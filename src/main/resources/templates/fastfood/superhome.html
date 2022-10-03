@@ -1,0 +1,74 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/wmain.css" type="text/css">
+</head>
+<style>
+#update{
+   width: 100px; 
+   display: block; 
+   height: 50px; 
+   line-height: 50px; 
+   text-align: center; 
+   background-color: #444; 
+   color: #fff; 
+   margin: 0 10px;
+}
+</style>
+
+<body>
+   <div id="wrap">
+        <header>
+            <h3>
+            <img src = "/img/bugerQueen.png" width="50" height="50">
+                <a> BURGER-QUEEN</a>
+            </h3>
+            <div>
+                <a th:href="@{/fastfood/logout}">로그아웃</a>   
+            </div>
+        </header>
+        <main>
+            <div class="con1">
+                <div class="title">회원 정보</div>
+                <ul class="user">
+                <!-- 
+                   <li th:text="${session.professor.professorName}"></li>
+                    <li th:text="${session.professor.professorNum}"></li>
+                 -->
+                    <li th:text="${session.user.userId}">..님</li>
+                   <!--  <a id="update">회원정보수정</a> -->
+                </ul>
+                <div class="title">카테고리</div>
+                <ul class="subject">
+                    <li>버거</li>
+                    <li>음료</li>
+                    <li>커피</li>
+                    <li>사이드</li>
+                    <li>디저트</li>
+                    <li>세트</li>
+                    
+                </ul>
+            </div>
+            <div class="con2">
+                <div id="">
+            <ul class="menu">
+               <li><a th:href="@{/fastfood/productAdd}">메뉴 추가 |</a></br></li>
+               <li><a th:href="@{/fastfood/productUpdate}">메뉴 수정 및 삭제 |</a></br></li>
+               <li><a th:href="@{/fastfood/DaySettlement(month=${currentmonth})}">월 결산 |</a></br></li>
+               <li><a th:href="@{/fastfood/CustomerManage}">회원 관리</a></li>
+            </ul>
+                </div>
+                
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+
+</body>
+</html>

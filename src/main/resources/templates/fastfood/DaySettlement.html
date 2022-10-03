@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/adminmenuStyle.css" type="text/css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>				
+			<script type="text/javascript" th:inline="javascript">
+		
+			</script>
+    
+</head>
+<style>
+#update{
+   width: 100px; 
+   display: block; 
+   height: 50px; 
+   line-height: 50px; 
+   text-align: center; 
+   background-color: #444; 
+   color: #fff; 
+   margin: 0 10px;
+}
+table, td, th {
+  border : 1px solid black;
+  border-collapse : collapse;
+}
+table {
+  width : 300px;
+  height : 200px;
+}
+th, td {
+  text-align: center;
+}
+h2 { text-align: right; }
+</style>
+
+<body>
+   <div id="wrap">
+        <header>
+            <h3>
+            <img src = "/img/bugerQueen.png" width="50" height="50">
+                <a> BURGER-QUEEN</a>
+            </h3>           
+        </header>
+        <main>
+			<div class="con2">
+				<div id="">
+					<ul class="menu">
+						<li><a th:href="@{/fastfood/superhome}">돌아가기 |</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=1)}">1월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=2)}">2월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=3)}">3월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=4)}">4월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=5)}">5월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=6)}">6월|</a></li>						
+						<li><a th:href="@{/fastfood/DaySettlement(month=7)}">7월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=8)}">8월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=9)}">9월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=10)}">10월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=11)}">11월|</a></li>
+						<li><a th:href="@{/fastfood/DaySettlement(month=12)}">12월|</a></li>						
+						
+					</ul>				
+				</div>
+				
+				<strong style="font-size:20px;" th:text="${nowdate}" ></strong>
+				<p style="font-size:20px;" align="center" th:text="${currentmonth}+'월일결산 '"> </p>
+				<p style="font-size:30px;" align="right">월일결산 결과: <strong th:text="${totalprice}+원"></strong> </p>
+				<table>
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>날짜</th>
+							<th>손님명</th>
+							<th>음식명</th>
+							<th>총 구매가격</th>
+						</tr>
+					</thead>
+					<tbody th:each="orders,count: ${ordersList}">
+						<tr>
+							<td th:text="${count.index}"></td>
+							<td th:text="${orders.orederDate}"></td>
+							<td th:text="${customerList[count.index].userId}"></td>
+							<td th:text="${productList[count.index].productName}"></td>
+							<td th:text="${orders.price}+원"></td>
+						</tr>
+					</tbody>
+				</table>
+								
+			</div>
+		</main>
+        <footer>
+
+        </footer>
+    </div>
+
+</body>
+</html>

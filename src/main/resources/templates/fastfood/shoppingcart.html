@@ -1,0 +1,109 @@
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+
+
+   <title>메인 페이지</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+   .table>tbody>tr>td, .table>tfoot>tr>td{
+    vertical-align: middle;
+}
+@media screen and (max-width: 600px) {
+    table#cart tbody td .form-control{
+		width:20%;
+		display: inline !important;
+	}
+	.actions .btn{
+		width:36%;
+		margin:1.5em 0;
+	}
+	
+	.actions .btn-info{
+		float:left;
+	}
+	.actions .btn-danger{
+		float:right;
+	}
+	
+	table#cart thead { display: none; }
+	table#cart tbody td { display: block; padding: .6rem; min-width:320px;}
+	table#cart tbody tr td:first-child { background: #333; color: #fff; }
+	table#cart tbody td:before {
+		content: attr(data-th); font-weight: bold;
+		display: inline-block; width: 8rem;
+	}
+	
+	
+	
+	table#cart tfoot td{display:block; }
+	table#cart tfoot td .btn{display:block;}
+	
+}
+  </style>
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>	
+			<script type="text/javascript" th:inline="javascript">
+			function dataSend(productname){				
+				alert(productname);				
+			
+			}
+			</script>
+</head>
+<body>
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+	<table id="cart" class="table table-hover table-condensed">
+    				<thead>
+						<tr>
+							<th style="width:50%">상품명</th>
+							<th style="width:10%">가격</th>
+							<th style="width:8%">수량</th>
+							<th style="width:22%" class="text-center">현재 가격</th>
+							<th style="width:10%"></th>
+						</tr>
+					</thead>
+					 <th:block th:each="baskets,count: ${basketList}"> 
+					<tbody>
+						<tr>
+							<td data-th="Product">
+								<div class="row">
+									<div class="col-sm-2 hidden-xs"><img src="/img/bulgogibuger.jpg" alt="..." class="img-responsive"/></div>
+									<div class="col-sm-10">
+										<h4 class="nomargin" th:text="${productList[count.index].productName}"></h4>										
+									</div>
+								</div>
+							</td>
+							<td data-th="Price" th:text="${productList[count.index].price}"></td>
+							<td data-th="Quantity">
+								<input type="number" class="form-control text-center" th:value="${baskets.pCount}">
+							</td>
+							<td data-th="Subtotal" class="text-center" th:text="${priceList[count.index]}"></td>
+							<td class="actions" data-th="">
+								<button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+								<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>								
+							</td>
+						</tr>
+					</tbody>
+					</th:block>
+					<tfoot>
+						<tr class="visible-xs">
+							<td class="text-center"><strong>3500원</strong></td>
+						</tr>
+						<tr>
+							<td><a th:href="@{/fastfood/menu}" class="btn btn-warning"><i class="fa fa-angle-left"></i> 계속 페이지로</a></td>
+							<td colspan="2" class="hidden-xs"></td>
+							<td>총 가격:</td>
+							<td class="hidden-xs text-center"  th:text="${totalprice}"><strong> </strong></td>
+							<td><a th:href="@{/fastfood/menu}" class="btn btn-success btn-block">구매 <i class="fa fa-angle-right"></i></a></td>
+						</tr>
+					</tfoot>
+				</table>
+</div>
+</body>
+</html>

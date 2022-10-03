@@ -1,0 +1,65 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Document</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/loginstyle.css}">
+<!--외부 css 연결-->
+
+<script >
+	function myFunction() {
+		var score = "[[${isloginSuccess}]]";
+	/* if (score >= 90){ console.log("점수 : A"); // 해당문 실행 }
+	 else if (score >= 80){ console.log("점수 : B"); }
+	 else if (score >= 70){ console.log("점수 : C"); }
+	 else if (score >= 60){ console.log("점수 : D"); }
+	 else { console.log("점수 : F"); }-->*/
+
+
+      	//alert( score );
+      }
+    </script>
+</head>
+
+<body>
+	<form th:action="@{/fastfood/login}" method="post">
+	<div class="loginbox">
+
+		<h1>로그인</h1>
+
+		  <form th:action="@{/fastfood/login}" method="post">
+
+			<label for="loginid" class="labelid">아이디</label> 
+			<input type="text" id="loginid" name="userId"><br />
+			 <label for="loginpw" class="labelpw">패스워드</label>
+
+			<input type="password" name="userPasswd">
+
+			
+
+			<div class="search">
+
+				<span class="text">·아이디 또는 비밀번호를 잊으셨나요?</span> <a th:href="@{/fastfood/login}">ID/PW찾기</a>
+
+			</div>
+
+			<div class="btnwrap">
+
+				<a th:href="@{/fastfood/register}">회원가입</a> 
+				<input type="submit" id="loginbtn" value="로그인" >
+
+				<label><input type="submit" value="로그인버튼"></label>
+
+			</div>
+			
+			
+			
+			<h4 th:if="${isloginSuccess}=='0'" style="color:red;"> ID와 패스워드가 일치하지 않습니다. </h4>
+        	
+        	<div th:if="${isloginSuccess}=='1'">일치</div>
+        	
+			
+
+		</form>

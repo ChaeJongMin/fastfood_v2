@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/adminmenuStyle.css" type="text/css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>				
+			<script type="text/javascript" th:inline="javascript">
+		
+			</script>
+    
+</head>
+<style>
+#update{
+   width: 100px; 
+   display: block; 
+   height: 50px; 
+   line-height: 50px; 
+   text-align: center; 
+   background-color: #444; 
+   color: #fff; 
+   margin: 0 10px;
+}
+table, td, th {
+  border : 1px solid black;
+  border-collapse : collapse;
+}
+table {
+  width : 300px;
+  height : 200px;
+}
+th, td {
+  text-align: center;
+}
+h2 { text-align: right; }
+</style>
+
+<body>
+<form th:action="@{/fastfood/CustomerManage}" method="post">
+   <div id="wrap">
+        <header>
+            <h3>
+            <img src = "/img/bugerQueen.png" width="50" height="50">
+                <a> BURGER-QUEEN</a>
+            </h3>           
+        </header>
+        <main>
+			<div class="con2">
+				<div id="">
+					<ul class="menu">
+						<li><a th:href="@{/fastfood/superhome}">돌아가기</a></li>
+					</ul>				
+				</div>
+				
+				<strong style="font-size:20px;">회원 정보 관리</strong>
+
+				<table>
+					<thead>
+						<tr>
+						<!-- 
+							 -->
+							<th>ID</th>
+							<th>email</th>
+							<th>phone</th>
+							<th>카드회사</th>
+							<th>수정선택</th>
+							<th>강제탈퇴</th>
+						</tr>
+					</thead>
+					<tbody th:each="customers: ${customerList}">
+						<tr>
+						<!-- 
+							-->
+							<td th:text="${customers.userId}"></td>
+							<td th:text="${customers.email}"></td>
+							<td th:text="${customers.phoneNum}"></td>
+							<td th:text="${customers.cardCompany}"></td>
+							<td><a th:href="@{/fastfood/cinfoUpdate(cid=${customers.userId})}">수정</a></td>
+							<td><a th:href="@{/fastfood/cinfoDelete(cid=${customers.userId})}">강제탈퇴</a></td> 
+						</tr>
+					</tbody>
+				</table>
+								
+			</div>
+		</main>
+        <footer>
+
+        </footer>
+    </div>
+</form>
+</body>
+</html>

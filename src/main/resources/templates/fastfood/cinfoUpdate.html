@@ -1,0 +1,77 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생 정보 수정</title>
+    <link rel="stylesheet" href="/css/adminmenuStyle.css" type="text/css">
+    
+</head>
+<body>
+<form method="post" th:action="@{/fastfood/cinfoUpdate(cid=${customers.userId})}">
+<header>
+    <h3>
+       <img src = "/img/bugerQueen.png" width="50" height="50">
+       <a th:href="@{/fastfood/menu}"> BURGER-QUEEN</a>
+    </h3>
+    <div>
+    	<a href="/fastfood/logout">로그아웃</a>
+	</div>
+</header>
+<main>
+<div class="con2">
+	<div>
+	<h2>상품 수정 및 삭제</h2>
+	</div>
+	<hr>
+	<br>
+	<div>
+	<strong>ID</strong>
+	<input class = "s_id" type="text" name="userId" th:value="${customers.userId}" disabled>
+	<input name="userId" th:value="${customers.userId}" type="hidden">
+	</div>
+	<div>
+	<strong>비밀번호</strong>
+	<input type = "password" name="userPasswd" th:value="${customers.userPasswd}" maxlength="15" disabled>
+	<input name="userPasswd" th:value="${customers.userPasswd}" type="hidden">
+	</div>
+	<br>
+	<hr>
+	<div>
+	<strong>E-mail</strong>
+	<input type="text" name="email" th:value="${customers.email}">
+	</div>
+	<br>
+	<hr>
+	<div>
+	<strong>phone</strong>
+	<input type="text" name="phoneNum" th:value="${customers.phoneNum}">
+	</div>
+	<br>
+	<hr>	
+	<div>
+	<strong>카드사</strong>
+	 <select class="box" name="cardCompany" th:value="${customers.cardCompany}">
+    			<option>선택</option>
+    			<option value="카카오뱅크" method="post">카카오뱅크</option>
+    			<option value="신한은행" method="post">신한은행</option>
+    			<option value="국민은행" method="post">국민은행</option>
+    			<option value="농협"  method="post">농협</option>
+    		</select>
+	 <!--  <input type="text" name="cardCompany" th:value="${session.user.cardCompany}">-->
+	</div>
+	<br>
+	<hr>	
+	<div>
+	<strong>카드번호</strong>
+	<input type="text" name="cardNum" th:value="${customers.cardNum}">
+	</div><br><hr>
+	<div id = "btn_group">
+	<input class="btn3" type="submit" value="정보수정">
+	
+	</div>
+</div>            	
+</main>
+</form>
+</BODY> 
+</HTML>

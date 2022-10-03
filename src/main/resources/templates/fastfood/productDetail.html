@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/adminmenuStyle.css" type="text/css">
+    <script type="text/javascript" th:inline="javascript">            
+           function showImage(input) { //이미지 미리보기 메소드   
+              
+                  if (input.files && input.files[0]) { // input이 이미지이므로 files(파일리스트), files[0]자신이 선택한 이미지 객체가 존재하는지 검사
+                     //이미지를 선택할 시 
+                     
+                     
+                     var reader = new FileReader();
+                     //이미지 파일을 읽기위한 FileReader(비동기)함수를 가져온다
+                     reader.readAsDataURL(input.files[0])
+                     //readAsDataURL메소드를 통해 이미지 파일을 읽어온다.
+                      reader.onload = function (e) {//정상적으로 파일을 읽으면 함수 실행
+                        //reader.onload는 reader가 정상적인으로 어떤 파일을 정상적으로 읽었을 경우 발생하는 핸들러
+                         
+                          var previewImage = document.getElementById("showimage")
+                           //img 아이디인 showimage를 찾아  previewImage저장
+                          previewImage.src = e.target.result
+                         //preview 이미지를 경로 값을 읽어온 이미지의 값을 저장해 이미지로 불러온다
+                           
+                           
+                           //------제이쿼리 사용 시
+                           //$('showimage').attr('src', e.target.result);
+                           //이미지 아이디 showimage를 attr 함수를 통해 읽은 이미지 값을 src(경로)에 저장
+                         //attr은 jquery문이기 때문에 $을 사용
+                     // reader가 비동기로 작동해서 html에 있는 img(62번쨰 줄)를 실행하여 읽어온 이미지를 보여준다
+                     }
+                     
+                  }
+              }         
+         </script>    
+</head>
+<style>
+#update{
+   width: 100px; 
+   display: block; 
+   height: 50px; 
+   line-height: 50px; 
+   text-align: center; 
+   background-color: #444; 
+   color: #fff; 
+   margin: 0 10px;
+}
+</style>
+
+<body>
+<form th:action="@{/fastfood/productDetail(pid=${product.pId})}" enctype="multipart/form-data" method="post">
+   <div id="wrap">
+        <header>
+            <h3>
+            <img src = "/img/bugerQueen.png" width="50" height="50">
+                <a> BURGER-QUEEN</a>
+            </h3>
+            <div>
+                <a href="/fastfood/logout">로그아웃</a>
+            </div>
+        </header>
+        <main>
+            <div class="con1">
+                <div class="title">매장관리</div>
+                <ul class="subject">
+                    <li>수정/삭제</li>
+                    <li>일결산</li>
+                    <li>추가</li>
+                    <li>회원정보수정</li>  
+                </ul>
+            </div>
+            <div class="con2">
+            	<div>
+            	<h2>상품 수정 및 삭제</h2>
+            	</div>
+            	<hr>
+            	<br>
+            	<div>
+        		<label for="inputTitle" class="col-sm-2 col-form-label"><strong>음식명(2글자~10글자)</strong></label>
+        	    <input type="text" name="productName" class="form-control" id="inputTitle" min=4 max=20 th:value="${product.productName}" disabled>
+        	    <input type="hidden" name="pId" th:value="${product.pId}">
+        	    </div>
+        	    <br>
+        	    <div>
+        	    <label for="inputAuthor" class="col-sm-2 col-form-label"><strong>가격(500원~15000원))</strong></label>
+        	    <input type="number" name="price" class="form-control" id="inputAuthor" min="500" max="15000" step="100" th:value="${product.price}">
+        	    </div>
+        	    <br>
+        	    <div>
+        	    <label><strong>품절</strong></label>
+        	    <input type="checkbox" name="allSale">
+        	    </div>
+        	    <br>
+        	    <div>
+        	    <label for="inputContent" class="col-sm-2 col-form-label" ><strong>카테고리</strong></label>
+        	    <select name="categoryName" disabled>
+        	    <!--  -->
+        	     	<option th:text="${product.categories.categoryName}" ></option>
+        	    	<!--<th:block th:each="catename, count: ${cateList}">
+        		       <option th:name="categories.categoryName" th:value="${catename.categoryName}" th:text="${catename.categoryName}" ></option>
+            		</th:block>  -->             
+           		</select>
+           		</div>
+           		<br>
+           		<div>
+           		<img style="width: 300px; height: 300px;" th:src="'/img/'+${product.productName}+'.jpg'" alt="your image" /> 
+           		<a th:href="@{/fastfood/ImageUpdate(pid=${product.pId})}">이미지 수정</a>
+           		</div>
+           		<!-- 
+           		<div>
+           		<label for="inputFile" class="col-sm-2 col-form-label"><strong>첨부 파일</strong></label>
+        	    	<input name="file" type="file" accept=".jpg, .png" required class="custom-file-input" 
+        	            id="customFile" onchange="showImage(this)" >               
+        	        <img id="showimage" style="width: 300px; height: 300px;" th:src="'/img/'+${product.productName}+'.jpg'" alt="your image" /> 
+        	        <input type="hidden" name="" src="">  
+        	    </div>
+        	    <br>
+           		 -->       		
+        	    <div>
+        	     <input class="btn btn-primary" type="submit" value="수정">    
+        	     <a class="btn btn-primary" th:href="@{/fastfood/delete(pid=${product.pId})}" >삭제</a>
+        	    </div>
+            </div>
+        </main>
+    </div>
+</form>
+</body>
+</html>
