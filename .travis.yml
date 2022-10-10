@@ -7,10 +7,9 @@ jdk:
 branches:
   only:
     - master
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
+install:
+  - mvn -N io.takari:maven:wrapper
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 # Travis CI 서버의 Home
 # 2
 cache:
