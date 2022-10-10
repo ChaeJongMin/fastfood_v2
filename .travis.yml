@@ -7,7 +7,10 @@ jdk:
 branches:
   only:
     - master
-
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 # Travis CI 서버의 Home
 # 2
 cache:
@@ -16,6 +19,9 @@ cache:
 
 before_install:
   - chmod +x mvnw
+
+# 3
+script: "./mvnw clean package"
 
 # CI 실행 완료시 메일로 알람
 # 4
