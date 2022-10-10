@@ -7,9 +7,7 @@ jdk:
 branches:
   only:
     - master
-install:
-  - mvn -N io.takari:maven:wrapper
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
 # Travis CI 서버의 Home
 # 2
 cache:
@@ -18,9 +16,6 @@ cache:
 
 before_install:
   - chmod +x mvnw
-
-# 3
-script: "./mvnw clean package"
 
 # CI 실행 완료시 메일로 알람
 # 4
