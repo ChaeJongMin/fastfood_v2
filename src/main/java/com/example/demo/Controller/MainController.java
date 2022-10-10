@@ -82,13 +82,13 @@ public class MainController {
        session.invalidate();
        System.out.println("*******세션 초기화*******");
        System.out.println("*******로그아웃*******");
-       return "/fastfood/login";
+       return "fastfood/login";
     }
 	
 	 @GetMapping("/CustomerUpdate")
      public String cUpdate(Model model,Customer customer) {
         //Iterable<>
-        return "/fastfood/CustomerUpdate";
+        return "fastfood/CustomerUpdate";
      }
      @PostMapping("/CustomerUpdate")
      public String cUpdateP(HttpSession session,Customer customer, @RequestParam("id") int id) {
@@ -101,23 +101,23 @@ public class MainController {
         c.setUserPasswd(customer.getUserPasswd());
         CustomerRepo.save(c);
         session.setAttribute("user", c);
-        return "forward:/fastfood/menu";
+        return "forward:fastfood/menu";
      }
 	
 	@GetMapping("/register")
 	public String signupView() {
-		return "/fastfood/register";	
+		return "fastfood/register";
 	}
 	
 	@PostMapping("/register")
 	public String signupSuccessView(Customer user) {
 		CustomerRepo.save(user);
-		return "redirect:/fastfood/login";
+		return "redirect:fastfood/login";
 	}
 	
 	@GetMapping("/login")
 	public String loginView( ) {
-		return "/fastfood/login";	
+		return "fastfood/login";
 	}
 	
 	@PostMapping("/login")
@@ -134,12 +134,12 @@ public class MainController {
 				isloginSuccess=1;
 				if(c.getRole()==1) {
 					session.setAttribute("user", c);
-					return "forward:/fastfood/superhome";
+					return "forward:fastfood/superhome";
 					}
 				else {
 					
 					session.setAttribute("user", c);
-					return "forward:/fastfood/menu";
+					return "forward:fastfood/menu";
 					}
 			}
 		}
@@ -147,25 +147,12 @@ public class MainController {
 		model.addAttribute("isloginSuccess", isloginSuccess);
 		System.out.println(isloginSuccess);
 		
-		return "/fastfood/login";
+		return "fastfood/login";
 	}
-		
-//	@GetMapping("/superhome")
-//	public String superhomepageView() {		
-//		System.out.println("@@GetMapping 메뉴 페이지  called...");				
-//		return "/fastfood/superhome";
-//	}
-//	@PostMapping("/superhome")
-//	public String superhomepage( HttpSession session) {
-//		System.out.println(" @@PostMapping 메뉴 페이지 called...");		
-//		System.out.println("**************************************");			
-//		return "/fastfood/superhome";	
-//	}
-	
 	@GetMapping("/new_food")
 	public String new_foodView() {		
 					
-		return "/fastfood/new_food";
+		return "fastfood/new_food";
 	}
 	
 	@PostMapping("/new_food")
@@ -178,45 +165,39 @@ public class MainController {
 		Categories c =CategoriRepo.findByCategoryName(foodCate).get(0);
 		System.out.println(c.getCategoryId());
 		
-		return "/fastfood/new_food";	
+		return "fastfood/new_food";
 	}
 	
 	@GetMapping("/fileupload")
 	public String fileupload() {		
 					
-		return "/fastfood/file_upload";
+		return "fastfood/file_upload";
 	}
-	
-//	@PostMapping("/fileupload")
-//	public String fileuploadpage() {
-//		
-//		return "/fastfood/file_upload";	
-//	}
+
 	@PostMapping("/fileupload")
 	public String uploadSingle(@RequestParam("files") MultipartFile file) throws Exception {
 	    String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
 	    System.out.println(rootPath);
 	    String basePath = rootPath + "\\" + "media";
 	    System.out.println(basePath);
-//	    String filePath = basePath + "\\" + file.getOriginalFilename();
 	    String filePath = "C:\\Users\\home\\Documents\\workspace-spring-tool-suite-4-4.11.1.RELEASE\\fastfood_up\\src\\main\\resources\\static\\img" + "\\" + file.getOriginalFilename();
 	    File dest = new File(filePath);
 	    file.transferTo(dest); // 파일 업로드 작업 수행
 	    System.out.println(filePath);
-	    return "/fastfood/file_upload";
+	    return "fastfood/file_upload";
 	}
 	
 	@GetMapping("/menu")
 	public String homepageView() {		
 		System.out.println("@@GetMapping 메뉴 페이지  called...");				
-		return "/fastfood/menu";
+		return "fastfood/menu";
 	}
 	
 	@PostMapping("/menu")
 	public String homepage( HttpSession session) {
 		System.out.println(" @@PostMapping 메뉴 페이지 called...");		
 		System.out.println("**************************************");			
-		return "/fastfood/menu";	
+		return "fastfood/menu";
 	}
 
 	 @GetMapping(value="/Hdetailmenu")
@@ -293,85 +274,9 @@ public class MainController {
 	   
 	      model.addAttribute("menuid",menuid);      
 	      model.addAttribute("menuname",menuname);
-	      return "/fastfood/Hdetailmenu";
+	      return "fastfood/Hdetailmenu";
 	    }
-	   
-	
-	
-//	@GetMapping(value="/Hdetailmenu")
-//    public String detailmenuView(Model model,@RequestParam("menuid") int menuid,HttpSession session){      
-//      System.out.println(" @@GetMapping 상세메뉴 페이지 called...");
-//      List<ProductImage> ProImgList=new ArrayList<ProductImage>();
-//      Categories cate = CategoriRepo.findById(menuid).get();
-//         for (Product product : cate.getProductList()) {
-//            System.out.println("---> " + product.getProductName());
-//            ProImgList.add(ProductImgRepo.findByProduct(product).get(0));      
-//           
-//         }
-//         System.out.println("선택한 메뉴 번호"+menuid);   
-//      model.addAttribute("productlist",cate.getProductList());      
-//      model.addAttribute("menuid",menuid);
-//      model.addAttribute("proImageList",ProImgList);
-//      return "/fastfood/Hdetailmenu";
-//    }
-	
-//	@PostMapping(value="/Hdetailmenu")
-//    public String Hdetailmenu(@RequestParam("mid") int mid,Model model,HttpSession session,@RequestParam("pname") String pname,
-//    		@RequestParam("size") String size,@RequestParam("temp") String temp){
-//		
-//		model.addAttribute("menuid",mid);
-//		System.out.println(" @@PostMapping homepageView called...");
-//      System.out.println("**********@PostMapping(\"/Hdetailmenu\")****************************");
-//
-//      System.out.println("현재 메뉴 번호: " + mid);		
-//      System.out.println("구매한 제품: "+pname);
-//      System.out.println("크기: "+size);
-//      System.out.println("온도: "+temp);
-//      //int menuid=Integer.parseInt(mid);
-//      
-//      
-//      Categories cate = CategoriRepo.findById(mid).get();
-////        for (Product product : cate.getProductList()) {
-////           System.out.println("---> " + product.getProductName());
-////           
-////        }
-////     model.addAttribute("productlist",cate.getProductList());
-//
-//     int infonum=0;
-//     for (Product p : cate.getProductList()) {
-//
-//
-//        if (p.getProductName().equals(pname)) {
-//           session.setAttribute("basketproduct", p.getInfo(size, temp));
-//           
-//           infonum=p.getInfo(size, temp).getInfoid();
-//           System.out.println(p.getInfo(size, temp).getSize().getSizename());
-//           System.out.println(p.getInfo(size, temp).getInfoid());
-//           System.out.println(p.getInfo(size, temp).getPrice());
-//           System.out.println(p.getInfo(size, temp).getTemperature().getTempname());
-//           System.out.println(p.getInfo(size, temp).getTemperature().getTempname());
-//           
-//           
-//        }
-//      }
-//     System.out.println(pname+"담기 완료");
-//     
-////      ProductRepo.findByProductName(pname).get(0).getInfo(size, temp);
-////      (Product_option_info)((Product)ProductRepo.findByProductName(pname).get(0)).getInfo(size, "None");
-//     
-////      Basket basket = new Basket();
-////      basket.setCustomer((Customer)session.getAttribute("user"))
-////      basket.setPCount(1);
-////      basket.setInfo(Integer.toString(infonum));
-////      basket.setPrice(OptionRepository.findById(infonum).get().getPrice());
-//     
-////      basket.setProductinfo((Product_option_info)ProductRepo.findByProductName(pname).get(0).getInfo(size, temp));
-////      basket.setProduct((Product_option_info)session.getAttribute("basketproduct"));
-////      
-////      BasketRepo.save(basket);
-//
-//    return null;
-//   }
+
 
 	@PostMapping(value="/Hdetailmenu")
     public String Hdetailmenu(@RequestParam("mid") int mid,Model model,HttpSession session,@RequestParam("pname") String pname,
@@ -437,7 +342,6 @@ public class MainController {
 
       }
 
-
     return null;
    }
 	
@@ -450,7 +354,7 @@ public class MainController {
 		}
 		//	Iterable<Basket> basketList = BasketRepo.find();
 	
-      return "/fastfood/my_baket";
+      return "fastfood/my_baket";
     }
 	
 	@PostMapping("/mybasket")
@@ -517,19 +421,8 @@ public class MainController {
 		model.addAttribute("productList",productList);
 		model.addAttribute("totalprice",totalprice);
 		model.addAttribute("productcount",productcount);
-      return "/fastfood/my_baket";
+      return "fastfood/my_baket";
     }
-	
-//	@GetMapping("/basket_save")
-//    public String basket_saveget(Model model,HttpSession session){      
-//		Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer)session.getAttribute("user"));
-//		for(Basket b:basketList) {
-//			System.out.println(b);
-//		}
-//		//	Iterable<Basket> basketList = BasketRepo.find();
-//	
-//      return "/fastfood/login";
-//    }
 	   
 	@ResponseBody
 	@PostMapping("/basket_save")
@@ -572,7 +465,7 @@ public class MainController {
 	      model.addAttribute("id",((Customer)session.getAttribute("user")).getUserId());
 	      
 	      model.addAttribute("totalprice", total);
-	      return "/fastfood/Payment";
+	      return "fastfood/Payment";
 	            
 	   }
 	   @PostMapping("/Payment")
@@ -621,9 +514,9 @@ public class MainController {
 	            OrdersRepo.save(o);
 	            BasketRepo.delete(b);
 	         }         
-	         return "/fastfood/Payment";
+	         return "fastfood/Payment";
 	      }
-	      return "/fastfood/Payment";
+	      return "fastfood/Payment";
 	   }
 	   public int checkUserPayInfo(String cardnum, String cardCompany,Customer customer) {
 	      if(!cardnum.equals(customer.getCardNum())) {

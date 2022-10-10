@@ -88,7 +88,7 @@ public class AdminController {
         int month=Integer.parseInt(datearray[1]);
         System.out.println("현재 월: "+month+"월");
         model.addAttribute("currentmonth",month);
-        return "/fastfood/superhome";
+        return "fastfood/superhome";
       }
      @PostMapping("/superhome")
      public String adminMenu(Model model,HttpSession session){
@@ -97,21 +97,9 @@ public class AdminController {
         int month=Integer.parseInt(datearray[1]);
         System.out.println("현재 월: "+month+"월");
         model.addAttribute("currentmonth",month);
-        return "/fastfood/superhome";
+        return "fastfood/superhome";
       }
-   
-//   @GetMapping("/adminMenu")
-//   public String adminView(Model model,HttpSession session){      
-//      
-//      return "/fastfood/adminMenu";
-//    }
-//   @PostMapping("/adminMenu")
-//   public String adminMenu(Model model,HttpSession session){            
-//      return "/fastfood/adminMenu";
-//    }
-     
-     
-     @GetMapping("/DaySettlement")
+	  @GetMapping("/DaySettlement")
      public String SettlementView(Model model,@RequestParam("month") String selectmonth) {
          Iterable<Orders> ordersList=OrdersRepo.findAll();
          ArrayList<Product> productList =new ArrayList<Product>();
@@ -132,7 +120,6 @@ public class AdminController {
            }
            System.out.println(o.getOrederDate());         
         }
-        ///
          
          for(Orders o:CurrentOrderList) { 
             customerList.add(CustomerRepo.findById(o.getCustomer().getId()).get());
@@ -145,7 +132,7 @@ public class AdminController {
          model.addAttribute("customerList",customerList);
          model.addAttribute("productList",productList);
          model.addAttribute("totalprice",totalprice);
-        return "/fastfood/DaySettlement";
+        return "fastfood/DaySettlement";
      }
      
      
@@ -166,7 +153,7 @@ public class AdminController {
    public String productAddView(Model model,HttpSession session){      
        Iterable<Categories> cateList=CategoriRepo.findAll();      
        model.addAttribute("cateList",cateList);   
-      return "/fastfood/productAdd";
+      return "fastfood/productAdd";
     }
    
 
@@ -292,17 +279,10 @@ public class AdminController {
     							OptionRepository.save(goods);
     							break;
     						}
-
     					}
-    					
     					break;
     					}
-    				 
-    				
-    					 
     				}
-
-    				
     			}
           
           
@@ -319,76 +299,27 @@ public class AdminController {
 
 
       }                         
-      return "/fastfood/productAdd";
+      return "fastfood/productAdd";
     }   
    
    @GetMapping("/supermenu")
 	public String homepageView() {		
 		System.out.println("@@GetMapping 메뉴 페이지  called...");				
-		return "/fastfood/supermenu";
+		return "fastfood/supermenu";
 	}
 	
 	@PostMapping("/supermenu")
 	public String homepage( HttpSession session) {
 		System.out.println(" @@PostMapping 메뉴 페이지 called...");		
 		System.out.println("**************************************");			
-		return "/fastfood/supermenu";	
+		return "fastfood/supermenu";
 	}
-	
 
-//	@GetMapping(value="/superHdetailmenu")
-//    public String detailmenuView(Model model,@RequestParam("menuid") int menuid,HttpSession session){      
-//		System.out.println(" superHdetailmenu@@GetMapping 상세메뉴 페이지 called...");		
-//      Categories cate = CategoriRepo.findById(menuid).get();
-//         for (Product product : cate.getProductList()) {
-//            System.out.println("---> " + product.getProductName());
-//         }
-//         System.out.println("선택한 메뉴 번호"+menuid);	
-//      model.addAttribute("productlist",cate.getProductList());		
-//      model.addAttribute("menuid",menuid);		
-//      return "/fastfood/superHdetailmenu";
-//    }
-//	
-//	@PostMapping(value="/superHdetailmenu")
-//    public String Hdetailmenu(@RequestParam("mid") int mid,Model model,HttpSession session,@RequestParam("pname") String pname){
-//		
-//		model.addAttribute("menuid",mid);
-//		System.out.println(" @@PostMapping homepageView called...");
-//      System.out.println("**********@PostMapping(\"/Hdetailmenu\")****************************");
-//
-//      System.out.println("현재 메뉴 번호: " + mid);		
-//      System.out.println("구매한 제품: "+pname);
-//      //int menuid=Integer.parseInt(mid);
-//      Categories cate = CategoriRepo.findById(mid).get();
-//        for (Product product : cate.getProductList()) {
-//           System.out.println("---> " + product.getProductName());
-//        }
-//     model.addAttribute("productlist",cate.getProductList());
-//
-//
-//     for (Product p : cate.getProductList()) {
-//
-//
-//        if (p.getProductName().equals(pname)) {
-//           session.setAttribute("basketproduct", p);
-//        }
-//      }
-//      System.out.println(pname+"담기 완료");
-//      Basket basket = new Basket();
-//      basket.setCustomer((Customer)session.getAttribute("user"));
-//      basket.setPCount(1);
-//      basket.setProduct((Product)session.getAttribute("basketproduct"));
-//      
-//      BasketRepo.save(basket);
-//
-//    return null;
-//   }
-	
 	@GetMapping("/edit")
 	   public String editView(Model model,HttpSession session){      
 	       Iterable<Categories> cateList=CategoriRepo.findAll();      
 	       model.addAttribute("cateList",cateList);   
-	      return "/fastfood/edit";
+	      return "fastfood/edit";
 	    }
 	   
 
@@ -429,7 +360,7 @@ public class AdminController {
 
 
 	      }                         
-	      return "/fastfood/edit";
+	      return "fastfood/edit";
 	    }  
 	   
 	   @GetMapping("/productUpdate")
@@ -461,7 +392,7 @@ public class AdminController {
 		   //ProductImage pimg = ImageRepository.findByP(pid).get();
 //		   ProductImage pimg=ImageRepository.findByProduct(p).get(0);
 		   //model.addAttribute("pimg", pimg); 
-		   return "/fastfood/productDetail";
+		   return "fastfood/productDetail";
 		   
 	   }
 	   @PostMapping("/productDetail")
@@ -500,11 +431,7 @@ public class AdminController {
 	            }
 	         }
 	      }
-	      
-	      
-	      
-	      
-	      
+
 	   @GetMapping("/ImageUpdate")
 	   public String ImageUpdateG(Model model, @RequestParam("pid") int pid, Product product){
 		   Iterable<Categories> cateList=CategoriRepo.findAll();            
@@ -514,7 +441,7 @@ public class AdminController {
 		   //ProductImage pimg = ImageRepository.findByP(pid).get();
 		   ProductImage pimg=ImageRepository.findByProduct(p).get(0);
 		   model.addAttribute("pimg", pimg); 
-		   return "/fastfood/ImageUpdate";
+		   return "fastfood/ImageUpdate";
 	   }
 	   @PostMapping("/ImageUpdate")
 	   public String onlyProduct(@RequestParam("pid") int pid,@RequestParam("file") MultipartFile file, String productName) 
@@ -573,20 +500,19 @@ public class AdminController {
 	         return "redirect:productUpdate";
 
 	   }
-	   
-	   
+
 	      @GetMapping("/CustomerManage")
 	      public String manageView(Model model) {
 	    	  System.out.println("====== @GetMapping(\"/CustomerManage\")========");
 	         Iterable<Customer> customerList = CustomerRepo.findByRole(0);
 	         model.addAttribute("customerList", customerList);
-	         return "/fastfood/CustomerManage";
+	         return "fastfood/CustomerManage";
 	      }
 	      @GetMapping("/cinfoUpdate")
 	      public String customerinfoUpdateView(Model model, @RequestParam("cid") String cid) {
 	         Customer c = CustomerRepo.findByUserId(cid).get(0);
 	         model.addAttribute("customers", c);
-	         return "/fastfood/cinfoUpdate";
+	         return "fastfood/cinfoUpdate";
 	      }
 	      @PostMapping("/cinfoUpdate")
 	      public String customerinfoUpdatePost(Model model, @RequestParam("cid") String cid, Customer customer) {
@@ -611,7 +537,5 @@ public class AdminController {
 	         CustomerRepo.delete(c);
 	          return "redirect:CustomerManage";
 	      }
-	   
-	   
- 
+
 }

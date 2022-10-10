@@ -1,0 +1,22 @@
+language: java
+jdk:
+  - openjdk8
+
+branches:
+  only:
+    - main
+
+before_install:
+  - chmod +x mvnw
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+script: "./maven clean build"
+
+notifications:
+  email:
+    recipients:
+      - dev.dico2760@naver.com
