@@ -3,14 +3,15 @@ sudo: true
 dist: trusty
 jdk:
   - openjdk8
+
+install:
+  - mvn -N io.takari:maven:wrapper
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 # 1
 branches:
   only:
     - master
 
-install:
-  - mvn -N io.takari:maven:wrapper
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 # Travis CI 서버의 Home
 
 # 2
