@@ -4,15 +4,14 @@ jdk:
 
 branches:
   only:
-    - main
-
-before_install:
-  - chmod +x mvnw
+    - master
 
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.gradle'
+    - $HOME/.m2
+
+before_install:
+  - chmod +x mvnw
 
 script: "./maven clean build"
 
