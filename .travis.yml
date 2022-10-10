@@ -11,7 +11,7 @@ cache:
     - '$HOME/.m2/'
 
 before_install:
-  - chmod +x mvw
+  - chmod +x mvnw
 
 script: "./maven package"
 
