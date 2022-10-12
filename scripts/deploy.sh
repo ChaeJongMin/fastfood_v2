@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/step2
-PROJECT_NAME=fastfood-spring-webservice
+PROJECT_NAME=fastfoodweb
 
 echo "> Build 파일 복사"
 
@@ -9,7 +9,7 @@ cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(pgrep -fl spring_deploy_test | grep jar | awk '{print $1}')
+CURRENT_PID=$(pgrep -fl fastfood_spring_webservice | grep jar | awk '{print $1}')
 
 echo "현재 구동 중인 애플리케이션 pid : $CURRENT_PID"
 
