@@ -11,13 +11,26 @@ branches:
   only:
     - master
 
-# Travis CI 서버의 Home
-
 # 2
 cache:
   directories:
     - '$HOME/.m2/repository'
 
+before_deploy:
+  - zip -r fastfood-springboot2-webservice *
+  - mkdir -p deploy
+  - mv fastfood-springboot2-webservice.zip deploy/fastfood-springboot2-webservice.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: fastfood-spring-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
 
 # CI 실행 완료시 메일로 알람
 # 4
