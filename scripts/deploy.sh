@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/step2
-PROJECT_NAME=fastfood_spring_webservice
+PROJECT_NAME=fastfood-spring-webservice
 
 echo "> Build 파일 복사"
 
