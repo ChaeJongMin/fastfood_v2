@@ -20,5 +20,5 @@ target/
 *.ipr
 
 ### AWS RDS ###
-/src/main/resources/application.properties
+/src/main/resources/application-rds.properties
 
