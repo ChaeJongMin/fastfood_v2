@@ -10,7 +10,7 @@ before_install:
 branches:
   only:
     - master
-    
+
 script: "./mvnw clean package"
 
 # 2
