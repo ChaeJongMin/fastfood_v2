@@ -9,9 +9,9 @@ cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(pgrep -fl fastfood_up | grep jar | awk '{print $1}')
-CURRENT_PID2=$(pgrep -fl fastfood-spring2-webservice | grep jar | awk '{print $1}')
-CURRENT_PID3=$(pgrep -fl fastfood-spring-webservice | grep jar | awk '{print $1}')
+CURRENT_PID=$(pgrep -fl fastfood_up | grep java | awk '{print $1}')
+CURRENT_PID2=$(pgrep -fl fastfood-spring2-webservice | grep java | awk '{print $1}')
+CURRENT_PID3=$(pgrep -fl fastfood-spring-webservice | grep java | awk '{print $1}')
 
 echo "현재 구동 중인 애플리케이션 pid : $CURRENT_PID"
 
