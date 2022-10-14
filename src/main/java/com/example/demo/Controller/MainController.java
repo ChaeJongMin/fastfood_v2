@@ -129,15 +129,13 @@ public class MainController {
 		int isloginSuccess=0;
 		for (Customer c : cusList) {			
 			if(userId.equals(c.getUserId()) && userPasswd.equals(c.getUserPasswd())) {
-			//if (c.getUserId().equals(userId) && c.getUserPasswd().equals(userPasswd)) {
-				
+
 				isloginSuccess=1;
 				if(c.getRole()==1) {
 					session.setAttribute("user", c);
 					return "forward:fastfood/superhome";
 					}
 				else {
-					
 					session.setAttribute("user", c);
 					return "forward:fastfood/menu";
 					}
