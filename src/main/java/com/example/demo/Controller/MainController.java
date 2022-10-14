@@ -124,20 +124,19 @@ public class MainController {
 	public String loginSuccessView(Model model, String userId, String userPasswd,HttpSession session) {
 		System.out.println("login controller");
 		System.out.println(userId + ", " + userPasswd);
-				
 		Iterable<Customer> cusList = CustomerRepo.findAll();
 		int isloginSuccess=0;
 		for (Customer c : cusList) {			
 			if(userId.equals(c.getUserId()) && userPasswd.equals(c.getUserPasswd())) {
-
 				isloginSuccess=1;
+				System.out.println("로그인 결과값"+isloginSuccess);
 				if(c.getRole()==1) {
 					session.setAttribute("user", c);
-					return "forward:fastfood/superhome";
+					return "forward:/fastfood/superhome";
 					}
 				else {
 					session.setAttribute("user", c);
-					return "forward:fastfood/menu";
+					return "forward:/fastfood/menu";
 					}
 			}
 		}
