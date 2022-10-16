@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-@PropertySource("classpath:application-rds.properties")
+@PropertySource("classpath:/application-rds.properties")
 @Service
 @Getter
 public class AwsS3Service {
@@ -45,11 +45,10 @@ public class AwsS3Service {
     }
 
     public String upload(MultipartFile file, String filename) throws IOException {
-        String fileName = filename;
 
-        s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
+        s3Client.putObject(new PutObjectRequest(bucket, filename, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3Client.getUrl(bucket, fileName).toString();
+        return s3Client.getUrl(bucket, filename).toString();
     }
 
 
