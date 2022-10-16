@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 @PropertySource("classpath:/application-rds.properties")
 @Service
@@ -34,7 +32,7 @@ public class AwsS3Service {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    @PostConstruct
+
     public void setS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
 
