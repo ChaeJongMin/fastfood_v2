@@ -75,7 +75,8 @@ public class MainController {
 	private OptionInfoRepo OptionRepository;
 	@Autowired
 	private TemperRepository TemperRepo;
-	
+
+	static String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
     public String logoutGet(HttpSession session, HttpServletRequest request) {
        session = request.getSession();
@@ -264,13 +265,11 @@ public class MainController {
 	           }
 	     }
 	       
-	      model.addAttribute("productlist",cate.getProductList());   
-//	      model.addAttribute("productlist", productList);
-	         
-	      model.addAttribute("goodslist",OptionRepository.findAll());      
-	   
+	      model.addAttribute("productlist",cate.getProductList());
+	      model.addAttribute("goodslist",OptionRepository.findAll());
 	      model.addAttribute("menuid",menuid);      
 	      model.addAttribute("menuname",menuname);
+		  model.addAttribute("s3url",s3Url);
 	      return "fastfood/Hdetailmenu";
 	    }
 
@@ -350,7 +349,7 @@ public class MainController {
 			System.out.println(b);
 		}
 		//	Iterable<Basket> basketList = BasketRepo.find();
-	
+		model.addAttribute("s3url",s3Url);
       return "fastfood/my_baket";
     }
 	
@@ -418,6 +417,7 @@ public class MainController {
 		model.addAttribute("productList",productList);
 		model.addAttribute("totalprice",totalprice);
 		model.addAttribute("productcount",productcount);
+		model.addAttribute("s3url",s3Url);
       return "fastfood/my_baket";
     }
 	   

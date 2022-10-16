@@ -24,5 +24,7 @@ public interface ProductRepository extends CrudRepository<Product,Integer> {
 	@Modifying
 	@Query("delete from Product b where b.pId=:pid")  //:id는 함수의 매개변수
 	void deleteProduct(Integer pid);
+
+
 	
 }

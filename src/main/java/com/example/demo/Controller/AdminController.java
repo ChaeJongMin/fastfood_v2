@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
+import com.example.demo.Service.AwsS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -333,11 +334,11 @@ public class AdminController {
 	       int isaddSuccess=0;
 	       
 	      System.out.println("상품 이름: "+pname +" 상품 가격: "+pprice +" 상품 카테고리: "+category);
-	       String rootpath= FileSystemView.getFileSystemView().getDefaultDirectory().toString();
-	       String sts="\\workspace-spring-tool-suite-4-4.12.0.RELEASE\\FastFood\\src\\main\\resources\\static\\img\\";
 
+		   AwsS3Service awsS3Service = new AwsS3Service();
+		   awsS3Service.setS3Client();
 	       
-	       String basepath="C:\\Users\\home\\Documents\\workspace-spring-tool-suite-4-4.11.1.RELEASE\\fastfood_up\\src\\main\\resources\\static\\img" + "\\" + file.getOriginalFilename();
+	       String basepath="D:\\Project\\fastfood_up\\src\\main\\resources\\static\\img\\" +pname+".jpg";
 
 	      if(!pname.equals("")&&!pprice.equals("")) {//빈칸 검사
 	    	  if(ProductRepo.findByProductName(pname).isEmpty()) {
@@ -448,9 +449,12 @@ public class AdminController {
 			   throws IllegalStateException, IOException {
 		   //ProductImage img=ImageRepository.findByProduct(p).get(0);
 		   Product p = ProductRepo.findById(pid).get();
-		  
-		   
-		   String sts="C:\\Users\\home\\Documents\\workspace-spring-tool-suite-4-4.11.1.RELEASE\\fastfood_up\\src\\main\\resources\\static\\img\\";
+
+		   //s3 설정
+		   AwsS3Service awsS3Service = new AwsS3Service();
+		   awsS3Service.setS3Client();
+
+		   String sts="D:\\Project\\fastfood_up\\src\\main\\resources\\static\\img\\";
 		   String existpath=sts+p.getProductName()+".jpg";
 		   System.out.println("이미지 저장 경로: "+existpath);
 		   File existFile=new File(existpath);
@@ -465,7 +469,7 @@ public class AdminController {
 			       file.transferTo(newFile); 
 			       ProductImage p_img=ImageRepository.findByProduct(p).get(0);
 			       p_img.setImageName(imgname);
-			       p_img.setImageLoad("/img/"+imgname+".jpg");
+			       p_img.setImageLoad(awsS3Service.upload(file, imgname));
 			       p_img.setProduct(p);
 			       ImageRepository.save(p_img); 
 			   }
