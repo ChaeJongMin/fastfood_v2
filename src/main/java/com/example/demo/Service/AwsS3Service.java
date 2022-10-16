@@ -44,7 +44,7 @@ public class AwsS3Service {
 
         s3Client.putObject(new PutObjectRequest(bucket, filename, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3Client.getUrl(bucket, filename).toString();
+        return s3Client.getUrl(bucket, "img/"+filename).toString();
     }
 
 
