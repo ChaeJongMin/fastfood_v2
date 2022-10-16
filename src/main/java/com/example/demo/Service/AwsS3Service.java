@@ -29,14 +29,14 @@ public class AwsS3Service {
 
     @Value("${cloud.aws.region.static}")
     private String region;
-
+    private final String REGION = "ap-northeast-2";
 
     public void setS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
 
         s3Client = AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(this.region)
+                .withRegion(REGION)
                 .build();
     }
 
