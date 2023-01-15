@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
-import com.example.demo.Service.AwsS3Service;
+//import com.example.demo.Service.AwsS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -335,8 +335,8 @@ public class AdminController {
 	       
 	      System.out.println("상품 이름: "+pname +" 상품 가격: "+pprice +" 상품 카테고리: "+category);
 
-		   AwsS3Service awsS3Service = new AwsS3Service();
-		   awsS3Service.setS3Client();
+//		   AwsS3Service awsS3Service = new AwsS3Service();
+//		   awsS3Service.setS3Client();
 	       
 	       String basepath="D:\\Project\\fastfood_up\\src\\main\\resources\\static\\img\\" +pname+".jpg";
 
@@ -451,8 +451,8 @@ public class AdminController {
 		   Product p = ProductRepo.findById(pid).get();
 
 		   //s3 설정
-		   AwsS3Service awsS3Service = new AwsS3Service();
-		   awsS3Service.setS3Client();
+//		   AwsS3Service awsS3Service = new AwsS3Service();
+//		   awsS3Service.setS3Client();
 
 		   String sts="D:\\Project\\fastfood_up\\src\\main\\resources\\static\\img\\";
 		   String existpath=sts+p.getProductName()+".jpg";
@@ -469,7 +469,7 @@ public class AdminController {
 			       file.transferTo(newFile); 
 			       ProductImage p_img=ImageRepository.findByProduct(p).get(0);
 			       p_img.setImageName(imgname);
-			       p_img.setImageLoad(awsS3Service.upload(file, imgname));
+			       //p_img.setImageLoad(awsS3Service.upload(file, imgname));
 			       p_img.setProduct(p);
 			       ImageRepository.save(p_img); 
 			   }

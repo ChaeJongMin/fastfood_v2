@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
+import com.example.demo.Service.CustomerService;
+import com.example.demo.dto.CustomerRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +39,7 @@ import com.example.demo.domain.Product_option_info;
 import com.example.demo.domain.Size;
 import com.example.demo.domain.Temperature;
 import com.example.demo.domain.Worker;
-
+import com.example.demo.dto.CustomerDto;
 import com.example.demo.persistence.BasketRepository;
 import com.example.demo.persistence.CategoriesRepository;
 import com.example.demo.persistence.CustomerRepository;
@@ -75,8 +77,9 @@ public class MainController {
 	private OptionInfoRepo OptionRepository;
 	@Autowired
 	private TemperRepository TemperRepo;
-
-	static String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
+	@Autowired
+	private CustomerService customerService;
+	static final String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
     public String logoutGet(HttpSession session, HttpServletRequest request) {
        session = request.getSession();
@@ -85,22 +88,23 @@ public class MainController {
        System.out.println("*******로그아웃*******");
        return "fastfood/login";
     }
-	
+
 	 @GetMapping("/CustomerUpdate")
      public String cUpdate(Model model,Customer customer) {
         //Iterable<>
         return "fastfood/CustomerUpdate";
      }
      @PostMapping("/CustomerUpdate")
-     public String cUpdateP(HttpSession session,Customer customer, @RequestParam("id") int id) {
+     public String cUpdateP(HttpSession session, CustomerRequestDto customer, @RequestParam("id") int id) {
         Customer c=CustomerRepo.findById(id).get();
-        c.setPhoneNum(customer.getPhoneNum());
-        c.setCardCompany(customer.getCardCompany());
-        c.setCardNum(customer.getCardNum());
-        c.setEmail(customer.getEmail());
-        c.setUserId(customer.getUserId());
-        c.setUserPasswd(customer.getUserPasswd());
-        CustomerRepo.save(c);
+//        c.setPhoneNum(customer.getPhoneNum());
+//        c.setCardCompany(customer.getCardCompany());
+//        c.setCardNum(customer.getCardNum());
+//        c.setEmail(customer.getEmail());
+//        c.setUserId(customer.getUserId());
+//        c.setUserPasswd(customer.getUserPasswd());
+//        CustomerRepo.save(c);
+		customerService.updateUserInfo(id,customer);
         session.setAttribute("user", c);
         return "forward:fastfood/menu";
      }
@@ -111,8 +115,8 @@ public class MainController {
 	}
 	
 	@PostMapping("/register")
-	public String signupSuccessView(Customer user) {
-		CustomerRepo.save(user);
+	public String signupSuccessView(CustomerRequestDto customer) {
+		customerService.saveUserInfo(customer);
 		return "redirect:fastfood/login";
 	}
 	
@@ -122,30 +126,44 @@ public class MainController {
 	}
 	
 	@PostMapping("/login")
-	public String loginSuccessView(Model model, String userId, String userPasswd,HttpSession session) {
+	public String loginSuccessView(Model model, String userId, String userPasswd,HttpSession session)  {
 		System.out.println("login controller");
 		System.out.println(userId + ", " + userPasswd);
-		Iterable<Customer> cusList = CustomerRepo.findAll();
+		boolean existUser=customerService.findUsers(userId,userPasswd);
 		int isloginSuccess=0;
-		for (Customer c : cusList) {			
-			if(userId.equals(c.getUserId()) && userPasswd.equals(c.getUserPasswd())) {
-				isloginSuccess=1;
-				System.out.println("로그인 결과값"+isloginSuccess);
-				if(c.getRole()==1) {
-					session.setAttribute("user", c);
-					return "forward:/fastfood/superhome";
-					}
-				else {
-					session.setAttribute("user", c);
-					return "forward:/fastfood/menu";
-					}
+		if(existUser){
+			isloginSuccess=1;
+			//반드시 수정 필요
+			session.setAttribute("user", CustomerRepo.findByUserId(userId).get(0));
+			if(customerService.getUser(userId).getRole()==1){
+				return "forward:/fastfood/superhome";
 			}
+			else
+				return "forward:/fastfood/menu";
 		}
-		
 		model.addAttribute("isloginSuccess", isloginSuccess);
-		System.out.println(isloginSuccess);
-		
 		return "fastfood/login";
+//		Iterable<Customer> cusList = CustomerRepo.findAll();
+//		int isloginSuccess=0;
+//		for (Customer c : cusList) {
+//			if(userId.equals(c.getUserId()) && userPasswd.equals(c.getUserPasswd())) {
+//				isloginSuccess=1;
+//				System.out.println("로그인 결과값"+isloginSuccess);
+//				if(c.getRole()==1) {
+//					session.setAttribute("user", c);
+//					return "forward:/fastfood/superhome";
+//					}
+//				else {
+//					session.setAttribute("user", c);
+//					return "forward:/fastfood/menu";
+//					}
+//			}
+//		}
+//
+//		model.addAttribute("isloginSuccess", isloginSuccess);
+//		System.out.println(isloginSuccess);
+		
+//		return "fastfood/login";
 	}
 	@GetMapping("/new_food")
 	public String new_foodView() {		

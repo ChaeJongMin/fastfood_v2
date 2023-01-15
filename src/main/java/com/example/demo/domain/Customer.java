@@ -7,13 +7,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @Entity
 public class Customer {
 	@Id
@@ -27,4 +27,16 @@ public class Customer {
 	private String cardCompany;
 	private String phoneNum;
 	private Integer role=0;
+
+	@Builder
+	public Customer(String userId,String userPasswd,String email
+			,String cardNum,String cardCompany,String phoneNum,int role){
+		this.userId=userId;
+		this.userPasswd=userPasswd;
+		this.email=email;
+		this.cardNum=cardNum;
+		this.cardCompany=cardCompany;
+		this.phoneNum=phoneNum;
+		this.role=role;
+	}
 }

@@ -41,7 +41,8 @@ public class Product {
 	
 	@OneToMany(mappedBy="product",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private List<Product_option_info> infoList=new ArrayList<Product_option_info>();
-	
+
+	//엔터티에서 setter은 무조건 금지 나중에 dto에서 추가해야한다.
 	public void setCategories(Categories c) {
 		this.categories = c;
 		c.getProductList().add(this);
