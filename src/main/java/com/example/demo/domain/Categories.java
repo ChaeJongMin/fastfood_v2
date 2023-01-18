@@ -10,9 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +27,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(exclude="productList")
+@NoArgsConstructor
 @Entity
 public class Categories {
 	@Id
@@ -36,5 +37,9 @@ public class Categories {
 	
 	@OneToMany(mappedBy="categories", fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	   private List<Product> productList = new ArrayList<Product>();
-	
+
+	@Builder
+	public Categories(String categoryName){
+		this.categoryName=categoryName;
+	}
 }

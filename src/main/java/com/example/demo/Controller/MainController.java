@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
+import com.example.demo.Service.CategoriesService;
 import com.example.demo.Service.CustomerService;
+import com.example.demo.dto.CategoriesDTO;
 import com.example.demo.dto.CustomerRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -79,6 +81,8 @@ public class MainController {
 	private TemperRepository TemperRepo;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private CategoriesService categoriesService;
 	static final String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
     public String logoutGet(HttpSession session, HttpServletRequest request) {
@@ -220,70 +224,52 @@ public class MainController {
 	    public String detailmenuView(Model model,@RequestParam("menuid") int menuid,@RequestParam("menuname") String menuname,HttpSession session){      
 	      System.out.println(" @@GetMapping 상세메뉴 페이지 called...");   
 //	      List<ProductImage> ProImgList=new ArrayList<ProductImage>();
-	      Categories cate = CategoriRepo.findById(menuid).get();
-	         for (Product product : cate.getProductList()) {
-	            System.out.println("---> " + product.getProductName());
-	            System.out.println(product.getPId());
-	            for(Product_option_info option : product.getInfoList()) {
-	               System.out.print(option.getSize().getSizename()+", ");
-	               System.out.println(option.getTemperature().getTempname());
-	            }
-	            System.out.println();
-	           
-	         }
-	         System.out.println("선택한 메뉴 번호"+menuid);   
+	      //CategoriesDTO cate = categoriesService.getCategories(menuid);
 	 
-	      List<Product> productList=new ArrayList<Product>();
-	      for(Product product : ProductRepo.findAll()) {
-	         if(product.getCategories().getCategoryId()==menuid) {
-	            productList.add(product);
-	            System.out.println("---> " + product.getProductName());
-	            System.out.println(product.getPId());
-	            
-	         }
-	      }
+	      List<Product> productList=categoriesService.getCategoriesInProductList(menuid);
+//	      for(Product product : ProductRepo.findAll()) {
+//	         if(product.getCategories().getCategoryId()==menuid) {
+//	            productList.add(product);
+//	            System.out.println("---> " + product.getProductName());
+//	            System.out.println(product.getPId());
+//
+//	         }
+//	      }
 	      if (menuid == 6) {
-	          if(menuid==6) {
-	              List<Categories> CatedrinkList=new ArrayList<Categories>();
-	              List<Categories> CatesideList=new ArrayList<Categories>();
+	              //List<Categories> CatedrinkList=new ArrayList<Categories>();
+	              //List<Categories> CatesideList=new ArrayList<Categories>();
 	              List<Product> drinkList=new ArrayList<Product>();            
 	              List<Product> sideList=new ArrayList<Product>();
 	              List<Integer> dpList=new ArrayList<Integer>();
 	              List<Integer> spList=new ArrayList<Integer>();
-	              CatedrinkList=CategoriRepo.findByCategoryName("탄산");
-	              CatesideList=CategoriRepo.findbyDrinkMenu("사이드", "디저트");
-	              for(Categories c1:CatedrinkList ) { 
-	                for(Product p: c1.getProductList()) {
-	                   drinkList.add(p);
-	                   if(p.getPrice()<=1500) {
-	                      dpList.add(0);
-	                   }
-	                   else {
-	                      
-	                      dpList.add(p.getPrice()-1200);   
-	                   }
-	                }
-	              }
-	              for(Categories c2:CatesideList ) { 
-	                 for(Product p: c2.getProductList()) {
-	                    sideList.add(p);
-	                    if(p.getPrice()<=1500) {
-	                      spList.add(0);
-	                   }
-	                   else {
-	                      
-	                      spList.add(p.getPrice()-1500);   
-	                   }
-	                 }
-	               }
-	              model.addAttribute("sideList",sideList);
-	              model.addAttribute("spList",spList);
-	              model.addAttribute("drinkList",drinkList);
-	              model.addAttribute("dpList",dpList);
-	           }
+	              //CatedrinkList=CategoriRepo.findByCategoryName("탄산");
+	              //CatesideList=CategoriRepo.findbyDrinkMenu("사이드", "디저트");
+			  for (Product p : categoriesService.getFindSoda()) {
+				  drinkList.add(p);
+				  if (p.getPrice() <= 1500) {
+					  dpList.add(0);
+				  } else {
+
+					  dpList.add(p.getPrice() - 1200);
+				  }
+			  }
+			  for (Product p : categoriesService.getFindDessertAndSide()) {
+				  sideList.add(p);
+				  if (p.getPrice() <= 1500) {
+					  spList.add(0);
+				  } else {
+
+					  spList.add(p.getPrice() - 1500);
+				  }
+			  }
+			  model.addAttribute("sideList", sideList);
+			  model.addAttribute("spList", spList);
+			  model.addAttribute("drinkList", drinkList);
+			  model.addAttribute("dpList", dpList);
+
 	     }
 	       
-	      model.addAttribute("productlist",cate.getProductList());
+	      model.addAttribute("productlist", productList);
 	      model.addAttribute("goodslist",OptionRepository.findAll());
 	      model.addAttribute("menuid",menuid);      
 	      model.addAttribute("menuname",menuname);

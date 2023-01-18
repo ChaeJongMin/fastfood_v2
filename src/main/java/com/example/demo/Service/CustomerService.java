@@ -36,7 +36,7 @@ public class CustomerService {
         customerRepo.save(c);
     }
     public void saveUserInfo(CustomerRequestDto customer){
-        customerRepo.save(customer.toEntitiy());
+        customerRepo.save(customer.toCustomerEntitiy());
     }
 
 }

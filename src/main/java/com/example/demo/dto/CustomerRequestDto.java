@@ -27,7 +27,7 @@ public class CustomerRequestDto {
         this.phoneNum=phoneNum;
         this.role=role;
     }
-    public Customer toEntitiy(){
+    public Customer toCustomerEntitiy(){
         return Customer.builder()
                 .userId(userId)
                 .userPasswd(userPasswd)
