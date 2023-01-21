@@ -12,10 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
-import com.example.demo.Service.CategoriesService;
-import com.example.demo.Service.CustomerService;
-import com.example.demo.dto.CategoriesDTO;
-import com.example.demo.dto.CustomerRequestDto;
+import com.example.demo.Service.*;
+import com.example.demo.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +39,6 @@ import com.example.demo.domain.Product_option_info;
 import com.example.demo.domain.Size;
 import com.example.demo.domain.Temperature;
 import com.example.demo.domain.Worker;
-import com.example.demo.dto.CustomerDto;
 import com.example.demo.persistence.BasketRepository;
 import com.example.demo.persistence.CategoriesRepository;
 import com.example.demo.persistence.CustomerRepository;
@@ -83,6 +80,14 @@ public class MainController {
 	private CustomerService customerService;
 	@Autowired
 	private CategoriesService categoriesService;
+	@Autowired
+	private ProductService productService;
+	@Autowired
+	private ProductOptionService productOptionService;
+	@Autowired
+	private SizeService sizeService;
+	@Autowired
+	private TemperatureService temperatureService;
 	static final String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
     public String logoutGet(HttpSession session, HttpServletRequest request) {
@@ -226,7 +231,7 @@ public class MainController {
 //	      List<ProductImage> ProImgList=new ArrayList<ProductImage>();
 	      //CategoriesDTO cate = categoriesService.getCategories(menuid);
 	 
-	      List<Product> productList=categoriesService.getCategoriesInProductList(menuid);
+//	      List<Product> productList=categoriesService.getCategoriesInProductList(menuid);
 //	      for(Product product : ProductRepo.findAll()) {
 //	         if(product.getCategories().getCategoryId()==menuid) {
 //	            productList.add(product);
@@ -238,42 +243,42 @@ public class MainController {
 	      if (menuid == 6) {
 	              //List<Categories> CatedrinkList=new ArrayList<Categories>();
 	              //List<Categories> CatesideList=new ArrayList<Categories>();
-	              List<Product> drinkList=new ArrayList<Product>();            
-	              List<Product> sideList=new ArrayList<Product>();
-	              List<Integer> dpList=new ArrayList<Integer>();
-	              List<Integer> spList=new ArrayList<Integer>();
+//	              List<Product> drinkList=new ArrayList<Product>();
+//	              List<Product> sideList=new ArrayList<Product>();
+//	              List<Integer> dpList=new ArrayList<Integer>();
+//	              List<Integer> spList=new ArrayList<Integer>();
 	              //CatedrinkList=CategoriRepo.findByCategoryName("탄산");
 	              //CatesideList=CategoriRepo.findbyDrinkMenu("사이드", "디저트");
-			  for (Product p : categoriesService.getFindSoda()) {
-				  drinkList.add(p);
-				  if (p.getPrice() <= 1500) {
-					  dpList.add(0);
-				  } else {
-
-					  dpList.add(p.getPrice() - 1200);
-				  }
-			  }
-			  for (Product p : categoriesService.getFindDessertAndSide()) {
-				  sideList.add(p);
-				  if (p.getPrice() <= 1500) {
-					  spList.add(0);
-				  } else {
-
-					  spList.add(p.getPrice() - 1500);
-				  }
-			  }
-			  model.addAttribute("sideList", sideList);
-			  model.addAttribute("spList", spList);
-			  model.addAttribute("drinkList", drinkList);
-			  model.addAttribute("dpList", dpList);
+//			  for (Product p : categoriesService.getFindSoda()) {
+//				  drinkList.add(p);
+//				  if (p.getPrice() <= 1500) {
+//					  dpList.add(0);
+//				  } else {
+//
+//					  dpList.add(p.getPrice() - 1200);
+//				  }
+//			  }
+//			  for (Product p : categoriesService.getFindDessertAndSide()) {
+//				  sideList.add(p);
+//				  if (p.getPrice() <= 1500) {
+//					  spList.add(0);
+//				  } else {
+//
+//					  spList.add(p.getPrice() - 1500);
+//				  }
+//			  }
+			  model.addAttribute("sideList", categoriesService.getFindDessertAndSide());
+			  model.addAttribute("spList", productService.findSidePrice(categoriesService.getFindDessertAndSide()));
+			  model.addAttribute("drinkList", categoriesService.getFindSoda());
+			  model.addAttribute("dpList", productService.findDrinkPrice(categoriesService.getFindSoda()));
 
 	     }
 	       
-	      model.addAttribute("productlist", productList);
-	      model.addAttribute("goodslist",OptionRepository.findAll());
+	      model.addAttribute("productlist", categoriesService.getCategoriesInProductList(menuid));
+	      model.addAttribute("goodslist",productOptionService.findAllOption());
 	      model.addAttribute("menuid",menuid);      
 	      model.addAttribute("menuname",menuname);
-		  model.addAttribute("s3url",s3Url);
+		  //model.addAttribute("s3url",s3Url);
 	      return "fastfood/Hdetailmenu";
 	    }
 
@@ -294,9 +299,14 @@ public class MainController {
       //얻어온 값으로 기본 값 구해서 option 테이블 참조해서 기본값 얻어오기
       if(mid!=6) {
          Product save_p=ProductRepo.findByProductName(pname).get(0);
-         Size save_s=(SizeRepository.findBySizename(size).get(0));      
+         Size save_s=(SizeRepository.findBySizename(size).get(0));
          Temperature save_t=TemperRepo.findByTempname(temp).get(0);
-         
+		  //1/21
+		  ProductRequsetDto productDTO=productService.getProduct(pname);
+		  SizeDTO sizeDTO=sizeService.getSize(size);
+		  TemperatureDTO temperatureDTO=temperatureService.getTemperature(temp);
+
+		 //고쳐야할 비즈니스 로직
          Product_option_info save_o=OptionRepository.findOptionbyinfos(save_p, save_s, save_t).get(0);
 
          System.out.println("상세아이디: " +   save_o.getInfoid());

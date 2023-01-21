@@ -10,9 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +26,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @ToString(exclude="categories")
 @Entity
 public class Product {
@@ -89,6 +90,13 @@ public class Product {
        }
 		
 		return null;
+	}
+
+	@Builder
+	public Product(String productName, int price, boolean allSale){
+		this.productName=productName;
+		this.price=price;
+		this.allSale=allSale;
 	}
 
 }
