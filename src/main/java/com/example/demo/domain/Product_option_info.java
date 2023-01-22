@@ -7,9 +7,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +24,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @Entity
 public class Product_option_info {
    @Id
@@ -46,4 +47,15 @@ public class Product_option_info {
    
    
    private Integer price;
+
+   @Builder
+   public Product_option_info(Product product, Size size, Temperature temperature,
+                              boolean isUse, int price){
+      this.product=product;
+      this.size=size;
+      this.temperature=temperature;
+      this.isUse=isUse;
+      this.price=price;
+
+   }
 }

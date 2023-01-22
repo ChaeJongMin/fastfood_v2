@@ -88,6 +88,9 @@ public class MainController {
 	private SizeService sizeService;
 	@Autowired
 	private TemperatureService temperatureService;
+	@Autowired
+	private BasketService basketService;
+
 	static final String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
     public String logoutGet(HttpSession session, HttpServletRequest request) {
@@ -298,57 +301,62 @@ public class MainController {
       //int menuid=Integer.parseInt(mid);
       //얻어온 값으로 기본 값 구해서 option 테이블 참조해서 기본값 얻어오기
       if(mid!=6) {
-         Product save_p=ProductRepo.findByProductName(pname).get(0);
-         Size save_s=(SizeRepository.findBySizename(size).get(0));
-         Temperature save_t=TemperRepo.findByTempname(temp).get(0);
+//         Product save_p=ProductRepo.findByProductName(pname).get(0);
+//         Size save_s=(SizeRepository.findBySizename(size).get(0));
+//         Temperature save_t=TemperRepo.findByTempname(temp).get(0);
 		  //1/21
 		  ProductRequsetDto productDTO=productService.getProduct(pname);
-		  SizeDTO sizeDTO=sizeService.getSize(size);
-		  TemperatureDTO temperatureDTO=temperatureService.getTemperature(temp);
+		  SizeRequestDTO sizeDTO=sizeService.getSize(size);
+		  TemperatureRequestDto temperatureDTO=temperatureService.getTemperature(temp);
+		  ProductOptionInfoRequestDto productOptionInfoRequestDto=productOptionService.getOption(productDTO,sizeDTO,temperatureDTO);
+		  basketService.saveSingleMenu(productOptionInfoRequestDto,session);
 
 		 //고쳐야할 비즈니스 로직
-         Product_option_info save_o=OptionRepository.findOptionbyinfos(save_p, save_s, save_t).get(0);
-
-         System.out.println("상세아이디: " +   save_o.getInfoid());
-         System.out.println("크기: " +   save_o.getSize().getSizename());
-         System.out.println("온도: " +   save_o.getTemperature().getTempname());
-         
-         Basket basket = new Basket();
-         basket.setProductinfo(save_o);
-         basket.setCustomer((Customer)session.getAttribute("user"));
-         basket.setPCount(1);
-         basket.setInfo(String.valueOf(save_o.getInfoid()));
-         basket.setPrice(save_o.getPrice());
-         BasketRepo.save(basket);
+//         Product_option_info save_o=OptionRepository.findOptionbyinfos(save_p, save_s, save_t).get(0);
+//
+//         System.out.println("상세아이디: " +   save_o.getInfoid());
+//         System.out.println("크기: " +   save_o.getSize().getSizename());
+//         System.out.println("온도: " +   save_o.getTemperature().getTempname());
+//
+//         Basket basket = new Basket();
+//         basket.setProductinfo(save_o);
+//         basket.setCustomer((Customer)session.getAttribute("user"));
+//         basket.setPCount(1);
+//         basket.setInfo(String.valueOf(save_o.getInfoid()));
+//         basket.setPrice(save_o.getPrice());
+//         BasketRepo.save(basket);
       }
       
       else {
-    	  Product_option_info[] save_o=new Product_option_info[3];
-    	  Product save_p[]=new Product[3];
+    	  ProductOptionInfoRequestDto[] save_o=new ProductOptionInfoRequestDto[3];
+    	  ProductRequsetDto[] save_p=new ProductRequsetDto[3];
     	  String[] setpanme=pname.split(",");
     	  int price= Integer.parseInt(setpanme[3]);
     	  
     	  for(int i=0;i<3;i++) {
-    		  
-    		  save_p[i]=ProductRepo.findByProductName(setpanme[i]).get(0);
-    		  Size save_s=(SizeRepository.findBySizename(size).get(0));      
-              Temperature save_t=TemperRepo.findByTempname(temp).get(0);
- 
-              save_o[i]=OptionRepository.findOptionbyinfos(save_p[i], save_s, save_t).get(0);
-              System.out.println("상세아이디: " +   save_o[i].getInfoid());
-              System.out.println("크기: " +   save_o[i].getSize().getSizename());
-              System.out.println("온도: " +   save_o[i].getTemperature().getTempname());
+			  save_p[i]=productService.getProduct(setpanme[i]);
+			  SizeRequestDTO sizeRequestDTO=sizeService.getSize(size);
+			  TemperatureRequestDto temperatureRequestDto=temperatureService.getTemperature(temp);
+			  save_o[i]=productOptionService.getOption(save_p[i],sizeRequestDTO,temperatureRequestDto);
+//    		  save_p[i]=ProductRepo.findByProductName(setpanme[i]).get(0);
+//    		  Size save_s=(SizeRepository.findBySizename(size).get(0));
+//              Temperature save_t=TemperRepo.findByTempname(temp).get(0);
+//              save_o[i]=OptionRepository.findOptionbyinfos(save_p[i], save_s, save_t).get(0);
+//              System.out.println("상세아이디: " +   save_o[i].getInfoid());
+//              System.out.println("크기: " +   save_o[i].getSize().getSizename());
+//              System.out.println("온도: " +   save_o[i].getTemperature().getTempname());
     	  }
-    	  
-    	  String info=save_o[0].getInfoid()+","+save_o[1].getInfoid()+","+save_o[2].getInfoid();
-          
-          Basket basket = new Basket();
-          basket.setProductinfo(save_o[0]);
-          basket.setCustomer((Customer)session.getAttribute("user"));
-          basket.setPCount(1);
-          basket.setInfo(info);
-          basket.setPrice(price);
-          BasketRepo.save(basket);
+
+    	  //String info=save_o[0].getInfoid()+","+save_o[1].getInfoid()+","+save_o[2].getInfoid();
+		  String info=productOptionService.infotoString(save_o);
+		  basketService.saveSetMenu(save_o[0],session,info);
+//          Basket basket = new Basket();
+//          basket.setProductinfo(save_o[0]);
+//          basket.setCustomer((Customer)session.getAttribute("user"));
+//          basket.setPCount(1);
+//          basket.setInfo(info);
+//          basket.setPrice(price);
+//          BasketRepo.save(basket);
 
       }
 
@@ -358,12 +366,12 @@ public class MainController {
 	
 	@GetMapping("/mybasket")
     public String cartView(Model model,HttpSession session){      
-		Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer)session.getAttribute("user"));
-		for(Basket b:basketList) {
-			System.out.println(b);
-		}
+//		Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer)session.getAttribute("user"));
+//		for(Basket b:basketList) {
+//			System.out.println(b);
+//		}
 		//	Iterable<Basket> basketList = BasketRepo.find();
-		model.addAttribute("s3url",s3Url);
+//		model.addAttribute("s3url",s3Url);
       return "fastfood/my_baket";
     }
 	

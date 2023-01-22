@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CustomerRequestDto {
-    private String userId; //PK
+    private String userId;
     private String userPasswd;
     private String email;
     private String cardNum;

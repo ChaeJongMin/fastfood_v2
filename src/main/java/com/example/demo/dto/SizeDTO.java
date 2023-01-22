@@ -14,4 +14,5 @@ public class SizeDTO {
         this.sId= sizeEntity.getSId();
         this.sizename= sizeEntity.getSizename();
     }
+
 }

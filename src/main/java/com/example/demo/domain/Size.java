@@ -7,9 +7,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +24,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @Entity
 public class Size {
 	@Id
@@ -31,5 +32,10 @@ public class Size {
 	private Integer sId;
 	
 	private String sizename;
+
+	@Builder
+	public Size(String sizename){
+		this.sizename=sizename;
+	}
 
 }

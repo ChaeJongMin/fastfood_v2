@@ -2,10 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.domain.Product;
 import com.example.demo.domain.Product_option_info;
-import com.example.demo.dto.ProductDTO;
-import com.example.demo.dto.Prouduct_option_infoDTO;
-import com.example.demo.dto.SizeDTO;
-import com.example.demo.dto.TemperatureDTO;
+import com.example.demo.dto.*;
 import com.example.demo.persistence.OptionInfoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +18,23 @@ public class ProductOptionService {
         return optionInfoRepo.findAll();
     }
 
-//    public Prouduct_option_infoDTO getOption(ProductDTO productDTO, SizeDTO sizeDTO, TemperatureDTO temperatureDTO){
-//
-//
-//    }
+    public ProductOptionInfoRequestDto getOption(ProductRequsetDto productRequsetDto, SizeRequestDTO sizeRequestDTO,
+                                             TemperatureRequestDto temperatureRequestDto){
+        Product_option_info product_option_info=optionInfoRepo.findOptionbyinfos(productRequsetDto.toProductEntitiy(),
+                sizeRequestDTO.toSizeEntity(), temperatureRequestDto.toTemperatureEntity()).get(0);
+        ProductOptionInfoRequestDto productOptionInfoRequestDto=new ProductOptionInfoRequestDto(product_option_info.getProduct(),
+                product_option_info.getSize(), product_option_info.getTemperature(), product_option_info.isUse(),
+                product_option_info.getPrice());
+        return productOptionInfoRequestDto;
+
+    }
+    public String infotoString(ProductOptionInfoRequestDto[] productOptionInfoRequestDto){
+        String result="";
+        result+=productOptionInfoRequestDto[0].productOptionInfoEntity().getInfoid()+",";
+        result+=productOptionInfoRequestDto[1].productOptionInfoEntity().getInfoid()+",";
+        result+=productOptionInfoRequestDto[2].productOptionInfoEntity().getInfoid();
+        return result;
+
+
+    }
 }

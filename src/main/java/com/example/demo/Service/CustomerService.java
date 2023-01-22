@@ -26,14 +26,7 @@ public class CustomerService {
         return new CustomerDto(customer);
     }
     public void updateUserInfo(int id, CustomerRequestDto customer){
-        Customer c=customerRepo.findById(id).get();
-        c.setPhoneNum(customer.getPhoneNum());
-        c.setCardCompany(customer.getCardCompany());
-        c.setCardNum(customer.getCardNum());
-        c.setEmail(customer.getEmail());
-        c.setUserId(customer.getUserId());
-        c.setUserPasswd(customer.getUserPasswd());
-        customerRepo.save(c);
+        customerRepo.save(customer.toCustomerEntitiy());
     }
     public void saveUserInfo(CustomerRequestDto customer){
         customerRepo.save(customer.toCustomerEntitiy());

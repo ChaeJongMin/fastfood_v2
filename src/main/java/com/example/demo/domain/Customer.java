@@ -20,7 +20,7 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String userId; //PK
+	private String userId;
 	private String userPasswd;
 	private String email;
 	private String cardNum;
@@ -29,8 +29,9 @@ public class Customer {
 	private Integer role=0;
 
 	@Builder
-	public Customer(String userId,String userPasswd,String email
+	public Customer(int id,String userId,String userPasswd,String email
 			,String cardNum,String cardCompany,String phoneNum,int role){
+		this.id=id;
 		this.userId=userId;
 		this.userPasswd=userPasswd;
 		this.email=email;
