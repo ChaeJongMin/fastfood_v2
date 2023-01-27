@@ -163,9 +163,9 @@
                         <div class="num">
                             <div class="updown">
                                 <input type="text" th:name="'p_num'+${count.index}" size="2" maxlength="4" class="p_num" th:value="${baskets.pCount}"  th:onkeyup="javascript:basket.changePNum([[${count.index}]]);">
-                          
-                                <span th:onclick="javascript:basket.changePNum([[${count.index}]]);"><i class="fas fa-arrow-alt-circle-up up"></i></span>
-                                <span th:onclick="javascript:basket.changePNum([[${count.index}]]);"><i class="fas fa-arrow-alt-circle-down down"></i></span>
+                          <!-- th:onclick -->
+                                <span onclick="javascript:basket.changePNum([[${count.index}]]);"><i class="fas fa-arrow-alt-circle-up up"></i></span>
+                                <span onclick="javascript:basket.changePNum([[${count.index}]]);"><i class="fas fa-arrow-alt-circle-down down"></i></span>
                             </div>
                         </div>
                         <div class="sum" th:text="${priceList[count.index]}" ></div>
@@ -197,7 +197,7 @@
                        <a  th:onclick="dataSend2()"  th:href="@{/fastfood/menu}"><i class="fa fa-angle-left"></i>계속 페이지로</a>                   
                 </div>
             </div>
-            <div id="goorder" class="">
+            <div id="goorders" class="">
                 <div class="clear"></div>
                 <div class="buttongroup center-align cmd">
                 	<a th:onclick="dataSend()" href=# >주문하기<i class="fa fa-angle-right"></i></a> 

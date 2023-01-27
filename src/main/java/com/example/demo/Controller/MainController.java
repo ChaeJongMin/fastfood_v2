@@ -384,8 +384,14 @@ public class MainController {
 		ArrayList<Product_option_info> productInfoList =new ArrayList<Product_option_info>();
 		ArrayList<Integer> priceList =new ArrayList<Integer>();			
 		int productcount=0;
-		
+		//수정필요-----------------------------------------------------------
+		//1.고객의 장바구니 데이터 크기 필요
+		//2.장바구니 테이블 수량 업데이트
+		//2.1 같은 아이템이 존재할 시
+		//2.2 기존(i)아이템 수량 증가
+		//2.3 비교(j)아이템 제거
 		//장바구니 테이블 수량 업데이트
+		//-----------------------------------------------------------------
 		for(int i=0;i<basketList.size(); i++) {
 			
 			for(int j=i+1; j<basketList.size(); j++) {	
@@ -403,19 +409,33 @@ public class MainController {
 		}
 		
 		//제품 리스트, 가격 리스트 생성
+		//수정필요-----------------------------------------------------------
+		//1.고객의 장바구니 데이터 크기 필요
+		//2.장바구니의 제품의 옵션 리스트 필요
+		//3.장바구니의 제품의 가격 리스트 필요
+		//-----------------------------------------------------------------
 		for(Basket b:basketList) {
 			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
 			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
-			
 			productcount += b.getPCount();
 		}
+		//수정필요-----------------------------------------------------------
+		// 가격리스트 필요 위에서 가져오기
+		//-----------------------------------------------------------------
 		int totalprice=0;
 		for(int i=0; i<priceList.size(); i++) {
 			totalprice+=priceList.get(i);
 		}
 		
 		Map<Integer, String[] >map=new HashMap<>();
-		
+		//수정필요-----------------------------------------------------------
+		//장바구니 리스트 필요
+		//장바구니 제품 중 카테고리가 세트인거 찾기
+		//해당 제품정보 분할
+		//1,2 idx 값(음료, 사이드)의 제품 이름 가져와서 사이드메뉴에 저장
+		//map에 제품아이디, 사이드메뉴 값 넣기
+		//가격리스트에 값 추가
+		//-----------------------------------------------------------------
 		for(Basket b:basketList) {
 			
 			if(b.getProductinfo().getProduct().getCategories().getCategoryName().equals("세트")) {
@@ -439,7 +459,7 @@ public class MainController {
 		model.addAttribute("productList",productList);
 		model.addAttribute("totalprice",totalprice);
 		model.addAttribute("productcount",productcount);
-		model.addAttribute("s3url",s3Url);
+		//model.addAttribute("s3url",s3Url);
       return "fastfood/my_baket";
     }
 	   
@@ -450,18 +470,21 @@ public class MainController {
 			throws Exception {
 		System.out.println(" @@PostMapping basket_saveView called...");
 		ArrayList<Basket> basketList = new ArrayList<Basket>();
+		//해당 고객의 장바구니 데이터 얻기
 		Iterable<Basket> deleteList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
 		
 		System.out.println("************변경된 바켓 객체 저장**************");
+		//basketarray 아이템을 baksetList에 넣기
 		for (String b : basketarray) { //변경된 바켓 객체 저장
 			basketList.add(BasketRepo.findById(Integer.parseInt(b)).get());
 			System.out.println(b);
 		}
+		//deleteList 삭제
 		for (Basket b : deleteList) { //해당 손님의 장바구니 아이템 전체 삭제
 			BasketRepo.delete(b);
 		}	
 		
-		
+		//insert
 		for (int i = 0; i < basketList.size(); i++) { //다시 가져온 바켓 객체 데베에 삽입
 			Basket newbasket = new Basket();
 			newbasket = basketList.get(i);
@@ -477,6 +500,7 @@ public class MainController {
 	 @GetMapping("/Payment")
 	   public String paymentView(HttpSession session,Model model) {
 	      System.out.println(" @@GetMapping 결제페이지 called...");
+		  //바스켓 리스트 얻어오기
 	      Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
 	      
 	      int total=calcu_price(basketList);
