@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +36,21 @@ public class BasketService {
         basket.setInfo(info);
         basket.setPrice(productOptionInfoRequestDto.getPrice());
         basketRepository.save(basket);
+    }
+
+    public List<Basket>  basketUpdate(HttpSession session){
+        List<Basket> basketList=basketRepository.findByCustomer((Customer)session.getAttribute("user"));
+        int basketListSize=basketList.size();
+        for(int i=0;i<basketListSize; i++) {
+            for (int j = i + 1; j < basketListSize; j++) {
+                if(basketList.get(i).getCustomer().getId()==basketList.get(i).getCustomer().getId()){
+                    basketList.get(i).setPCount(basketList.get(i).getPCount()+1); //수량 증가
+                    basketRepository.save(basketList.get(i)); // 정보 변경
+                    basketRepository.deleteById(basketList.get(j).getBid()); //중복된 아이템 테이블에서 제거
+                    basketList.remove(j); //중복된 아이템 리스트에서 제거
+                }
+            }
+        }
+        return basketList;
     }
 }

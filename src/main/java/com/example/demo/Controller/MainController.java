@@ -382,7 +382,9 @@ public class MainController {
 		List<Basket> basketList = BasketRepo.findByCustomer((Customer)session.getAttribute("user"));
 		ArrayList<Product> productList =new ArrayList<Product>();
 		ArrayList<Product_option_info> productInfoList =new ArrayList<Product_option_info>();
-		ArrayList<Integer> priceList =new ArrayList<Integer>();			
+		ArrayList<Integer> priceList =new ArrayList<Integer>();
+
+		//int baksekSize=basketService.getBasketByCustomerSize(session);
 		int productcount=0;
 		//수정필요-----------------------------------------------------------
 		//1.고객의 장바구니 데이터 크기 필요
@@ -392,21 +394,19 @@ public class MainController {
 		//2.3 비교(j)아이템 제거
 		//장바구니 테이블 수량 업데이트
 		//-----------------------------------------------------------------
-		for(int i=0;i<basketList.size(); i++) {
-			
-			for(int j=i+1; j<basketList.size(); j++) {	
-				
-				if(basketList.get(i).getInfo().equals(basketList.get(j).getInfo())) { //아이템이 같을 시
-					if(basketList.get(i).getCustomer().getId()==basketList.get(i).getCustomer().getId()){
-						basketList.get(i).setPCount(basketList.get(i).getPCount()+1); //수량 증가
-						BasketRepo.save(basketList.get(i)); // 정보 변경
-						BasketRepo.deleteById(basketList.get(j).getBid()); //중복된 아이템 테이블에서 제거
-						basketList.remove(j); //중복된 아이템 리스트에서 제거
-					}
-										
-				}
-			}
-		}
+//		for(int i=0;i<baksekSize; i++) {
+//			for(int j=i+1; j<baksekSize; j++) {
+//				if(basketList.get(i).getInfo().equals(basketList.get(j).getInfo())) { //아이템이 같을 시
+//					if(basketList.get(i).getCustomer().getId()==basketList.get(i).getCustomer().getId()){
+//						basketList.get(i).setPCount(basketList.get(i).getPCount()+1); //수량 증가
+//						BasketRepo.save(basketList.get(i)); // 정보 변경
+//						BasketRepo.deleteById(basketList.get(j).getBid()); //중복된 아이템 테이블에서 제거
+//						basketList.remove(j); //중복된 아이템 리스트에서 제거
+//					}
+//
+//				}
+//			}
+//		}
 		
 		//제품 리스트, 가격 리스트 생성
 		//수정필요-----------------------------------------------------------
@@ -414,6 +414,7 @@ public class MainController {
 		//2.장바구니의 제품의 옵션 리스트 필요
 		//3.장바구니의 제품의 가격 리스트 필요
 		//-----------------------------------------------------------------
+		//각 매개변수로 basketList 반환 함수로 각 리스트를 반환하는 메소드 만들기
 		for(Basket b:basketList) {
 			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
 			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
@@ -447,8 +448,8 @@ public class MainController {
 			map.put(b.getBid() , sidemenu);
 			}
 			
-			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
-			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
+//			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
+//			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
 			
 			
 		}
