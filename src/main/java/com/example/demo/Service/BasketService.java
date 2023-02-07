@@ -12,7 +12,10 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +41,8 @@ public class BasketService {
         basketRepository.save(basket);
     }
 
-    public List<Basket>  basketUpdate(HttpSession session){
-        List<Basket> basketList=basketRepository.findByCustomer((Customer)session.getAttribute("user"));
+    public List<Basket>  basketDeleteDuplicationToItem(HttpSession session){
+        List<Basket> basketList=getBasketListByUser(session);
         int basketListSize=basketList.size();
         for(int i=0;i<basketListSize; i++) {
             for (int j = i + 1; j < basketListSize; j++) {
@@ -53,4 +56,48 @@ public class BasketService {
         }
         return basketList;
     }
+    public List<Basket> getBasketListByUser(HttpSession session){
+        return basketRepository.findByCustomer((Customer)session.getAttribute("user"));
+    }
+    public int getTotalProductCnt(List<Basket> basketList){
+        int result=0;
+        for(Basket b:basketList) {
+            result+=b.getPCount();
+        }
+        return result;
+    }
+
+    public List<Basket> saveChangeBakset(List<String> basketArray){
+        List<Basket> basketList=new ArrayList<>();
+        for(String b : basketArray){
+            basketList.add(basketRepository.findById(Integer.parseInt(b)).get());
+        }
+        return basketList;
+    }
+    public void insertChangeBasket(List<Basket> basketList,List<String> counts){
+        for (int i = 0; i < basketList.size(); i++) { //다시 가져온 바켓 객체 데베에 삽입
+            Basket newbasket = new Basket();
+            newbasket = basketList.get(i);
+            newbasket.setPCount(Integer.parseInt((counts.get(i))));
+            System.out.println("바스켓 아이디: " + newbasket.getBid() + " 바스켓 수량: " + newbasket.getPCount());
+            basketRepository.save(newbasket);
+        }
+    }
+    public void deleteBakset(List<Basket> basketList){
+        for (Basket b : basketList) {
+            basketRepository.delete(b);
+        }
+    }
+
+    public int calcTotalPrice(List<Basket> basketList){
+        int totalprice=0;
+        for(Basket b:basketList) {
+            int price=b.getProductinfo().getPrice();
+            price=price*b.getPCount();
+            totalprice+=price;
+        }
+
+        return totalprice;
+    }
+
 }

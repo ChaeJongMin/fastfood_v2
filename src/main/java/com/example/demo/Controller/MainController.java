@@ -90,6 +90,8 @@ public class MainController {
 	private TemperatureService temperatureService;
 	@Autowired
 	private BasketService basketService;
+	@Autowired
+	private OrderService orderService;
 
 	static final String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
@@ -378,14 +380,18 @@ public class MainController {
 	@PostMapping("/mybasket")
     public String cartPost(Model model,HttpSession session){ 
 		System.out.println(" @@PostMapping ShoppingCarteView called...");
-	      System.out.println("**********@PostMapping(\"/ShoppingCart\")****************************");
-		List<Basket> basketList = BasketRepo.findByCustomer((Customer)session.getAttribute("user"));
+		System.out.println("**********@PostMapping(\"/ShoppingCart\")****************************");
+		List<Basket> basketList = basketService.basketDeleteDuplicationToItem(session);
+		ArrayList<Integer> priceList=productOptionService.priceToBasket(basketList);
+		int productcount=basketService.getTotalProductCnt(basketList);
+		int totalprice=basketService.getTotalProductCnt(basketList);
+		Map<Integer, String[]>map=productOptionService.findBySetMenu(basketList);
+		//List<Basket> basketList = BasketRepo.findByCustomer((Customer)session.getAttribute("user"));
 		ArrayList<Product> productList =new ArrayList<Product>();
-		ArrayList<Product_option_info> productInfoList =new ArrayList<Product_option_info>();
-		ArrayList<Integer> priceList =new ArrayList<Integer>();
+//		ArrayList<Product_option_info> productInfoList =new ArrayList<Product_option_info>();
+//		ArrayList<Integer> priceList =new ArrayList<Integer>();
 
 		//int baksekSize=basketService.getBasketByCustomerSize(session);
-		int productcount=0;
 		//수정필요-----------------------------------------------------------
 		//1.고객의 장바구니 데이터 크기 필요
 		//2.장바구니 테이블 수량 업데이트
@@ -415,20 +421,25 @@ public class MainController {
 		//3.장바구니의 제품의 가격 리스트 필요
 		//-----------------------------------------------------------------
 		//각 매개변수로 basketList 반환 함수로 각 리스트를 반환하는 메소드 만들기
-		for(Basket b:basketList) {
-			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
-			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
-			productcount += b.getPCount();
-		}
-		//수정필요-----------------------------------------------------------
-		// 가격리스트 필요 위에서 가져오기
-		//-----------------------------------------------------------------
-		int totalprice=0;
-		for(int i=0; i<priceList.size(); i++) {
-			totalprice+=priceList.get(i);
-		}
-		
-		Map<Integer, String[] >map=new HashMap<>();
+
+		//ArrayList<Product> productList =new ArrayList<Product>();
+		//ArrayList<Product_option_info> productInfoList =new ArrayList<Product_option_info>();
+		//ArrayList<Integer> priceList =new ArrayList<Integer>();
+
+
+//
+//		for(Basket b:basketList) {
+//			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
+//			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
+//			productcount += b.getPCount();
+//		}
+
+
+
+//		for(int i=0; i<priceList.size(); i++) {
+//			totalprice+=priceList.get(i);
+//		}
+
 		//수정필요-----------------------------------------------------------
 		//장바구니 리스트 필요
 		//장바구니 제품 중 카테고리가 세트인거 찾기
@@ -437,24 +448,21 @@ public class MainController {
 		//map에 제품아이디, 사이드메뉴 값 넣기
 		//가격리스트에 값 추가
 		//-----------------------------------------------------------------
-		for(Basket b:basketList) {
-			
-			if(b.getProductinfo().getProduct().getCategories().getCategoryName().equals("세트")) {
-				
-			String[] setpanme=b.getInfo().split(",");
-			
-			String[] sidemenu= {OptionRepository.findById(Integer.parseInt(setpanme[1])).get().getProduct().getProductName()
-								,OptionRepository.findById(Integer.parseInt(setpanme[2])).get().getProduct().getProductName()};
-			map.put(b.getBid() , sidemenu);
-			}
-			
+//		for(Basket b:basketList) {
+//
+//			if(b.getProductinfo().getProduct().getCategories().getCategoryName().equals("세트")) {
+//
+//			String[] setpanme=b.getInfo().split(",");
+//
+//			String[] sidemenu= {OptionRepository.findById(Integer.parseInt(setpanme[1])).get().getProduct().getProductName()
+//								,OptionRepository.findById(Integer.parseInt(setpanme[2])).get().getProduct().getProductName()};
+//			map.put(b.getBid() , sidemenu);
+//			}
 //			productInfoList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get());
 //			priceList.add(OptionRepository.findById(b.getProductinfo().getInfoid()).get().getPrice()*b.getPCount());
-			
-			
-		}
+//		}
 		model.addAttribute("basketMap",map);
-		model.addAttribute("productInfoList",productInfoList);
+		model.addAttribute("productInfoList",productOptionService.addProductOItoBakset(basketList));
 		model.addAttribute("basketList",basketList); // html each문 반복횟수
 		model.addAttribute("priceList",priceList); 
 		model.addAttribute("productList",productList);
@@ -469,30 +477,35 @@ public class MainController {
 	public String basket_save(@RequestParam(value = "basketarray[]") List<String> basketarray, HttpSession session,
 			@RequestParam(value = "counts[]") List<String> counts, @RequestParam("checkpage") int checkpage)
 			throws Exception {
+
+		basketService.deleteBakset(basketService.getBasketListByUser(session));
+		basketService.insertChangeBasket(basketService.saveChangeBakset(basketarray),counts);
+
 		System.out.println(" @@PostMapping basket_saveView called...");
-		ArrayList<Basket> basketList = new ArrayList<Basket>();
+//		ArrayList<Basket> basketList = new ArrayList<Basket>();
 		//해당 고객의 장바구니 데이터 얻기
-		Iterable<Basket> deleteList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
-		
+		//Iterable<Basket> deleteList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
+
 		System.out.println("************변경된 바켓 객체 저장**************");
 		//basketarray 아이템을 baksetList에 넣기
-		for (String b : basketarray) { //변경된 바켓 객체 저장
-			basketList.add(BasketRepo.findById(Integer.parseInt(b)).get());
-			System.out.println(b);
-		}
-		//deleteList 삭제
-		for (Basket b : deleteList) { //해당 손님의 장바구니 아이템 전체 삭제
-			BasketRepo.delete(b);
-		}	
-		
-		//insert
-		for (int i = 0; i < basketList.size(); i++) { //다시 가져온 바켓 객체 데베에 삽입
-			Basket newbasket = new Basket();
-			newbasket = basketList.get(i);
-			newbasket.setPCount(Integer.parseInt((counts.get(i))));
-			System.out.println("바스켓 아이디: " + newbasket.getBid() + " 바스켓 수량: " + newbasket.getPCount());
-			BasketRepo.save(newbasket);
-		}
+
+//		for (String b : basketarray) { //변경된 바켓 객체 저장
+//			basketList.add(BasketRepo.findById(Integer.parseInt(b)).get());
+//			System.out.println(b);
+//		}
+//		//deleteList 삭제
+//		for (Basket b : deleteList) { //해당 손님의 장바구니 아이템 전체 삭제
+//			BasketRepo.delete(b);
+//		}
+//
+//		//insert
+//		for (int i = 0; i < basketList.size(); i++) { //다시 가져온 바켓 객체 데베에 삽입
+//			Basket newbasket = new Basket();
+//			newbasket = basketList.get(i);
+//			newbasket.setPCount(Integer.parseInt((counts.get(i))));
+//			System.out.println("바스켓 아이디: " + newbasket.getBid() + " 바스켓 수량: " + newbasket.getPCount());
+//			BasketRepo.save(newbasket);
+//		}
 		String message="AJAX 성공";
 		return message;
 	}
@@ -502,12 +515,13 @@ public class MainController {
 	   public String paymentView(HttpSession session,Model model) {
 	      System.out.println(" @@GetMapping 결제페이지 called...");
 		  //바스켓 리스트 얻어오기
-	      Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
+//	      Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
 	      
-	      int total=calcu_price(basketList);
+	      int total=basketService.calcTotalPrice(basketService.getBasketListByUser(session));
+
 	      System.out.println("%%%%%%%%%%%%%"+total+"%%%%%%");
-	      model.addAttribute("id",((Customer)session.getAttribute("user")).getUserId());
-	      
+
+	      model.addAttribute("id",customerService.currentUserId(session));
 	      model.addAttribute("totalprice", total);
 	      return "fastfood/Payment";
 	            
@@ -516,71 +530,75 @@ public class MainController {
 	   public String payment(HttpSession session,Model model,String cardCompany, String cardNumber) {
 	      System.out.println(" @@PostMapping 결제페이지 called...");
 	      System.out.println("가져온 값: "+cardCompany+cardNumber);
-	      Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
-	      Customer c=(Customer)session.getAttribute("user");
-	      int total=calcu_price(basketList);
-	      model.addAttribute("id",c.getUserId());
-	      model.addAttribute("totalprice", total);
-	      int isCheck=0;
-	            
-	      if(!cardNumber.equals("")&&!cardCompany.equals("")) {//빈칸 X         
-	         int checkResult=checkUserPayInfo(cardNumber,cardCompany,
-	               (Customer)session.getAttribute("user")); //체크함수
-	         switch(checkResult) {
-	         case 1:
-	            isCheck=1;
-	            break;
-	         case -1:
-	            isCheck=-1;
-	            break;
-	         case -2:
-	            isCheck=-2;
-	            break;
-	         }
-	         model.addAttribute("check",isCheck);   
-	      }
-	      else { //빈칸 O
-	        isCheck=-3;   
-	        model.addAttribute("check",isCheck);   
-	      }
+
+	      //Iterable<Basket> basketList = BasketRepo.findByCustomer((Customer) session.getAttribute("user"));
+	      //Customer c=(Customer)session.getAttribute("user");
+	      //int total=calcu_price(basketList);
+	      model.addAttribute("id",customerService.currentUserId(session));
+	      model.addAttribute("totalprice", basketService.calcTotalPrice(basketService.getBasketListByUser(session)));
+		  int isCheck=customerService.checkCardInfo(cardCompany,cardNumber,session);
+		  model.addAttribute("check",isCheck);
+//	      if(!cardNumber.equals("")&&!cardCompany.equals("")) {//빈칸 X
+//	         int checkResult=checkUserPayInfo(cardNumber,cardCompany,
+//	               (Customer)session.getAttribute("user")); //체크함수
+//	         switch(checkResult) {
+//	         case 1:
+//	            isCheck=1;
+//	            break;
+//	         case -1:
+//	            isCheck=-1;
+//	            break;
+//	         case -2:
+//	            isCheck=-2;
+//	            break;
+//	         }
+//	         model.addAttribute("check",isCheck);
+//	      }
+//	      else { //빈칸 O
+//	        isCheck=-3;
+//	        model.addAttribute("check",isCheck);
+//	      }
 	         
 	      if(isCheck==1) {               
-	         for(Basket b:basketList) {
-	            Orders o=new Orders();
-	            o.setCustomer(c);
-	            
-	            
-	            o.setProduct(b.getProductinfo().getProduct());
-	            o.setPrice(b.getPrice());
-	            o.setInfo(b.getInfo());
-	            
-	            o.setOrederDate(new Date());
-	            OrdersRepo.save(o);
-	            BasketRepo.delete(b);
-	         }         
+//	         for(Basket b:basketList) {
+//	            Orders o=new Orders();
+//	            o.setCustomer(c);
+//
+//	            o.setProduct(b.getProductinfo().getProduct());
+//	            o.setPrice(b.getPrice());
+//	            o.setInfo(b.getInfo());
+//
+//	            o.setOrederDate(new Date());
+//	            OrdersRepo.save(o);
+//	            BasketRepo.delete(b);
+			  orderService.saveOrder(basketService.getBasketListByUser(session),
+					  customerService.convertCustomer(customerService.getCurCustomer(session)) );
+			  basketService.deleteBakset(basketService.getBasketListByUser(session));
+//	         }
+
 	         return "fastfood/Payment";
 	      }
 	      return "fastfood/Payment";
 	   }
-	   public int checkUserPayInfo(String cardnum, String cardCompany,Customer customer) {
-	      if(!cardnum.equals(customer.getCardNum())) {
-	         return -1;
-	      }
-	      if(!cardCompany.equals(customer.getCardCompany())) {
-	         return -2;
-	      }
-	      return 1; //성공
-	   }
-	   public int calcu_price(Iterable<Basket> basketList) {
-	      int totalprice=0;
-	      for(Basket b:basketList) {
-	    	  
-	         int price=b.getProductinfo().getPrice();
-	         price=price*b.getPCount();
-	         totalprice+=price;
-	      }
-	      
-	      return totalprice;
-	   }
+//	   public int checkUserPayInfo(String cardnum, String cardCompany,Customer customer) {
+//	      if(!cardnum.equals(customer.getCardNum())) {
+//	         return -1;
+//	      }
+//	      if(!cardCompany.equals(customer.getCardCompany())) {
+//	         return -2;
+//	      }
+//	      return 1; //성공
+//	   }
+//	   public int calcu_price(Iterable<Basket> basketList) {
+//	      int totalprice=0;
+//	      for(Basket b:basketList) {
+//
+//	         int price=b.getProductinfo().getPrice();
+//	         price=price*b.getPCount();
+//	         totalprice+=price;
+//	      }
+//
+//	      return totalprice;
+//	   }
 	
 }
