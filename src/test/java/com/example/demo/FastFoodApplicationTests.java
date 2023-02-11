@@ -1,32 +1,20 @@
 package com.example.demo;
 
 import java.io.File;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.filechooser.FileSystemView;
 
+import com.example.demo.domain.*;
+import com.example.demo.persistence.*;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.domain.Basket;
-import com.example.demo.domain.Categories;
-import com.example.demo.domain.Customer;
-
-import com.example.demo.domain.Product;
-import com.example.demo.domain.ProductImage;
-import com.example.demo.domain.Product_option_info;
-import com.example.demo.domain.Size;
-import com.example.demo.domain.Temperature;
-import com.example.demo.persistence.BasketRepository;
-import com.example.demo.persistence.CategoriesRepository;
-import com.example.demo.persistence.CustomerRepository;
-import com.example.demo.persistence.ProductImageRepository;
-import com.example.demo.persistence.ProductRepository;
-import com.example.demo.persistence.SizeRepository;
-import com.example.demo.persistence.TemperRepository;
-import com.example.demo.persistence.WorkerRepository;
-
-import com.example.demo.persistence.OptionInfoRepo;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 class FastFoodApplicationTests {
@@ -52,8 +40,43 @@ class FastFoodApplicationTests {
 	private SizeRepository SizeRepository;
 	@Autowired
 	private TemperRepository TemperRepo;
-	
-	
+	@Autowired
+	private BoardsRepository boardsRepository;
+
+	@AfterEach
+	public void cleanUp(){
+		boardsRepository.deleteAll();
+	}
+	@Test
+	public void SaveAndSelect(){
+		Customer customer=CustomerRepo.findByUserId("20173349").get(0);
+		String title="테스트 제목";
+		String content="테스트 내용입니다.";
+		String writer=customer.getUserId();
+
+		boardsRepository.save(Boards.builder()
+				.title(title)
+				.content(content)
+				.writer(writer)
+				.customer(customer)
+				.build()
+		);
+
+		//날짜 비교를 위해 java.sql.Date 객체 생성
+		Date date=new Date();
+		long currentTime=date.getTime();
+		java.sql.Date dateToYMD=new java.sql.Date(currentTime);
+
+		List<Boards> boardsList=boardsRepository.findAll();
+
+		Boards boards=boardsList.get(0);
+		assertThat(boards.getWriter()).isEqualTo(writer);
+		assertThat(boards.getCnt()).isEqualTo(0);
+		assertThat(boards.getTitle()).isEqualTo(title);
+		assertThat(boards.getContent()).isEqualTo(content);
+		System.out.println("가져온 시간은: "+boards.getCreateDate());
+	}
+
 //	@Test
 //	void sizeadd() {
 //		

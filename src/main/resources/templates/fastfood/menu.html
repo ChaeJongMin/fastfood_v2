@@ -5,43 +5,45 @@
     <title>HTML Result</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" 
            integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<style>
+		header {
+			height: 80px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0 50px;
+			width: 100%;
+			border-bottom: 1px solid #ccc;
+			font-weight:bold;
+		}
+		header h1{
+			font-size : 40px;
+			text-decoration: none;
+			color:black;
+		}
+		header div {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		header div > a {
+			width: 100px;
+			display: block;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			background-color: #333;
+			color: #fff;
+			margin: 0 10px;
+		}
+		#div1{
+			width: 100%;
+			background-color:gray;
+		}
+	</style>
+
 </head>
-<style>
-header {
-	height: 80px; 
-	display: flex; 
-	justify-content: space-between; 
-	align-items: center; 
-	padding: 0 50px; 
-	width: 100%; 
-	border-bottom: 1px solid #ccc;
-	font-weight:bold;
-}
-header h1{
-	font-size : 40px;
-	text-decoration: none; 
-	color:black;
-}
-header div {
-	display: flex; 
-	justify-content: center; 
-	align-items: center;
-}
-header div > a {
-	width: 100px; 
-	display: block; 
-	height: 50px; 
-	line-height: 50px; 
-	text-align: center; 
-	background-color: #333; 
-	color: #fff; 
-	margin: 0 10px;
-}
-#div1{
-	width: 100%;
-	background-color:gray;  
-}
-</style>
+
 <body>
 	<header>
 	<h1>
@@ -53,7 +55,9 @@ header div > a {
 	</h1>
 	<div>
 		<a th:text="${session.user.userId}" th:href="@{/fastfood/CustomerUpdate(id=${session.user.id})}" style="color:white"></a>
-      <a th:href="@{/fastfood/logout}">로그아웃</a>   
+        <a th:href="@{/fastfood/logout}">로그아웃</a>
+		<a th:href="@{/fastfood/board(id=${session.user.id})}">게시판</a>
+	</div>
 	</header>
 	<div class="container body-content">
 	<div class="container">
@@ -73,44 +77,44 @@ header div > a {
 	 
 	<tr><!-- 첫번째 줄 시작 -->
 	    <td><div class="col" style="padding-top:10px;">
-	<a th:href="@{/fastfood/Hdetailmenu(menuid=1,menuname=버거)}" >
+	<a th:href="@{/fastfood/Hdetailmenu(menuid=1,menuname='버거')}" >
 	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="\img\hamburger_menu.jpg" /></a>
 	<div>버거</div>
     </div></td>
 	    <td><div class="col" style="padding-top:10px;">
-	<a th:href="@{/fastfood/Hdetailmenu(menuid=2,menuname=탄산)}" >
+	<a th:href="@{/fastfood/Hdetailmenu(menuid=2,menuname='탄산')}" >
 	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/soda_menu.jpg" /></a>
 	<div>탄산</div>
 	</div></td>
 	    <td><div class="col" style="padding-top:10px;">
-    <a th:href="@{/fastfood/Hdetailmenu(menuid=3,menuname=커피)}" >
+    <a th:href="@{/fastfood/Hdetailmenu(menuid=3,menuname='커피')}" >
 	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/coffee_menu.jpg" /></a>
 	<div>커피</div>
     </div></td>
 	</tr><!-- 첫번째 줄 끝 -->
 	<tr><!-- 두번째 줄 시작 -->
 	    <td><div class="col" style="padding-top:10px;">
-    <a th:href="@{/fastfood/Hdetailmenu(menuid=4,menuname=사이드)}" >
+    <a th:href="@{/fastfood/Hdetailmenu(menuid=4,menuname='사이드')}" >
 	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/side_menu.jpg" /></a>
 	<div>사이드</div>
     </div></td>
 	    <td><div class="col" style="padding-top:10px;">
-    <a th:href="@{/fastfood/Hdetailmenu(menuid=5,menuname=디저트)}" >
+    <a th:href="@{/fastfood/Hdetailmenu(menuid=5,menuname='디저트')}" >
 	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/dessert_menu.jpg" /></a>
 	<div>디저트</div>
     </div></td>
 	    <td><div class="col" style="padding-top:10px;">
-    <a th:href="@{/fastfood/Hdetailmenu(menuid=6,menuname=세트)}" >
+    <a th:href="@{/fastfood/Hdetailmenu(menuid=6,menuname='세트')}" >
 	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="\img\combo_menu.jpg" /></a>
 	<div>세트</div>
     </div></td>
 	</tr><!-- 두번째 줄 끝 -->
     </table>
-	
- 
-    
+
+
+
     </div>
-                
+
      
     <!-- 
     <div class="row justify-content-start" style="padding-top:10px;">
@@ -118,3 +122,7 @@ header div > a {
      -->
 
 	<p class="text-black-50">항상 신선한 재료와 맛과 서비스로 최선을 다하겠습니다.</p>
+	</div>
+	</div>
+</body>
+</html>

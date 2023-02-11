@@ -36,6 +36,9 @@ public class CustomerService {
     public String currentUserId(HttpSession session){
         return ((Customer)session.getAttribute("user")).getUserId();
     }
+    public String findById(int id){
+        return customerRepo.findById(id).get().getUserId();
+    }
     public CustomerDto getCurCustomer(HttpSession session){
         return new CustomerDto((Customer)session.getAttribute("user"));
     }

@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+        <meta http-equiv="X-UA-Compatible" content = "ie=edge">
+        <title> 게시판 </title>
+        <link th:href="@{/css/board.css}" rel="stylesheet" type="text/css">
+        <!--외부스타일시트 연결구문-->
+    </head>
+    
+    <body>
+        <header>            
+            <div class="home">
+                <a href="#"><img class="menuImg" src="/img/boardImg/menu.png"/></a>
+                <div class="logoText"><a href="#">Menu</a></div>
+            </div>        
+            <div class="userId">
+               <span th:utext="${userId}"></span>
+            </div>
+        </header>
+        <section id="main">
+            <div class="left">
+                <h1>자유 게시판</h1>
+                <button type="button" th:onclick="|location.href='@{/fastfood/addPost(id=${session.user.id})}'|">
+                    <img th:src="@{/img/boardImg/plus.png}">
+                     ADD POST
+                </button>
+            </div>
+        </section>
+        <section id="boardTable">
+            <div id="boardDiv">
+                <table id="boardT">                   
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                    </tr>
+                    <tr th:each="boardsList : ${boards}">
+                        <th><span th:text="${boardsList.no}"></span></th>
+                        <th><span th:text="${boardsList.title}"></span>/th>
+                        <th><span th:text="${boardsList.writer}"></span></th>
+                        <th><span th:text="${boardsList.createDate}"></span></th>
+                        <th><span th:text="${boardsList.cnt}"></span></th>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>

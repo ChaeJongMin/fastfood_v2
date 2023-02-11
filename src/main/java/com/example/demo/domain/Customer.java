@@ -1,10 +1,5 @@
 package com.example.demo.domain;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import java.util.*;
 
@@ -28,10 +23,11 @@ public class Customer {
 	private String phoneNum;
 	private Integer role=0;
 
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+		private List<Boards> boardList=new ArrayList<>();
 	@Builder
 	public Customer(int id,String userId,String userPasswd,String email
 			,String cardNum,String cardCompany,String phoneNum,int role){
-		this.id=id;
 		this.userId=userId;
 		this.userPasswd=userPasswd;
 		this.email=email;

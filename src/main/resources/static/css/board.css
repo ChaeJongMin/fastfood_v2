@@ -1,0 +1,93 @@
+*{
+    padding: 0; margin: 0;
+}
+img{
+    
+}
+a{
+    text-decoration: none; color: #333;
+}
+header{
+    width: 100%;
+    overflow: hidden;
+    margin: auto;
+    background-color: #f85473; 
+    text-align: center;
+    position: relative;
+    margin-bottom: 50px;
+}
+header .home{
+    width:20%;    
+    float: left;
+    margin: 0 auto;   
+    font-size: 30px;
+    
+}
+header img{
+    margin: 20px auto;    
+    width: 20%;    
+}
+header .logoText{
+    width: 5%;
+    position: absolute;
+    top:30%;
+    left: 12%;
+}
+header .userId{
+    width:20%;   
+    height: 40px;
+    border: 3px solid #000;
+    float: right;
+    position: absolute;
+    text-align: center;
+    line-height: 40px;
+    top: 30%;
+    right: 10%;    
+}
+#main{
+    width:100%;
+    overflow: hidden;    
+    position: relative;
+    margin-bottom: 40px;
+}
+#main .left{    
+    height: 130px;
+    position: relative;    
+    
+}
+#main .left h1{
+    margin-left: 50px;
+    margin-bottom: 10px;
+    font-size: 50px;    
+}
+#main .left button{
+    width:10%;
+    height: 50px;
+    background-color: #fc759e;
+    margin-left: 80px;   
+    font-size: 25px;
+}
+#main .left button img{
+    width:12%;
+}
+#boardDiv {
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#boardT{
+    width:100%;
+    border-top: 2px solid #808080;
+    margin: 30px auto;
+}
+#boardT th{
+    border-left:none;
+    border-right:none;
+}
+#boardT tr,
+#boardT td{
+    border-left:none;
+    border-right:none;
+    text-align: center;
+    height:60px;
+}
