@@ -1,20 +1,29 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Service.BoardsService;
+import com.example.demo.Service.CustomerService;
+import com.example.demo.dto.BoardUpdateRequestDto;
 import com.example.demo.dto.BoardsRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 public class boardApiController {
     private final BoardsService boardsService;
-
-    @PutMapping("/api/post")
+    private final CustomerService customerService;
+    @PostMapping ("/api/post")
     public Long save(@RequestBody BoardsRequestDto requestDto){
-        System.out.println("api/post 컨트롤러 작동!!");
         return boardsService.save(requestDto);
+    }
+    @PutMapping("/api/put/{id}")
+    public Long update(@PathVariable Long id, @RequestBody BoardUpdateRequestDto requestDto) {
+        return boardsService.update(id, requestDto);
+    }
+
+    @DeleteMapping("/api/delete/{id}")
+    public Long delete(@PathVariable Long id) {
+        boardsService.delete(id);
+        return id;
     }
 }

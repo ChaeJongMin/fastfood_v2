@@ -21,9 +21,15 @@
         <section id="main">
             <div class="left">
                 <h1>자유 게시판</h1>
+                <!--
                 <button type="button" th:onclick="|location.href='@{/fastfood/addPost(id=${session.user.id})}'|">
                     <img th:src="@{/img/boardImg/plus.png}">
                      ADD POST
+                </button>
+                -->
+                <button type="button" th:onclick="|location.href='@{/fastfood/addPost}'|">
+                    <img th:src="@{/img/boardImg/plus.png}">
+                    ADD POST
                 </button>
             </div>
         </section>
@@ -37,12 +43,13 @@
                         <th>작성일</th>
                         <th>조회수</th>
                     </tr>
-                    <tr th:each="boardsList : ${boards}">
-                        <th><span th:text="${boardsList.no}"></span></th>
-                        <th><span th:text="${boardsList.title}"></span>/th>
-                        <th><span th:text="${boardsList.writer}"></span></th>
-                        <th><span th:text="${boardsList.createDate}"></span></th>
-                        <th><span th:text="${boardsList.cnt}"></span></th>
+                    <tr th:each="board : ${boards}">
+                        <th><span th:text="${board.getNo()}"></span></th>
+                        <th><span th:text="${board.getTitle()}"
+                                  th:onclick="|location.href='@{/fastfood/boardContent(id=${board.getNo()})}'|"></span></th>
+                        <th><span th:text="${board.getUserId()}"></span></th>
+                        <th><span th:text="${board.getCreateDate()}"></span></th>
+                        <th><span th:text="${board.getCnt()}"></span></th>
                     </tr>
                 </table>
             </div>

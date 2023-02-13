@@ -74,7 +74,6 @@ class FastFoodApplicationTests {
 		assertThat(boards.getCnt()).isEqualTo(0);
 		assertThat(boards.getTitle()).isEqualTo(title);
 		assertThat(boards.getContent()).isEqualTo(content);
-		System.out.println("가져온 시간은: "+boards.getCreateDate());
 	}
 
 //	@Test

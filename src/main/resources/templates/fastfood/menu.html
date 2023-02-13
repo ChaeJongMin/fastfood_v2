@@ -54,9 +54,14 @@
 		<a>BURGER-QUEEN</a>
 	</h1>
 	<div>
+		<!--
 		<a th:text="${session.user.userId}" th:href="@{/fastfood/CustomerUpdate(id=${session.user.id})}" style="color:white"></a>
         <a th:href="@{/fastfood/logout}">로그아웃</a>
 		<a th:href="@{/fastfood/board(id=${session.user.id})}">게시판</a>
+		-->
+		<a th:text="안농" th:href="@{/fastfood/CustomerUpdate}" style="color:white"></a>
+		<a th:href="@{/fastfood/logout}">로그아웃</a>
+		<a th:href="@{/fastfood/board}">게시판</a>
 	</div>
 	</header>
 	<div class="container body-content">

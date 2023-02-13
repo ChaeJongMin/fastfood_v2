@@ -23,11 +23,15 @@ public class Customer {
 	private String phoneNum;
 	private Integer role=0;
 
-	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 		private List<Boards> boardList=new ArrayList<>();
+
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Comment> commentList=new ArrayList<>();
 	@Builder
 	public Customer(int id,String userId,String userPasswd,String email
-			,String cardNum,String cardCompany,String phoneNum,int role){
+			,String cardNum,String cardCompany,String phoneNum,int role,List<Boards> boardList
+					){
 		this.userId=userId;
 		this.userPasswd=userPasswd;
 		this.email=email;
@@ -35,5 +39,7 @@ public class Customer {
 		this.cardCompany=cardCompany;
 		this.phoneNum=phoneNum;
 		this.role=role;
+		this.boardList=boardList;
+		this.commentList=commentList;
 	}
 }

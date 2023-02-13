@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 @Getter
 @NoArgsConstructor
 public class CustomerRequestDto {
@@ -36,6 +38,7 @@ public class CustomerRequestDto {
                 .cardCompany(cardCompany)
                 .phoneNum(phoneNum)
                 .role(role)
+                .boardList(new ArrayList<>())
                 .build();
     }
 }

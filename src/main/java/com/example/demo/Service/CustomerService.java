@@ -79,4 +79,15 @@ public class CustomerService {
                 customerDto.getRole());
         return customerRequestDto;
     }
+
+    public boolean compareWriter(String writer, String target){
+        if(writer.equals(target)){
+            return true;
+        }
+        return false;
+    }
+    public int getUserPkId(String userId){
+        return customerRepo.findByUserId(userId).get(0).getId();
+    }
+
 }

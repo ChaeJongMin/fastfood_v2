@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
 import com.example.demo.Service.*;
+import com.example.demo.config.auth.dto.SessionUser;
 import com.example.demo.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -92,7 +93,7 @@ public class MainController {
 	private BasketService basketService;
 	@Autowired
 	private OrderService orderService;
-
+	private String currentUserId="";
 	static final String s3Url="https://fastfood-spring-build.s3.ap-northeast-2.amazonaws.com/img/";
 	@GetMapping("/logout")
     public String logoutGet(HttpSession session, HttpServletRequest request) {
@@ -120,6 +121,7 @@ public class MainController {
 //        CustomerRepo.save(c);
 		customerService.updateUserInfo(id,customer);
         session.setAttribute("user", c);
+		setUserId(session);
         return "forward:fastfood/menu";
      }
 	
@@ -147,8 +149,7 @@ public class MainController {
 		int isloginSuccess=0;
 		if(existUser){
 			isloginSuccess=1;
-			//반드시 수정 필요
-			session.setAttribute("user", CustomerRepo.findByUserId(userId).get(0));
+			session.setAttribute("user",new SessionUser(CustomerRepo.findByUserId(userId).get(0)));
 			if(customerService.getUser(userId).getRole()==1){
 				return "forward:/fastfood/superhome";
 			}
@@ -600,5 +601,14 @@ public class MainController {
 //
 //	      return totalprice;
 //	   }
-	
+	public void setUserId(HttpSession session){
+
+		currentUserId=customerService.currentUserId(session);
+		System.out.println("setUserId "+currentUserId);
+	}
+	public String getUserId(){
+		System.out.println("-------------getUserId------------");
+		System.out.println("getUserId "+currentUserId);
+		return currentUserId;
+	}
 }
