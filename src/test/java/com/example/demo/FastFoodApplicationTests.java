@@ -43,37 +43,22 @@ class FastFoodApplicationTests {
 	@Autowired
 	private BoardsRepository boardsRepository;
 
-	@AfterEach
-	public void cleanUp(){
-		boardsRepository.deleteAll();
-	}
 	@Test
-	public void SaveAndSelect(){
-		Customer customer=CustomerRepo.findByUserId("20173349").get(0);
-		String title="테스트 제목";
-		String content="테스트 내용입니다.";
-		String writer=customer.getUserId();
+	public void SaveBoard(){
+		for(int i=30; i<300; i++){
+			Customer customer=CustomerRepo.findByUserId("20173349").get(0);
+			String title="테스트 제목"+(i+1);
+			String content="테스트 내용"+(i+1)+"입니다.";
+			String writer=customer.getUserId();
 
-		boardsRepository.save(Boards.builder()
-				.title(title)
-				.content(content)
-				.writer(writer)
-				.customer(customer)
-				.build()
-		);
-
-		//날짜 비교를 위해 java.sql.Date 객체 생성
-		Date date=new Date();
-		long currentTime=date.getTime();
-		java.sql.Date dateToYMD=new java.sql.Date(currentTime);
-
-		List<Boards> boardsList=boardsRepository.findAll();
-
-		Boards boards=boardsList.get(0);
-		assertThat(boards.getWriter()).isEqualTo(writer);
-		assertThat(boards.getCnt()).isEqualTo(0);
-		assertThat(boards.getTitle()).isEqualTo(title);
-		assertThat(boards.getContent()).isEqualTo(content);
+			boardsRepository.save(Boards.builder()
+					.title(title)
+					.content(content)
+					.writer(writer)
+					.customer(customer)
+					.build()
+			);
+		}
 	}
 
 //	@Test

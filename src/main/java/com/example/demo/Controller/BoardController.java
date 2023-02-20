@@ -8,13 +8,18 @@ import com.example.demo.domain.Boards;
 import com.example.demo.domain.Customer;
 import com.example.demo.dto.BoardsDto;
 import com.example.demo.dto.CommentResponseDto;
+import com.example.demo.dto.PageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import org.springframework.data.domain.Pageable;
 import java.security.Principal;
 import java.util.List;
 
@@ -26,9 +31,29 @@ public class BoardController {
     private final CustomerService customerService;
     private String currentUserId;
     @GetMapping("/board")
-    public String showBoard(Model model, @LoginUser SessionUser user ){
+    public String showBoard(Model model, @LoginUser SessionUser user, @PageableDefault(size = 10) Pageable pageable
+    ,String target ,String searchKeyword){
+
+        Page<BoardsDto> boards=null;
+
+        if(searchKeyword==null){
+            boards=boardsService.findAll(pageable);
+        } else
+            boards=boardsService.boardSearchList(searchKeyword,pageable,target);
+
+        PageDto pageDto=boardsService.makePageDto(boards.getPageable().getPageNumber()+1, boards.getTotalPages());
+
+        int nextPage=pageDto.getCurrentPage()+9;
+        if(nextPage>boards.getTotalPages()){
+            nextPage=pageDto.getMostEndPage()-1;
+        }
+        model.addAttribute("nextPage", nextPage);
+        System.out.println("페이지 위치: "+pageDto.getStartPage()+" "+pageDto.getEndPage());
         model.addAttribute("userId",currentUserId=customerService.findById(user.getId()));
-        model.addAttribute("boards",boardsService.findAll());
+        model.addAttribute("pages",pageDto);
+        model.addAttribute("boards",boards);
+
+
         return "fastfood/board";
     }
 

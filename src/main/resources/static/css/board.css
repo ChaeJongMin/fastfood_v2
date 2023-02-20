@@ -91,3 +91,62 @@ header .userId{
     text-align: center;
     height:60px;
 }
+
+.page-link {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #f7a0a0;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #f1f1f1;
+    font-weight:bold;
+    background-color: #f77676;
+    border-color: #f77676;
+
+}
+.page-link:focus, .page-link:hover {
+    color: #f1f1f1;
+    background-color: #f77676;
+    border-color: #ccc;
+}
+
+.search-box{
+    margin-top: 20px;
+    position: relative;
+    height: 40px;
+    width: 400px;
+    border: 1px solid #fa0808;
+    background: #ffffff;
+    left: 10%;
+
+}
+.search-select{
+    float:left;
+    height: 100%;
+    width: 25%;
+    border: 0px;
+    padding: 7px;
+}
+
+.search-text{
+    outline: none;
+    float:left;
+    width: 60%;
+    padding: 8px;
+    font-size: 16px;
+    border: 0px;
+    height: 100%;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+.search-btn{
+    outline: none;
+    width:15%;
+    height: 100%;
+    border: 0px;
+    background-color: #f77676;
+    float: left;
+    color: #ffffff;
+}
