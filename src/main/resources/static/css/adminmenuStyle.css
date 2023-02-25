@@ -1,4 +1,4 @@
-/* ì´ˆê¸° ™” */
+
 *{
    margin: 0; 
    padding: 0; 
@@ -163,4 +163,7 @@ main .con2 table tbody tr td:nth-child(2) {
    background-color: #333; 
    color: #fff; 
    text-align: center;
+}
+.btnBox{
+   margin-top: 10px;
 }

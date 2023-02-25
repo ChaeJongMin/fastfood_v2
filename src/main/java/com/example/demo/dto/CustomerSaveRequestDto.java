@@ -2,28 +2,23 @@ package com.example.demo.dto;
 
 import com.example.demo.domain.Customer;
 import com.example.demo.domain.Role;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 
 @Getter
 @NoArgsConstructor
-public class CustomerRequestDto {
+public class CustomerSaveRequestDto {
     private String userId;
     private String userPasswd;
     private String email;
     private String cardNum;
     private String cardCompany;
     private String phoneNum;
-    private Integer role=0;
-
-    @Builder
-    public CustomerRequestDto(String userId,String userPasswd,String email
-    ,String cardNum,String cardCompany,String phoneNum,int role){
-        this.userId=userId;
-        this.userPasswd=userPasswd;
+    public void setEncorderPasswd(String convertPasswd){
+        this.userPasswd=convertPasswd;
     }
     public Customer toCustomerEntitiy(){
         return Customer.builder()
@@ -33,8 +28,9 @@ public class CustomerRequestDto {
                 .cardNum(cardNum)
                 .cardCompany(cardCompany)
                 .phoneNum(phoneNum)
-                .role(Role.USER)
                 .boardList(new ArrayList<>())
+                .commentList(new ArrayList<>())
+                .role(Role.USER)
                 .build();
     }
 }

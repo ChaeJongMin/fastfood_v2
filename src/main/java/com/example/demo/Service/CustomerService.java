@@ -1,11 +1,13 @@
 package com.example.demo.Service;
 
 import com.example.demo.domain.Customer;
-import com.example.demo.dto.CustomerDto;
-import com.example.demo.dto.CustomerRequestDto;
+import com.example.demo.dto.*;
 import com.example.demo.persistence.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     //private final CustomerDto customerDto;
     //private final CustomerRequestDto customerRequestDto;
     public boolean findUsers(String userId, String userPasswd){
@@ -36,7 +40,7 @@ public class CustomerService {
     public String currentUserId(HttpSession session){
         return ((Customer)session.getAttribute("user")).getUserId();
     }
-    public String findById(int id){
+    public String findByIds(int id){
         return customerRepo.findById(id).get().getUserId();
     }
     public CustomerDto getCurCustomer(HttpSession session){
@@ -88,6 +92,26 @@ public class CustomerService {
     }
     public int getUserPkId(String userId){
         return customerRepo.findByUserId(userId).get(0).getId();
+    }
+    /********************************************************************************************/
+    @Transactional
+    public int save(CustomerSaveRequestDto customerSaveRequestDto){
+        customerSaveRequestDto.setEncorderPasswd(passwordEncoder.encode(customerSaveRequestDto.getUserPasswd()));
+        return customerRepo.save(customerSaveRequestDto.toCustomerEntitiy()).getId();
+    }
+    @Transactional(readOnly = true)
+    public CustomerResponseDto findById(int id){
+        return new CustomerResponseDto(customerRepo.findById(id).get());
+    }
+
+    @Transactional
+    public int update(int id, CustomerSaveRequestDto customerRequestDto){
+        Customer customer=customerRepo.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("해당 사용자가 없습니다."));
+        customer.update(customerRequestDto.getUserId()
+                ,customerRequestDto.getEmail(), customerRequestDto.getCardNum(), customerRequestDto.getCardCompany(),
+                        customerRequestDto.getPhoneNum());
+                return id;
     }
 
 }

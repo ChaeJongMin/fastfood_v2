@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,14 +105,14 @@ public class MainController {
        return "fastfood/login";
     }
 
-	 @GetMapping("/CustomerUpdate")
-     public String cUpdate(Model model,Customer customer) {
-        //Iterable<>
-        return "fastfood/CustomerUpdate";
-     }
-     @PostMapping("/CustomerUpdate")
-     public String cUpdateP(HttpSession session, CustomerRequestDto customer, @RequestParam("id") int id) {
-        Customer c=CustomerRepo.findById(id).get();
+//	 @GetMapping("/CustomerUpdate")
+//     public String cUpdate(Model model,Customer customer) {
+//        //Iterable<>
+//        return "fastfood/CustomerUpdate";
+//     }
+//     @PostMapping("/CustomerUpdate")
+//     public String cUpdateP(HttpSession session, CustomerRequestDto customer, @RequestParam("id") int id) {
+//        Customer c=CustomerRepo.findById(id).get();
 //        c.setPhoneNum(customer.getPhoneNum());
 //        c.setCardCompany(customer.getCardCompany());
 //        c.setCardNum(customer.getCardNum());
@@ -119,45 +120,31 @@ public class MainController {
 //        c.setUserId(customer.getUserId());
 //        c.setUserPasswd(customer.getUserPasswd());
 //        CustomerRepo.save(c);
-		customerService.updateUserInfo(id,customer);
-        session.setAttribute("user", c);
-		setUserId(session);
-        return "forward:fastfood/menu";
-     }
-	
-	@GetMapping("/register")
-	public String signupView() {
-		return "fastfood/register";
-	}
-	
-	@PostMapping("/register")
-	public String signupSuccessView(CustomerRequestDto customer) {
-		customerService.saveUserInfo(customer);
-		return "redirect:fastfood/login";
-	}
-	
-	@GetMapping("/login")
-	public String loginView( ) {
-		return "fastfood/login";
-	}
-	
-	@PostMapping("/login")
-	public String loginSuccessView(Model model, String userId, String userPasswd,HttpSession session)  {
-		System.out.println("login controller");
-		System.out.println(userId + ", " + userPasswd);
-		boolean existUser=customerService.findUsers(userId,userPasswd);
-		int isloginSuccess=0;
-		if(existUser){
-			isloginSuccess=1;
-			session.setAttribute("user",new SessionUser(CustomerRepo.findByUserId(userId).get(0)));
-			if(customerService.getUser(userId).getRole()==1){
-				return "forward:/fastfood/superhome";
-			}
-			else
-				return "forward:/fastfood/menu";
-		}
-		model.addAttribute("isloginSuccess", isloginSuccess);
-		return "fastfood/login";
+//		customerService.updateUserInfo(id,customer);
+//        session.setAttribute("user", c);
+//		setUserId(session);
+//        return "forward:fastfood/menu";
+//     }
+
+//	@PostMapping("/login")
+//	public void loginSuccessView(Model model, String userId, String userPasswd)  {
+//		System.out.println("login controller");
+//		System.out.println(userId + ", " + userPasswd);
+//		boolean existUser=customerService.findUsers(userId,userPasswd);
+//		int isloginSuccess=0;
+//		if(existUser){
+//			isloginSuccess=1;
+//			session.setAttribute("user",new SessionUser(CustomerRepo.findByUserId(userId).get(0)));
+//			if(customerService.getUser(userId).getRole()==1){
+//				return "forward:/fastfood/superhome";
+//			}
+//			else
+//				return "forward:/fastfood/menu";
+//		}
+//		model.addAttribute("isloginSuccess", isloginSuccess);
+//		return "fastfood/login";
+		//return ;
+
 //		Iterable<Customer> cusList = CustomerRepo.findAll();
 //		int isloginSuccess=0;
 //		for (Customer c : cusList) {
@@ -179,7 +166,7 @@ public class MainController {
 //		System.out.println(isloginSuccess);
 		
 //		return "fastfood/login";
-	}
+//	}
 	@GetMapping("/new_food")
 	public String new_foodView() {		
 					
@@ -216,19 +203,6 @@ public class MainController {
 	    file.transferTo(dest); // 파일 업로드 작업 수행
 	    System.out.println(filePath);
 	    return "fastfood/file_upload";
-	}
-	
-	@GetMapping("/menu")
-	public String homepageView() {		
-		System.out.println("@@GetMapping 메뉴 페이지  called...");				
-		return "fastfood/menu";
-	}
-	
-	@PostMapping("/menu")
-	public String homepage( HttpSession session) {
-		System.out.println(" @@PostMapping 메뉴 페이지 called...");		
-		System.out.println("**************************************");			
-		return "fastfood/menu";
 	}
 
 	 @GetMapping(value="/Hdetailmenu")

@@ -42,7 +42,9 @@
 	margin-left: 15px;
 	margin-right: 8px;
 }
-
+.login-box{
+	width: 200px;
+}
 ​
 
 .chk {
@@ -86,11 +88,13 @@
 	margin-left: 5px;
 }
 
-​
-
+.input-field{
+	margin-bottom:5px;
+}
 .btnwrap {
 	width: 100%;
 	text-align: center;
+	margin-top: 15px;
 }
 
 .btnwrap label {

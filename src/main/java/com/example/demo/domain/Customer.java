@@ -7,7 +7,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 public class Customer {
@@ -21,25 +20,38 @@ public class Customer {
 	private String cardNum;
 	private String cardCompany;
 	private String phoneNum;
-	private Integer role=0;
 
 	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 		private List<Boards> boardList=new ArrayList<>();
 
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Comment> commentList=new ArrayList<>();
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Role role;
+
 	@Builder
-	public Customer(int id,String userId,String userPasswd,String email
-			,String cardNum,String cardCompany,String phoneNum,int role,List<Boards> boardList
-					){
+	public Customer(String userId,String userPasswd,String email
+			,String cardNum,String cardCompany,String phoneNum,List<Boards> boardList
+			,List<Comment> commentList, Role role){
 		this.userId=userId;
 		this.userPasswd=userPasswd;
 		this.email=email;
 		this.cardNum=cardNum;
 		this.cardCompany=cardCompany;
 		this.phoneNum=phoneNum;
-		this.role=role;
 		this.boardList=boardList;
 		this.commentList=commentList;
+		this.role=role;
+	}
+
+	public void update(String userId,String email
+			,String cardNum,String cardCompany,String phoneNum){
+		this.userId=userId;
+		this.email=email;
+		this.cardNum=cardNum;
+		this.cardCompany=cardCompany;
+		this.phoneNum=phoneNum;
 	}
 }

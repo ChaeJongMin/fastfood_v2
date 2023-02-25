@@ -49,7 +49,7 @@ public class BoardController {
         }
         model.addAttribute("nextPage", nextPage);
         System.out.println("페이지 위치: "+pageDto.getStartPage()+" "+pageDto.getEndPage());
-        model.addAttribute("userId",currentUserId=customerService.findById(user.getId()));
+        model.addAttribute("userId",currentUserId=customerService.findById(user.getId()).getUserId());
         model.addAttribute("pages",pageDto);
         model.addAttribute("boards",boards);
 

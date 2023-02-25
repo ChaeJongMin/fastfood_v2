@@ -46,12 +46,9 @@ var index={
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data),
-            // success : function (data){
-            //     alert("반환값: "+data);
-            // }
         }).done(function(){
             alert("글 등록!!!!");
-            window.location.href="/fastfood/board";
+            window.location.href="/fastfood/login";
         }).fail(function(error){
             alert(JSON.stringify(error));
         });

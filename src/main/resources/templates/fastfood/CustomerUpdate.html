@@ -1,107 +1,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 정보 수정</title>
     <link rel="stylesheet" href="/css/adminmenuStyle.css" type="text/css">
-    
+
 </head>
 <body>
-<form method="post" th:action="@{/fastfood/CustomerUpdate(id=${session.user.id})}">
 <header>
     <h3>
-       <img src = "/img/bugerQueen.png" width="50" height="50">
-       <a th:href="@{/fastfood/menu}"> BURGER-QUEEN</a>
+        <img src="/img/bugerQueen.png" width="50" height="50">
+        <a th:href="@{/fastfood/menu}"> BURGER-QUEEN</a>
     </h3>
     <div>
-    	<a href="/fastfood/logout">로그아웃</a>
-	</div>
+        <a href="/fastfood/logout">로그아웃</a>
+    </div>
 </header>
 <main>
-<div class="con2">
-	<div>
-	<h2>상품 수정 및 삭제</h2>
-	</div>
-	<hr>
-	<br>
-	<div>
-	<strong>ID</strong>
-	<input class = "s_id" type="text" name="userId" th:value="${session.user.userId}">
-	</div>
-	<div>
-	<strong>비밀번호</strong>
-	<input type = "password" name="userPasswd" th:value="${session.user.userPasswd}" maxlength="15">
-	</div>
-	<br>
-	<hr>
-	<div>
-	<strong>E-mail</strong>
-	<input type="text" name="email" th:value="${session.user.email}">
-	</div>
-	<br>
-	<hr>
-	<div>
-	<strong>phone</strong>
-	<input type="text" name="phoneNum" th:value="${session.user.phoneNum}">
-	</div>
-	<br>
-	<hr>	
-	<div>
-	<strong>카드사</strong>
-	<!-- 
-	<select name="cardCompany">
-		<th:block th:each="company, cout: ${companyList}">
-			<option th:value="${company}" th:text="{company}"></option>
-		</th:block>
-	</select>
-	 -->
-	 
-	 <select class="box" name="cardCompany" th:value="${session.user.cardCompany}">
-    			<option>선택</option>
-    			<option value="카카오뱅크" method="post">카카오뱅크</option>
-    			<option value="신한은행" method="post">신한은행</option>
-    			<option value="국민은행" method="post">국민은행</option>
-    			<option value="농협"  method="post">농협</option>
-    		</select>
-	 <!--  <input type="text" name="cardCompany" th:value="${session.user.cardCompany}">-->
-	</div>
-	<br>
-	<hr>	
-	<div>
-	<strong>카드번호</strong>
-	<input type="text" name="cardNum" th:value="${session.user.cardNum}">
-	</div><br><hr>
-	<div id = "btn_group">
-	<input class="btn3" type="submit" value="정보수정">
-	
-	</div>
-</div>            	
+    <div class="con2">
+        <div>
+            <h2>정보 수정</h2>
+        </div>
+        <hr>
+        <br>
+        <div>
+            <strong>ID</strong>
+            <input class="s_id" type="text" name="userId" id="userId" th:value="${customer.getUserId()}" disabled>
+        </div>
+        <br>
+        <hr>
+        <div>
+            <strong>E-mail</strong>
+            <input type="text" name="email" id="email" th:value="${customer.getEmail()}">
+        </div>
+        <br>
+        <hr>
+        <div>
+            <strong>phone</strong>
+            <input type="text" name="phoneNum" id="phoneNum" th:value="${customer.getPhoneNum()}">
+        </div>
+        <br>
+        <hr>
+        <div>
+            <strong>카드사</strong>
+            <select class="box" name="cardCompany" id="cardCompany">
+                <option>선택</option>
+                <option value="카카오뱅크"
+                        th:selected="${#strings.equals(customer.getCardCompany(), '카카오뱅크')} ? true : false ">카카오뱅크
+                </option>
+                <option value="신한은행"
+                        th:selected="${#strings.equals(customer.getCardCompany(), '신한은행')} ? true : false ">신한은행
+                </option>
+                <option value="국민은행"
+                        th:selected="${#strings.equals(customer.getCardCompany(), '국민은행')} ? true : false ">국민은행
+                </option>
+                <option value="농협" th:selected="${#strings.equals(customer.getCardCompany(), '농협')} ? true : false ">
+                    농협
+                </option>
+            </select>
+        </div>
+        <br>
+        <hr>
+        <div>
+            <strong>카드번호</strong>
+            <input type="text" name="cardNum" th:value="${customer.getCardNum()}">
+        </div>
+        <br>
+        <hr>
+        <div class="btnBox">
+            <button type="button" id="update-button" class="btn btn-primary">수정</button>
+            <button type="button" th:onclick="|location.href='@{/fastfood/menu}'|">돌아가기</button>
+            <input type="hidden" id="id" th:value="${id}" disabled>
+        </div>
+    </div>
 </main>
-<!-- <tr>
- 	<td>
- 		<strong>변경할 비밀번호</strong>
- 	</td>
- 	<td>
-	    <input name="studentPw" type = "password" id="pwd2" th:value="${session.customer.userPasswd}" maxlength="15" >            
-		<p>※비밀번호는 <span class="num">문자, 숫자, 특수문자(~!@#$%^&*)의 조합
-            10~16자리</span>로 입력이 가능합니다.</p>
-	</td>
-</tr>
- -->
-		<!-- 
-		<span>@</span>
-		<input type="text" name="email_2">
-			<select name="email_s">
-				<option value="gmail">gmail.com</option>
-				<option value="naver">naver.com</option>
-				<option value="hanmail">hanmail.net</option>
-				<option value="nate">nate.com</option>
-				<option value="daum">daum.net</option>
-				<option value="self">직접입력</option>
-			</select>
-		 -->
-
-</form>
-</BODY> 
-</HTML>
+<script type="text/javascript"
+        src="https://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="/js/customerInit.js"></script>
+</body>
+</html>
