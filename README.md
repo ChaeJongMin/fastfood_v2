@@ -2,8 +2,8 @@
 
 패스트푸트 
 
-+ ### 환경
- - IDE: 인텔리제이, Brackets</br>
+### 환경
+ IDE: 인텔리제이, Brackets</br>
  프레임워크: Spring Boot</br>
  Skill: JPA, Spring Security, Thymeleaf, JUnit, AWS(현재 사용하지 않고있습니다.)</br> 
  사용한 언어: HTML5/CSS3, Java, JavaScript</br> 
