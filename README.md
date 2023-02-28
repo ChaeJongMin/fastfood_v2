@@ -1,8 +1,8 @@
-# Project Title
+# 1. Project Title
 
 패스트푸트 
 
-### 환경
+###환경
 IDE: 인텔리제이, Brackets</br>
 프레임워크: Spring Boot</br>
 Skill: JPA, Spring Security, Thymeleaf, JUnit, AWS(현재 사용하지 않고있습니다.)</br> 
@@ -11,7 +11,7 @@ DB : MySQL</br>
 OS : Windows, Linux(aws 배포 시 사용)</br>
 CI/CD : TravisCI, AWS Code Deploy (현재 사용하지 않고있습니다.)
 
-## 프로젝트 진행
+## 2. 프로젝트 진행
 
 ### 21.04 ~ 21.07 
 개발 인원: 3인
@@ -45,7 +45,11 @@ Entity Repository Dto Service Controller로 분리를 해봤습니다.</br>
 ### 23.02 ~~ (예정)
 주문을 위한 Api 개발 및 DTO, Service 계층 등 수정
 
-## 기타
+## 3. 기타
+
+### 구현할 기능들(무조건 개발한다는 뜻이 아니라 개발이 필요한 것만 모아봤습니다.)
+1. OAuth2 또는 JWT 토큰 적용<br>
+2. 관리자 기능 각 계층 수정 및 api 개발
 
 ### 해당 프로젝트의 진행에 대한 포스트한 블로그
 = https://velog.io/@dico2760/series/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8</br>
