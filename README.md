@@ -1,6 +1,7 @@
 # Project Title
 
-패스트푸트 AS
+패스트푸트 
+
 ### 환경
 IDE: 인텔리제이, Brackets</br>
 프레임워크: Spring Boot</br>
