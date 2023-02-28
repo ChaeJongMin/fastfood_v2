@@ -33,3 +33,7 @@ Entity Repository Dto Service Controller로 분리를 해봤습니다.
 
 ## 23.02 ~~ (예정)
 주문을 위한 Api 개발 및 DTO, Service 계층 등 수정
+
+## 해당 프로젝트의 진행에 대한 포스트한 블로그
+= https://velog.io/@dico2760/series/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8
+(23.02 시작한 게시판 기능 부터 ~~)
