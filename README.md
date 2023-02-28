@@ -13,7 +13,7 @@ AWS EC2에 서버 배포 (현재 배포 중단)
 ## 22.12 
 기존 프로젝트는 Entity Repository Controller 로 이루어졌는데 여러 교재를 통해 잘못된 설계를 하게 된것을 알게되어 
 Entity Repository Dto Service Controller로 분리를 해봤습니다.
-그러나 막상 구현해보니 무작정 따라하게되어 해당 계층은 제 역할을 못하는 것 같습니다.
+그러나 막상 구현해보니 해당 계층은 제 역할을 못하는 것 같습니다.
 
 ## 23.02
 게시판, 댓글, 페이징, 검색 기능을 추가해봤습니다.
@@ -21,13 +21,15 @@ Entity Repository Dto Service Controller로 분리를 해봤습니다.
 
 ## 23.02.22
 스프링 시큐리티 적용(form login 방식 사용)
-= 그러나 rest Api하게 만들기 위해 JWT TOKEN, OAuth2 적용 필요
+그러나 rest Api하게 만들기 위해 JWT TOKEN, OAuth2 적용 필요
 
 ## 23.02.24
 고객 정보를 처리하기 위해 고객 api 개발
+잘못 구현한 Service 계층, DTO 등  수정
 
 ## 23.02.27
 제품 구매를 위해 장바구니 api 개발
+잘못 구현한 Service 계층, DTO 등  수정
 
 ## 23.02 ~~ (예정)
-주문을 위한 Api 개발 및 DTO, Service 계층 생성
+주문을 위한 Api 개발 및 DTO, Service 계층 등 수정
