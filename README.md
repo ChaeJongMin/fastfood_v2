@@ -42,8 +42,10 @@ Entity Repository Dto Service Controller로 분리를 해봤습니다.</br>
 제품 구매를 위해 장바구니 api 개발</br>
 잘못 구현한 Service 계층, DTO 등  수정
 
-### 23.02 ~~ (예정)
-주문을 위한 Api 개발 및 DTO, Service 계층 등 수정
+### 23.03.01
+주문을 위한 Api 개발 및 DTO, Service 계층 등 수정</br>
+메뉴페이지 새롭게 디자인</br>
+고객이 사용하는 기능들을 모두 수정 및 기능 추가 완료
 
 ## 3. 기타
 
