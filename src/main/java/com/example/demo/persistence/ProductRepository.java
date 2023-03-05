@@ -1,6 +1,7 @@
 package com.example.demo.persistence;
 import java.util.List;
 
+import javax.print.attribute.standard.PresentationDirection;
 import javax.transaction.Transactional;
 
 import org.hibernate.annotations.Parameter;
@@ -22,9 +23,12 @@ public interface ProductRepository extends CrudRepository<Product,Integer> {
 
 	@Transactional
 	@Modifying
-	@Query("delete from Product b where b.pId=:pid")  //:id는 함수의 매개변수
+	@Query("delete from Product b where b.pid=:pid")  //:id는 함수의 매개변수
 	void deleteProduct(Integer pid);
 
+	List<Product> findByCategories_CategoryId(int id);
+	List<Product> findByCategories_CategoryIdOrCategories_CategoryId(int id1, int id2);
 
-	
+
+
 }

@@ -86,6 +86,7 @@
     .basketdiv .sum {
         width: 34%;
       max-width: 80px;
+        margin-left: 5px;
         color: #0000aa;
     }
     .basketdiv .point {
@@ -112,7 +113,7 @@
     }
     .basketdiv .data .pname {
         text-align: left !important;
-      line-height: 1.2 !important;
+      line-height: 1.6 !important;
     }
     .basketdiv .data .price, .basketdiv .data .sum, .basketdiv .data .point {
         text-align: right;
@@ -174,13 +175,17 @@
   font-size: 1.25em;
     font-weight: bold;
 }
+.move:hover{
+    cursor: pointer;
+}
+
 .buttongroup{
   text-align: center;
 }
 .buttongroup a{
   text-decoration: none;
 }
-.cmd a, .cmd span {
+.cmd a, .cmd button {
     padding: 12px 30px;
     box-sizing: border-box;
     margin-top: 10px;

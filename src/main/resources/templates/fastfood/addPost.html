@@ -47,7 +47,7 @@ body {
 
 					<label for="writer">작성자</label>
 
-					<input type="text" class="form-control" name="writer" id="writer" th:value="${userId}" disabled>
+					<input type="text" class="form-control" name="writer" id="writer" th:value="${userId.getUserId()}" disabled>
 
 				</div>
 
@@ -73,7 +73,7 @@ body {
 
 	</article>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
-	<script type="text/javascript" src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/Boardinit.js"></script>
 </body>
 
 </html>

@@ -1,15 +1,132 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>시작화면ver.3</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>HTML Result</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+		  integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}" >
 </head>
+
 <body>
-	<br>
-	<h3 align="center">팀프로젝트</h3>
-	<table></table>
-	<hr>
-	<p align="center"><a href="fastfood/login">로그인 하러가기</a></p>
-	<br>
-	<hr>
+<header>
+	<h1>
+		<!--
+        <img alt="logo" src="/img/hambuger/burgerQueen.png" width="200" height="200">
+         -->
+		<img th:src="@{/img/bugerQueen.png}" width="50" height="50">
+		<a>BURGER-QUEEN</a>
+	</h1>
+	<div>
+		<!--
+		<a th:text="${session.user.userId}" th:href="@{/fastfood/CustomerUpdate(id=${session.user.id})}" style="color:white"></a>
+        <a th:href="@{/fastfood/logout}">로그아웃</a>
+		<a th:href="@{/fastfood/board(id=${session.user.id})}">게시판</a>
+		-->
+		<!--		<a th:text="${user.getUserId()}" th:href="@{/fastfood/CustomerInfoUpdate}" style="color:white"></a>-->
+		<!--		<a href="#" th:onclick="|javascript:allDelete(${user.getId()})|">로그아웃</a>-->
+		<a class="btn btn-outline dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+		   data-bs-toggle="dropdown" aria-expanded="false" text="아이디">
+		</a>
+		<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+			<li><a class="dropdown-item" th:href="@{/fastfood/CustomerUpdate}">정보수정</a></li>
+			<li><a  class="dropdown-item" href="#" th:onclick="|javascript:allDelete(${user.getId()})|">로그아웃</a></li>
+			<li><a class="dropdown-item" th:href="@{/fastfood/my_baket}">장바구니</a></li>
+
+		</ul>
+		<a th:href="@{/fastfood/board}">게시판</a>
+	</div>
+</header>
+
+<div class="container body-content">
+	<div class="container">
+		<div id="div1" class="row justify-content-start" style="padding-top:10px; padding-bottom:10px">
+			<div class="col">
+				<!--<input class="form-control" ></input>-->
+			</div>
+			<div class="col">
+				<!-- <button class="btn btn-primary" >SEARCH</button> -->
+			</div>
+		</div>
+
+		<div class="row justify-content-start" style="padding-top:10px;">
+
+			<section id="mainBig">
+				<div class="left">
+					<img src="\img\hamburger_menu.jpg" />
+				</div>
+				<div class="right">
+					<img src="/img/soda_menu.jpg">
+				</div>
+			</section>
+
+			<!--	 <table border="1">-->
+			<!--	 -->
+			<!--	<tr>&lt;!&ndash; 첫번째 줄 시작 &ndash;&gt;-->
+			<!--	    <td><div class="col" style="padding-top:10px;">-->
+			<!--	<a th:href="@{/fastfood/Hdetailmenu(menuid=1)}" >-->
+			<!--	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="\img\hamburger_menu.jpg" /></a>-->
+			<!--	<div>버거</div>-->
+			<!--    </div></td>-->
+			<!--	    <td><div class="col" style="padding-top:10px;">-->
+			<!--	<a th:href="@{/fastfood/Hdetailmenu(menuid=2)}" >-->
+			<!--	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/soda_menu.jpg" /></a>-->
+			<!--	<div>탄산</div>-->
+			<!--	</div></td>-->
+			<!--	    <td><div class="col" style="padding-top:10px;">-->
+			<!--    <a th:href="@{/fastfood/Hdetailmenu(menuid=3)}" >-->
+			<!--	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/coffee_menu.jpg" /></a>-->
+			<!--	<div>커피</div>-->
+			<!--    </div></td>-->
+			<!--	</tr>&lt;!&ndash; 첫번째 줄 끝 &ndash;&gt;-->
+			<!--	<tr>&lt;!&ndash; 두번째 줄 시작 &ndash;&gt;-->
+			<!--	    <td><div class="col" style="padding-top:10px;">-->
+			<!--    <a th:href="@{/fastfood/Hdetailmenu(menuid=4)}" >-->
+			<!--	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/side_menu.jpg" /></a>-->
+			<!--	<div>사이드</div>-->
+			<!--    </div></td>-->
+			<!--	    <td><div class="col" style="padding-top:10px;">-->
+			<!--    <a th:href="@{/fastfood/Hdetailmenu(menuid=5)}" >-->
+			<!--	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="/img/dessert_menu.jpg" /></a>-->
+			<!--	<div>디저트</div>-->
+			<!--    </div></td>-->
+			<!--	    <td><div class="col" style="padding-top:10px;">-->
+			<!--    <a th:href="@{/fastfood/Hdetailmenu(menuid=6)}" >-->
+			<!--	<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="\img\combo_menu.jpg" /></a>-->
+			<!--	<div>세트</div>-->
+			<!--    </div></td>-->
+			<!--	</tr>&lt;!&ndash; 두번째 줄 끝 &ndash;&gt;-->
+			<!--    </table>-->
+
+
+
+		</div>
+
+
+		<!--
+        <div class="row justify-content-start" style="padding-top:10px;">
+        <div class="col" style="padding-top:10px;">
+         -->
+
+		<p class="text-black-50">항상 신선한 재료와 맛과 서비스로 최선을 다하겠습니다.</p>
+	</div>
+</div>
+<script type="text/javascript"
+		src="https://code.jquery.com/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	function allDelete(id){
+		$.ajax({
+			type: 'DELETE',
+			url: '/api/basket/'+id,
+		}).done(function() {
+			alert('로그아웃합니다, 로그인페이지로 돌아갑니다.');
+			window.location.href = "/fastfood/logout";
+		}).fail(function (error) {
+			alert(JSON.stringify(error));
+		});
+	}
+</script>
 </body>
 </html>

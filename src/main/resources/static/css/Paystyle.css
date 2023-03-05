@@ -1,4 +1,9 @@
-body { margin:50px auto; width:600px;}
+@media (min-width: 992px) {
+    .col-md-4 {
+        width: 70.33333333%;
+    }
+}
+body { margin:50px 31%; width:600px;}
 
 /* CSS for Credit Card Payment form */
 .credit-card-box .panel-title {
@@ -40,4 +45,25 @@ body { margin:50px auto; width:600px;}
 /* Just looks nicer */
 .credit-card-box .panel-heading img {
     min-width: 180px;
+}
+.box{
+    margin-left: 6px;
+}
+.btn-success{
+    background-color: #ea6171;
+    border-color: #ea6171;
+}
+.btn-block {
+    margin-top: 2px;
+}
+.btn-success:hover {
+    background-color: #fd7e14;
+}
+.panel-default>.panel-heading {
+    background-color: #ea6171;
+}
+.btn-success:focus, .btn-success:hover, .open>.dropdown-toggle.btn-success {
+    color: #fff;
+    background-color: #fd7e14;
+    background-color: #fd7e14;
 }

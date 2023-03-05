@@ -1,107 +1,15 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width">
-   <title>이벤트 리스너로 장바구니 수량 변경 및 자동 합계 구하기</title>
+   <title>장바구니</title>
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="/css/10-11.css" />
-   <script type="text/javascript" src="/js/10-11.js"></script> 
-   <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>   
-         <script type="text/javascript" th:inline="javascript">
-         // 주문 클릭 시
-         function dataSend(){            
-          
-            var basketArray = [];
-            var count=[];
-            var checkarr= $("input[name='buy']"); //체크박스들을 checkarr 배열에 저장
-            var check=[];
-            var selection = document.querySelectorAll('.p_num');                                
-            var checkPage=1;   
-            //체크된 리스트 저장  
-            
-               $("input[name='buy']").each(function(i) { //현재 체크박스 수 만큼 반복 
-                  if(checkarr[i].checked){ //체크가 되면 객체 저장
-                  basketArray.push($(this).val());
-                  check.push(i);                  
-               
-               }   
-               });         
-                selection.forEach(function(item,index) {                         
-                   for(var i=0; i<(check.length);i++){               
-                      if(check[i]==index){
-                      
-                         var items = document.querySelector('input[name=p_num'+index+']');
-                            count.push(items.value)
-                      
-                             check.shift();
-                      }                                   
-                   }                   
-                });    
-                
-              //ajax 호출
-                $.ajax({
-                    url:   "basket_save",     
-                    type:   "post",
-                    data:   {basketarray:basketArray,counts:count,checkpage:checkPage},
-                    success: function onData (data) {
-                    	alert(data);
-                    	 window.location.href= "/fastfood/Payment";
-                    	 
-                    	
-                    },
-                    error: function onError (error) {
-                    	alert(error);
-                    }
-            });
-         }
-      
-         //계속 페이지 클릭 시
-         function dataSend2(){            
-      
-             var basketArray = [];
-             var count=[];
-             var selection = document.querySelectorAll('.p_num');
-             var checkPage=2;
-             selection.forEach(function(item) {
-                count.push(item.value)
-             });
-                alert($('input[name="buy"]').length);
-                
-                 $('input[name="buy"]').each(function(i){                            
-                    basketArray.push($(this).val());                            
-                 });
-                 if($('input[name="buy"]').length == 0){
-                	 alert("비어있습니다.");
-                	
-                 }
-                
-               //ajax 호출
-               //&&'input[name="buy"]:not(:checked)'
-                 $.ajax({
-                     url: "basket_save",     
-                     type: "post",
-                     data: {basketarray:basketArray,counts:count,checkpage:checkPage},
-                     success: function onData (data) {
-                    	 alert(data);
-                    	
-                    	
-                    	 
-                     },
-                     error: function onError (error) {
-                    	 alert(error);
-                     }
-             });
-          }
-         </script>
+   <link rel="stylesheet" href="/css/boardUi.css" />
 </head>
 <body>
-
-   <!--<form th:action="@{/fastfood/basket_save}" method="post">-->
    
-    <form name="orderform" id="orderform" method="post" class="orderform" th:action="@{/fastfood/basket_save}" >     
-            <input type="hidden" name="cmd" value="order">
+    <div id="basket-form" >
             <div class="basketdiv" id="basket">
                 <div class="row head">
                     <div class="subdiv">
@@ -112,7 +20,7 @@
                     <div class="subdiv">
                         <div class="basketprice">가격</div>
                         <div class="num">수량</div>
-                        <div class="sum">합계</div>
+                        <div class="sum">&nbsp;&nbsp;&nbsp;&nbsp;합계</div>
                     </div>
                     <div class="subdiv">
     
@@ -122,91 +30,69 @@
                 </div>
              
               <th:block th:each="baskets,count: ${basketList}"> 
-                <div class="row data">
+                <form class="row data" id="basket-info" method="post">
                     <div class="subdiv">
-                        <div class="check"><input type="checkbox" name="buy" checked="" th:value="${baskets.bid}"  onclick="javascript:basket.checkItem();">&nbsp;</div>
-                        <div class="img"><img th:src="'/img/'+${productInfoList[count.index].getProduct().getProductName()}+'.jpg'" width="60"></div>
-                        <div class="pname">
-                            <span th:text="${productInfoList[count.index].getProduct().productName}"></span><br>
-                            <span th:text="'사이즈: '+${productInfoList[count.index].getSize().getSizename()}"></span>
-                           
-                            <span th:if="${productInfoList[count.index].getTemperature().getTempname()} != 'None'" th:text="', 온도:'+${productInfoList[count.index].getTemperature().getTempname()}"></span>
+                        <div class="check"><input type="checkbox" name="buy" checked="" th:value="${baskets.getBid()}"  th:onclick="|javascript:basket.checkItem()|">&nbsp;</div>
+                        <div class="img"><img th:src="'/img/'+${productList[count.index].getProductName()}+'.jpg'" width="60" height="40"></div>
+                        <div class="pname" id="item-name">
+                            <strong th:text="${productList[count.index].getProductName()}"></strong><br>
+                            <span th:text="'사이즈: '+${productList[count.index].getSizeName()}"></span>
+                            <span th:if="${productList[count.index].getTempName()} != 'None'" th:text="', 온도:'+${productList[count.index].getTempName()}"></span>
                             
                             <br>
-                            <th:block th:if="${productInfoList[count.index].getProduct().getCategories().getCategoryName()} == '세트'">
-                            <!--  <script  th:inline="javascript">
-	 
-									var info ='[[${baskets.getInfo()}]]';
-									var infoarr=info.split(",");
-									
-									var sidenum=parseInt(infoarr[1]);
-									var drinknum=parseInt(infoarr[2]);
-       								 
-									alert(sidenum);	 
-									alert(drinknum);	
-									 
-									var side =parseInt(infoarr[1]);
-									var drink =parseInt(infoarr[2]);
-									document.write('[[${baskets.getInfo()}]]');
-									
-							</script>--> 
-                            	
-                            	<span  th:text="'사이드정보: '+${basketMap[baskets.getBid][0]}+', '+${basketMap[baskets.getBid][1]}" ></span>
+                            <th:block th:if="${baskets.isSet()}">
+                            	<span  th:text="'사이드정보: '+${setForSideAndDrink[count.index].getSideName()}+', '+${setForSideAndDrink[count.index].getDrinkName()}" ></span>
                             </th:block>
                             
                             		
                         </div>
-                         <input type="hidden" name="bknumber" class="b_num" th:value="${baskets.bid}">
+<!--                         <input type="hidden" name="bknumber" class="b_num" th:value="${baskets.getBid()}">-->
                     </div>
                     <div class="subdiv">
-                        <div class="basketprice"><input type="hidden" name="p_price" id="p_price3" class="p_price" th:value="${productInfoList[count.index].price}" th:text="${productInfoList[count.index].price}"></div>
+                        <div class="basketprice" id="item-price">
+                            <div name="p_price" id="p_price3" class="p_price" th:value="${baskets.getPrice()}" th:text="${baskets.getPrice()}"></div>
+                        </div>
                         <div class="num">
                             <div class="updown">
-                                <input type="text" th:name="'p_num'+${count.index}" size="2" maxlength="4" class="p_num" th:value="${baskets.pCount}"  th:onkeyup="javascript:basket.changePNum([[${count.index}]]);">
+                                <input type="text" id="item-cnt" th:name="'p_num'+${count.index}" size="2" maxlength="4" class="p_num" th:value="${baskets.getPCount()}"  th:onkeyup="|javascript:basket.changePNum(${count.index})|">
                           <!-- th:onclick -->
-                                <span onclick="javascript:basket.changePNum([[${count.index}]]);"><i class="fas fa-arrow-alt-circle-up up"></i></span>
-                                <span onclick="javascript:basket.changePNum([[${count.index}]]);"><i class="fas fa-arrow-alt-circle-down down"></i></span>
+                                <span th:onclick="|javascript:basket.changePNum(${count.index})|"><i class="fas fa-arrow-alt-circle-up up"></i></span>
+                                <span th:onclick="|javascript:basket.changePNum(${count.index})|"><i class="fas fa-arrow-alt-circle-down down"></i></span>
                             </div>
                         </div>
-                        <div class="sum" th:text="${priceList[count.index]}" ></div>
+                        <div class="sum" id="item-sum" th:text="${baskets.getTotalPrice()}+'원'" ></div>
                     </div>
                     <div class="subdiv">
-                        <div class="basketcmd"><a href="javascript:void(0)" class="abutton" onclick="javascript:basket.delItem();">삭제</a></div>
+                        <div class="basketcmd"><a href="javascript:void(0)" class="abutton" th:onclick="|javascript:basket.delItem()|">삭제</a></div>
                     </div>
-                </div>
+                </form>
                 </th:block>
-                
-                
-                             
-        
             </div>
           
           
             <div class="right-align basketrowcmd">
-                <a href="javascript:void(0)" class="abutton" onclick="javascript:basket.delCheckedItem();">선택상품삭제</a>
-                <a href="javascript:void(0)" class="abutton" onclick="javascript:basket.delAllItem();">장바구니비우기</a>
+                <a href="javascript:void(0)" class="abutton" th:onclick="|javascript:basket.delCheckedItem()|">선택상품삭제</a>
+                <a href="javascript:void(0)" class="abutton" id="AllDelete" th:onclick="|javascript:basket.delAllItem()|">장바구니비우기</a>
             </div>
     
-            <div th:text= "'상품갯수: '+${productcount}+'개'" class="bigtext right-align sumcount" id="sum_p_num">상품갯수: 4개</div>
-            <div th:text= "'합계금액: '+${totalprice}+'원'" class="bigtext right-align box blue summoney" id="sum_p_price"></div>
+            <div th:text= "'상품갯수: '+${totalCnt}+'개'" class="bigtext right-align sumcount" id="sum_p_num"></div>
+            <div th:text= "'합계금액: '+${totalPrice}+'원'" class="bigtext right-align box blue summoney" id="sum_p_price"></div>
     
-    
-            <div id="goorder" class="">
-                <div class="clear"></div>
-                <div class="buttongroup center-align cmd">
-                       <a  th:onclick="dataSend2()"  th:href="@{/fastfood/menu}"><i class="fa fa-angle-left"></i>계속 페이지로</a>                   
-                </div>
-            </div>
+
             <div id="goorders" class="">
                 <div class="clear"></div>
                 <div class="buttongroup center-align cmd">
-                	<a th:onclick="dataSend()" href=# >주문하기<i class="fa fa-angle-right"></i></a> 
-                   <!-- <input type="submit" name="order" th:onclick="dataSend()" value="주문하기"><i class="fa fa-angle-right"></i>      -->               
+                    <button class="move" th:onclick="|location.href='@{/fastfood/menu}'|"><i class="fa fa-angle-left"></i>메뉴이동</button>
+<!--                    <button class="move" name="order" id="basket-update-btn">주문하기<i class="fa fa-angle-right"></i></button>-->
+                    <button class="move" name="order" th:onclick="|javascript:buys()|">주문하기<i class="fa fa-angle-right"></i></button>
                 </div>
             </div>
-                    
-        </form>
+        </div>
+    <input type="hidden" id="userId" th:value="${userId}">
 
+   <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="/js/basketUi.js"></script>
+   <script type="text/javascript" src="/js/basketInit.js"></script>
 </body>
 
 </html>

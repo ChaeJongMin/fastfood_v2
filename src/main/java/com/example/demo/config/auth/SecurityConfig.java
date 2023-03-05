@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -27,6 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/fastfood/menu").hasAnyRole(Role.USER.name())
+                .antMatchers("/fastfood/CustomerInfoUpdate").hasAnyRole(Role.USER.name())
+                .antMatchers("/fastfood/Hdetailmenu").hasAnyRole(Role.USER.name())
+                .antMatchers("/fastfood/mybasket").hasAnyRole(Role.USER.name())
+                .antMatchers("/fastfood/Payment").hasAnyRole(Role.USER.name())
                 .antMatchers("/fastfood/superhome").hasAnyRole(Role.ADMIN.name())
                 .anyRequest().permitAll()
         ;
@@ -39,6 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("userPasswd")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/fastfood/logout"))
+                .logoutSuccessUrl("/fastfood/login")
+                .invalidateHttpSession(true)
         ;
 
         http

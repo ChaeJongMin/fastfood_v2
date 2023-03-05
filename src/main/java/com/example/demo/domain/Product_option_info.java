@@ -36,16 +36,13 @@ public class Product_option_info {
    private Product product;
    
    @ManyToOne
-   @JoinColumn(name="sId",nullable=false)
+   @JoinColumn(name="sid",nullable=false)
    private Size size;
    
    @ManyToOne
-   @JoinColumn(name="tId",nullable=false)
+   @JoinColumn(name="tid",nullable=false)
    private Temperature temperature;
-   
    private boolean isUse=true; //옵션 사용 여부
-   
-   
    private Integer price;
 
    @Builder

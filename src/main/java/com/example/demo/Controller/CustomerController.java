@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
@@ -25,20 +28,20 @@ public class CustomerController {
         model.addAttribute("msg",msg);
         return "fastfood/login";
     }
+    @GetMapping("/logout")
+    public void logouts(){
+        return;
+    }
     @GetMapping("/register")
     public String signupView() {
         return "fastfood/register";
     }
 
-    @GetMapping("/menu")
-    public String homepageView() {
-        return "fastfood/menu";
-    }
-    @GetMapping("/CustomerUpdate")
+    @GetMapping("/CustomerInfoUpdate")
     public String updateView(@LoginUser SessionUser user, Model model){
         model.addAttribute("customer",customerService.findById(user.getId()));
         model.addAttribute("id", user.getId());
-        return "fastfood/CustomerUpdate";
+        return "fastfood/CustomerInfoUpdate";
     }
 }
 

@@ -15,7 +15,7 @@
         <header>            
             <div class="home">
                 <a href="#"><img class="menuImg" src="/img/boardImg/menu.png"/></a>
-                <div class="logoText"><a href="#">Menu</a></div>
+                <div class="logoText"><a th:href="@{/fastfood/menu}">Menu</a></div>
             </div>        
             <div class="userId">
                <span th:utext="${userId}"></span>
@@ -31,8 +31,7 @@
                 </button>
                 -->
                 <button type="button" th:onclick="|location.href='@{/fastfood/addPost}'|">
-                    <img th:src="@{/img/boardImg/plus.png}">
-                    ADD POST
+                    <div class="block">글쓰기</div>
                 </button>
             </div>
         </section>

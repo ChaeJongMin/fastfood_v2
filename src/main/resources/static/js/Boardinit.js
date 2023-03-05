@@ -39,7 +39,6 @@ var index={
             alert("제목이 비어있습니다.")
             return false;
         }
-
         $.ajax({
             type: 'POST',
             url : '/api/post',
@@ -48,7 +47,7 @@ var index={
             data: JSON.stringify(data),
         }).done(function(){
             alert("글 등록!!!!");
-            window.location.href="/fastfood/login";
+            window.location.href="/fastfood/board";
         }).fail(function(error){
             alert(JSON.stringify(error));
         });

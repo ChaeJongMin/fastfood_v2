@@ -3,10 +3,7 @@ package com.example.demo.dto;
 import com.example.demo.domain.Boards;
 import com.example.demo.domain.Comment;
 import com.example.demo.domain.Customer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Setter
+@Getter
 public class CommentRequestDto {
     private String content;
     private Boards boards;

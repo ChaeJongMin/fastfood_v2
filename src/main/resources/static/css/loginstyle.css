@@ -1,52 +1,72 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Raleway:wght@100;200;300;400;500;600;700;800&display=swap');
+*{
+	font-family: 'Raleway', sans-serif;;
+}
+a {
+	text-decoration: none;
+}
+#container{
+	width:70%;
+	height:90%;
+	margin: 90px auto;
+}
+.imgae-box{
+	width: 50%;
+	height: 100%;
+	float:left;
+	box-sizing: border-box;
+	background-image: url("../img/boardImg/login.png");
+	background-size: 100%;
+}
+.title-msg{
+	position: relative;
+	left: 15%;
+	font-size: 40px;
+	font-weight: 600;
+	color:#fa6e07;
+	top:-3%;
+}
 .loginbox {
-	position: absolute;
-	top: 40%;
-	left:40%;
-	
+	width: 50%;
+	height: 100%;
+	float:left;
+	box-sizing: border-box;
+	background-color: #ffcea3;
 }
 
 .loginbox h1 {
 	width: 100%;
 	height: 40px;
 	font-size: 28px;
-	color: #ff9900;
+	color: #fa6e07;
 	border-bottom: 1px solid #ff9900;
 	padding-left: 40px;
 	box-sizing: border-box;
 	background-repeat: no-repeat;
 	background-position: 3px 5px;
 	margin-bottom: 30px;
+	text-align: center;
 }
+.login-form{
+	width: 100%;
+	height: 80%;
 
-​
-
-#loginid, #loginpw {
-	width: 200px;
-	height: 25px;
-	border: 1px solid #999;
 	box-sizing: border-box;
-	margin-bottom: 10px;
 }
-
-.labelid {
-	font-size: 14px;
-	color: #666;
-	margin-left: 15px;
-	margin-right: 22px;
-}
-
-.labelpw {
-	font-size: 14px;
-	color: #666;
-	margin-left: 15px;
-	margin-right: 8px;
+.input-field{
+	width: 60%;
+	height: 7%;
+	position: relative;
+	margin: 0 auto 5px;
 }
 .login-box{
-	width: 200px;
+	width: 120%;
+	height: 80%;
+	border-radius: 10px;
+	border: 0.5px solid #ff9900;
+	position: relative;
+	left: -10%;
 }
-​
-
 .chk {
 	width: 100%;
 	text-align: right;
@@ -60,70 +80,61 @@
 	position: relative;
 	top: -3px;
 }
-
-​
-
 .search {
 	width: 100%;
 	height: 40px;
-	border-bottom: 1px dashed #999;
 	box-sizing: border-box;
 	line-height: 40px;
 	text-align: center;
 	margin-bottom: 20px;
 }
 
-.search span {
-	font-size: 11px;
-	color: #999;
-}
-
 .search a {
-	font-size: 12px;
+	font-size: 18px;
 	text-decoration: none;
-	background-color: #333;
-	color: #fff;
+	color: black;
 	padding: 3px 5px;
-	border-radius: 3px;
-	margin-left: 5px;
+	font-weight: 500;
+	position: relative;
+	left: 30%;
 }
 
-.input-field{
-	margin-bottom:5px;
-}
 .btnwrap {
 	width: 100%;
 	text-align: center;
 	margin-top: 15px;
-}
-
-.btnwrap label {
-	position: absolute;
-	left: -999em;
+	height: 300px;
 }
 
 .btnwrap a {
-	width: 129px;
-	height: 35px;
+	width: 80%;
+	height: 40px;
 	background-color: #999;
 	text-decoration: none;
-	display: inline-block;
-	border-radius: 3px;
+	display: block;
+	border-radius: 15px;
 	color: #fff;
 	font-size: 14px;
 	font-weight: bold;
 	line-height: 35px;
+	position: relative;
+	left:10%;
+	margin-top:50px;
 }
 
 #loginbtn {
-	width: 129px;
-	height: 35px;
+	width: 80%;
+	height: 40px;
 	border: none;
 	background-color: #ff9900;
-	border-radius: 3px;
+	border-radius: 15px;
 	color: #fff;
 	font-size: 14px;
 	font-weight: bold;
 	position: relative;
 	top: 1px;
+	margin-top:20px;
+}
+.error-msgs{
+	margin-left: 80px;
 }

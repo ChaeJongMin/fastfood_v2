@@ -31,8 +31,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Customer user = (Customer) customLoadUserByUsername.loadUserByUsername(authentication.getName().toString());
         String reqPassword = authentication.getCredentials().toString();
-        System.out.println("req비빌 "+ reqPassword);
-        System.out.println("유저 비밀 "+user.getUserPasswd());
         //if(!passwordEncoder.matches(reqPassword, passwordEncoder.encode(user.getUserPasswd()))) throw new BadCredentialsException("Not Found User");
         if(!passwordEncoder.matches(reqPassword, user.getUserPasswd())) throw new BadCredentialsException("Not Found User");
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

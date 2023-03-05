@@ -116,15 +116,15 @@ public class AdminController {
         model.addAttribute("nowdate",nowdate);
         for(Orders o:ordersList) { //현재 날짜와 테이블 주문 날짜 비교
            
-           if(compareDate(year,month,o.getOrederDate())) { //테이블 데이터값이 현재 날짜와 같을 시
-              CurrentOrderList.add(o);            
-           }
-           System.out.println(o.getOrederDate());         
+//           if(compareDate(year,month,o.getOrederDate())) { //테이블 데이터값이 현재 날짜와 같을 시
+//              CurrentOrderList.add(o);
+//           }
+//           System.out.println(o.getOrederDate());
         }
          
          for(Orders o:CurrentOrderList) { 
             customerList.add(CustomerRepo.findById(o.getCustomer().getId()).get());
-            productList.add(ProductRepo.findById(o.getProduct().getPId()).get());
+            productList.add(ProductRepo.findById(o.getProduct().getPid()).get());
             totalprice+=o.getPrice();
             
          }
@@ -500,7 +500,7 @@ public class AdminController {
 	         ImageRepository.delete(p_img);
 	         
 	         System.out.println("***********상풍삭제***********");
-	         ProductRepo.deleteProduct(p.getPId());
+	         ProductRepo.deleteProduct(p.getPid());
 	         return "redirect:productUpdate";
 
 	   }

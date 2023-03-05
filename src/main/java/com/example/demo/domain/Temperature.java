@@ -30,7 +30,7 @@ import lombok.ToString;
 public class Temperature {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer tId;
+	private Integer tid;
 	
 	private String tempname;
 

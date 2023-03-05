@@ -1,11 +1,17 @@
 window.onload = function (){
-    alert("onload");
-    document.querySelector('#save-button').addEventListener('click',function () {
-        save();
-    });
-    document.querySelector('#update-button').addEventListener('click',function () {
-        update();
-    });
+    let saveEle=document.querySelector('#save-button');
+    let updateEle=document.querySelector('#update-button');
+    if(saveEle!=null){
+        saveEle.addEventListener('click',function () {
+            save();
+        })
+    }
+    if(updateEle!=null){
+        updateEle.addEventListener('click',function (){
+            update();
+        })
+    }
+
 }
 function save(){
     let data={
@@ -14,7 +20,7 @@ function save(){
         email:document.querySelector('#email').value,
         phoneNum:document.querySelector('#phoneNum').value,
         cardCompany:document.querySelector('#cardCompany').value,
-        cardNum:document.querySelector('#cardNum').value,
+        cardNum:document.querySelector('#cardNum').value
     }
     $.ajax({
         type: 'POST',
@@ -35,7 +41,7 @@ function update(){
         email:document.querySelector('#email').value,
         phoneNum:document.querySelector('#phoneNum').value,
         cardCompany:document.querySelector('#cardCompany').value,
-        cardNum:document.querySelector('#cardNum').value,
+        cardNum:document.querySelector('#cardNum').value
     }
     let id=document.querySelector('#id').value;
     $.ajax({

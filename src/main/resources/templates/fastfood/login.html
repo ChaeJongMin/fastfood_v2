@@ -10,34 +10,34 @@
 </head>
 
 <body>
-<form th:action="@{/fastfood/login}" method="post">
-    <div class="loginbox">
+    <div id="container">
+        <div class="imgae-box">
+            <h4 class="title-msg" style="font-family: 'Caveat', cursive" >Buger Queen</h4>
+        </div>
+        <div class="loginbox">
+            <h1>로그인</h1>
+            <form th:action="@{/fastfood/login}" method="post" class="login-form">
+                <div class="input-field">
+                    <input type="text" class="login-box" id="loginid" name="userId" placeholder="아이디"><br/>
+                </div>
+                <div class="input-field">
+                    <input type="password" class="login-box" id="loginpw" name="userPasswd" placeholder="비밀번호">
+                </div>
+                <div class="search">
+                    <a href="#" style="font-family: 'Caveat', cursive">forget id or passwd?</a>
+                </div>
+<!--                <div class="remember-box">-->
+<!--                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>-->
+<!--                    <label class="form-check-label" for="rememberMe">로그인 유지</label>-->
+<!--                </div>-->
+                <h4 class="error-msgs" th:text="${error} ? ${msg} : ''" style="color:red;"></h4>
+                <div class="btnwrap">
+                    <input type="submit" id="loginbtn" value="SIGN IN" style="font-family: 'Caveat', cursive">
+                    <a th:href="@{/fastfood/register}" style="text-align:center;font-family: 'Caveat', cursive">SIGN UP</a>
+                </div>
 
-        <h1>로그인</h1>
-
-        <form th:action="@{/fastfood/login}" method="post">
-            <div class="input-field">
-                <label for="loginid" class="labelid">아이디</label>
-                <input type="text" class="login-box" id="loginid" name="userId"><br/>
-            </div>
-            <label for="loginpw" class="labelpw">패스워드</label>
-            <input type="password" class="login-box" id="loginpw" name="userPasswd">
-            <div class="search">
-                <span class="text">·아이디 또는 비밀번호를 잊으셨나요?</span> <a th:href="@{/fastfood/login}">ID/PW찾기</a>
-
-            </div>
-
-            <div class="btnwrap">
-
-                <a th:href="@{/fastfood/register}" style="text-align:center">회원가입</a>
-                <input type="submit" id="loginbtn" value="로그인">
-
-                <label><input type="submit" value="로그인버튼"></label>
-            </div>
-            <h4 th:text="${error} ? ${msg} : ''" style="color:red;"></h4>
-
-        </form>
-    </div>
-</form>
+            </form>
+        </div>
+</div>
 </body>
 </html>

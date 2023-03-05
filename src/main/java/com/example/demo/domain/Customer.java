@@ -21,7 +21,7 @@ public class Customer {
 	private String cardCompany;
 	private String phoneNum;
 
-	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 		private List<Boards> boardList=new ArrayList<>();
 
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.filechooser.FileSystemView;
 
 import com.example.demo.domain.*;
+import com.example.demo.dto.ProductResponseDto;
 import com.example.demo.persistence.*;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
@@ -45,19 +46,9 @@ class FastFoodApplicationTests {
 
 	@Test
 	public void SaveBoard(){
-		for(int i=30; i<300; i++){
-			Customer customer=CustomerRepo.findByUserId("20173349").get(0);
-			String title="테스트 제목"+(i+1);
-			String content="테스트 내용"+(i+1)+"입니다.";
-			String writer=customer.getUserId();
-
-			boardsRepository.save(Boards.builder()
-					.title(title)
-					.content(content)
-					.writer(writer)
-					.customer(customer)
-					.build()
-			);
+		List<Product> list=ProductRepo.findByCategories_CategoryId(4);
+		for(Product p:list){
+			System.out.println(p.getProductName()+" "+p.getPid()+" "+p.getPrice());
 		}
 	}
 
