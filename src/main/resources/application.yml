@@ -1,0 +1,9 @@
+  jwt:
+    secret: ZivO1gEBucnaJ4rqVIbRItAu97Bp5JMxhFgG1OnDYaVvGDVT
+
+  logging:
+    config: classpath:log4j2.xml
+
+  output:
+    ansi:
+      enabled: always

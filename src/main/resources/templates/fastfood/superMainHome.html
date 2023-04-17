@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> AdminPage </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="/css/superMainHome.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<header>
+    <div id="head">
+        <h4>ADMIN</h4>
+    </div>
+</header>
+
+<nav>
+    <div class="card-user">
+        <img src="/img/superHome/admin.png">
+        <div id="user-info">
+            <h5>user님</h5>
+            <p>dico2760@naver.com</p>
+        </div>
+    </div>
+    <ul class="subMenu">
+        <li><button type="button" class="side-btn">Home</button></li>
+        <li><button type="button" class="side-btn">LOGOUT</button></li>
+        <li><button type="button" class="side-btn">고객 관리</button></li>
+        <li><button type="button" class="side-btn">메뉴 추가</button></li>
+        <li><button type="button" class="side-btn">메뉴 관리</button></li>
+        <li><button type="button" class="side-btn">결산</button></li>
+    </ul>
+</nav>
+
+<section>
+    <article id="article-box">
+        <div class="alarm-box">
+            <div class="img-box info-box1">
+                <img class="info-img-loc" src="/img/superHome/customer.png">
+            </div>
+            <div id="user-count" class="count-box">
+                <h5>새로운 유저(Day)</h5>
+                <p>30</p>
+            </div>
+
+        </div>
+        <div class="alarm-box">
+            <div class="img-box info-box2">
+                <img class="info-img-loc" src="/img/superHome/order.png">
+            </div>
+            <div id="order-count" class="count-box">
+                <h5>새로운 주문(Day)</h5>
+                <p>30</p>
+            </div>
+
+        </div>
+        <div class="alarm-box">
+            <div class="img-box info-box3">
+                <img class="info-img-loc" src="/img/superHome/sale.png">
+            </div>
+            <div id="sale-count" class="count-box">
+                <h5>총 판매가격(Day)</h5>
+                <p>300000원</p>
+            </div>
+
+        </div>
+        <div class="alarm-box">
+            <div class="img-box info-box4">
+                <img class="info-img-loc ro" src="/img/superHome/board.png">
+            </div>
+            <div id="board-count" class="count-box">
+                <h5>새로운 글(Day)</h5>
+                <p>3000</p>
+            </div>
+
+        </div>
+    </article>
+    <article id="article-lineChart">
+        <canvas id="line-chart" width="800" height="250">
+        </canvas>
+    </article>
+    <article>
+        <div></div>
+        <div></div>
+        <div></div>
+    </article>
+</section>
+<footer>
+
+</footer>
+<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.min.js"></script>
+<script src="/js/chart.js" type="text/javascript">
+</script>
+</body></html>
