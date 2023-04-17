@@ -7,11 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,15 +15,20 @@ import javax.servlet.http.HttpSession;
 public class CustomerController {
     private final CustomerService customerService;
 
+//    @GetMapping("/login")
+//    public String showLogin(@RequestParam(value = "error", required = false)Boolean error,
+//                            @RequestParam(value = "msg", required = false)String msg,
+//                            Model model){
+//        System.out.println("error: "+error+" msg: "+msg);
+//        model.addAttribute("error",error);
+//        model.addAttribute("msg",msg);
+//        return "fastfood/login";
+//    }
     @GetMapping("/login")
-    public String showLogin(@RequestParam(value = "error", required = false)Boolean error,
-                            @RequestParam(value = "msg", required = false)String msg,
-                            Model model){
-        System.out.println("error: "+error+" msg: "+msg);
-        model.addAttribute("error",error);
-        model.addAttribute("msg",msg);
+    public String showLogin(Model model){
         return "fastfood/login";
     }
+
     @GetMapping("/logout")
     public void logouts(){
         return;

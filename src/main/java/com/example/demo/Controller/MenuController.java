@@ -2,18 +2,20 @@ package com.example.demo.Controller;
 
 import com.example.demo.Service.BasketService;
 import com.example.demo.Service.CategoriesService;
+import com.example.demo.Service.CustomerService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.config.auth.LoginUser;
 import com.example.demo.config.auth.dto.SessionUser;
 import com.example.demo.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,14 +24,25 @@ import java.util.List;
 public class MenuController {
     private final ProductService productService;
     private final CategoriesService categoriesService;
-
+    private final CustomerService customerService;
+//    private SecurityUtil securityUtil;
     private final BasketService basketService;
 
+//    @GetMapping("/menu")
+//    public String menupageView(@LoginUser SessionUser user,Model model) {
+//        model.addAttribute("user",user);
+//        return "fastfood/menu";
+//    }
     @GetMapping("/menu")
-    public String menupageView(@LoginUser SessionUser user,Model model) {
-        model.addAttribute("user",user);
+    public String menupageView(Model model, HttpServletRequest request) {
+//        String user=customerService.findByidForUserId(id);
+//        model.addAttribute("id",id);
+//        model.addAttribute("user",user);
+        System.out.println("menu 작동");
+
         return "fastfood/menu";
     }
+
 
     @GetMapping("/Hdetailmenu")
     public String DetailMenuShow(Model model, @RequestParam("menuid") int menuid, @LoginUser SessionUser user) {
