@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <title>Login</title>
-
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" type="text/css" th:href="@{/css/loginstyle.css}">
     <!--외부 css 연결-->
 </head>
@@ -16,7 +16,7 @@
         </div>
         <div class="loginbox">
             <h1>로그인</h1>
-            <form th:action="@{/fastfood/login}" method="post" class="login-form">
+            <form class="login-form">
                 <div class="input-field">
                     <input type="text" class="login-box" id="loginid" name="userId" placeholder="아이디"><br/>
                 </div>
@@ -30,14 +30,17 @@
 <!--                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>-->
 <!--                    <label class="form-check-label" for="rememberMe">로그인 유지</label>-->
 <!--                </div>-->
-                <h4 class="error-msgs" th:text="${error} ? ${msg} : ''" style="color:red;"></h4>
+<!--                <h4 class="error-msgs" th:text="${error} ? ${msg} : ''" style="color:red;"></h4>-->
                 <div class="btnwrap">
-                    <input type="submit" id="loginbtn" value="SIGN IN" style="font-family: 'Caveat', cursive">
+                    <input type="button" id="loginbtn" value="SIGN IN" style="font-family: 'Caveat', cursive">
                     <a th:href="@{/fastfood/register}" style="text-align:center;font-family: 'Caveat', cursive">SIGN UP</a>
                 </div>
 
             </form>
         </div>
 </div>
+    <script type="text/javascript"
+            src="https://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/customerInit.js"></script>
 </body>
 </html>

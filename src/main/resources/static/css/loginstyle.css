@@ -135,6 +135,9 @@ a {
 	top: 1px;
 	margin-top:20px;
 }
+#loginbtn:hover{
+	cursor: pointer;
+}
 .error-msgs{
 	margin-left: 80px;
 }
