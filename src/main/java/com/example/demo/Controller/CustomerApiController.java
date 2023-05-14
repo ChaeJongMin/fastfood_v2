@@ -33,18 +33,24 @@ public class CustomerApiController {
         return ResponseEntity.status(HttpStatus.OK).body(customerService.findByUserId(principal.getName()));
     }
     @PostMapping("/api/customer/login")
-    public ResponseEntity<?> loginSuccess(@RequestBody Map<String, String> loginForm,
-                                          @CookieValue(name="refreshToken", required = false) String refreshToken) throws JsonProcessingException {
+    public ResponseEntity loginSuccess(@RequestBody Map<String, String> loginForm,
+                                          @CookieValue(name="refreshToken", required = false) String refreshToken,
+                                       HttpServletResponse response) throws JsonProcessingException {
         if(refreshToken==null)
             refreshToken="not exist";
         System.out.println(refreshToken);
         ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(customerService.login(loginForm.get("userId"), loginForm.get("userPasswd"),refreshToken));
-        System.out.println("(apiLogin)변환된 jsonString: "+jsonString);
-        return ResponseEntity.status(HttpStatus.OK).body(jsonString);
+        customerService.login(loginForm.get("userId"), loginForm.get("userPasswd"),refreshToken,response);
+        return new ResponseEntity(HttpStatus.OK);
     }
     @PostMapping("/api/customer")
     public int sava(@RequestBody CustomerSaveRequestDto customerSaveRequestDto){
+        //소셜 로그인한 유저일 경우!
+        //최초 사용자가 소셜 로그인을 이용 시 customer 테이블에 이메일과 소셜 정보가 이미 존재하므로
+        //이 정보를 바탕으로 구분
+        if(customerService.existToSocialFromEmail(customerSaveRequestDto.getEmail())){
+            return customerService.updateForInitSocialUser(customerSaveRequestDto);
+        }
         return customerService.save(customerSaveRequestDto);
     }
     @PutMapping("/api/customer/{id}")

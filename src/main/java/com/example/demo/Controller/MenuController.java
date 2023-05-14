@@ -6,9 +6,12 @@ import com.example.demo.Service.CustomerService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.config.auth.LoginUser;
 import com.example.demo.config.auth.dto.SessionUser;
+import com.example.demo.config.auth.jwt.UserData.CustomUserDetail;
 import com.example.demo.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 @RequestMapping(path = "/fastfood")
 public class MenuController {
     private final ProductService productService;
@@ -34,18 +38,18 @@ public class MenuController {
 //        return "fastfood/menu";
 //    }
     @GetMapping("/menu")
-    public String menupageView(Model model, HttpServletRequest request) {
-//        String user=customerService.findByidForUserId(id);
-//        model.addAttribute("id",id);
-//        model.addAttribute("user",user);
+    public String menupageView(Model model, HttpServletRequest request, @AuthenticationPrincipal CustomUserDetail customUser) {
+        int id=customUser.getId();
+        String user=customerService.findByidForUserId(id);
+        model.addAttribute("id",id);
+        model.addAttribute("user",user);
         System.out.println("menu 작동");
-
         return "fastfood/menu";
     }
 
 
     @GetMapping("/Hdetailmenu")
-    public String DetailMenuShow(Model model, @RequestParam("menuid") int menuid, @LoginUser SessionUser user) {
+    public String DetailMenuShow(Model model, @RequestParam("menuid") int menuid, @AuthenticationPrincipal CustomUserDetail customUser) {
         //세트일떄
         if (menuid == 6) {
             List<ProductResponseDto> sideList=productService.findByDessertAndSide();
@@ -67,8 +71,8 @@ public class MenuController {
         model.addAttribute("productlist", productService.findByCate(menuid));
         model.addAttribute("menuid", menuid);
         model.addAttribute("menuname", categoriesService.findCateName(menuid));
-        model.addAttribute("basketSize",basketService.countByCustomer(user.getId()));
-        model.addAttribute("userId",user.getId());
+        model.addAttribute("basketSize",basketService.countByCustomer(customUser.getId()));
+        model.addAttribute("userId",customUser.getId());
         return "fastfood/Hdetailmenu";
     }
 

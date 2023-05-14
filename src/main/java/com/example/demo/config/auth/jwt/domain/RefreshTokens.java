@@ -37,8 +37,9 @@ public class RefreshTokens extends BaseTime {
                 .expiration(expiration/1000)
                 .build();
     }
-    public void updateValue(String value) {
-        this.value = value;
+    public void update(String value, Long expiration){
+        this.value=value;
+        this.expiration=expiration/1000;
     }
 
 

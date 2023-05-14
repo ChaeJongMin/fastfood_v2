@@ -1,6 +1,8 @@
 package com.example.demo.config.auth;
 
 //import com.example.demo.config.auth.CustomAuthenticationSuccessHandler;
+import com.example.demo.config.auth.Oauth.CustomOAuth2UserService;
+import com.example.demo.config.auth.Oauth.OAuth2SuccessHandler;
 import com.example.demo.config.auth.jwt.*;
 import com.example.demo.config.auth.jwt.domain.Util.TokenUtils;
 import com.example.demo.domain.Role;
@@ -36,10 +38,12 @@ public class SecurityConfig {
 //    private final CustomAuthenticationProvider customAuthenticationProvider;
     private final TokenUtils tokenUtils;
     private final JwtTokenProvider jwtTokenProvider;
+    private final OAuth2SuccessHandler oAuth2LoginSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
-
+                .httpBasic().disable()
                 .csrf().disable()
                 .cors()
                 .and()
@@ -47,21 +51,25 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/api/customer/login","/api/customer/logout","/fastfood/login","/fastfood/join").permitAll()
+                .antMatchers("/api/customer/login","/api/customer/logout","/fastfood/login","/fastfood/register","/fastfood/menu").permitAll()
                 .antMatchers("/css/**","/js/**","/img/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/fastfood/**").permitAll()
-                .antMatchers("/fastfood/**","/api/**").hasAnyRole(Role.USER.name())
+                .antMatchers(HttpMethod.POST, "/api/customer").permitAll()
+//                .antMatchers("/fastfood/**","/api/**").hasAnyRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling()
+
+                .oauth2Login()
+                .successHandler(oAuth2LoginSuccessHandler)
+                .userInfoEndpoint().userService(customOAuth2UserService);
+
+//                .exceptionHandling()
                 //인증 실패
 //                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 //인가 실패
-                .accessDeniedHandler(new JwtAccessDeniedHandler())
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider,tokenUtils), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+//                .accessDeniedHandler(new JwtAccessDeniedHandler())
+        httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider,tokenUtils), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
 
 
         return httpSecurity.build();

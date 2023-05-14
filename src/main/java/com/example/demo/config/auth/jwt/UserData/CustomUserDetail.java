@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 public class CustomUserDetail implements UserDetails {
     private Customer customer;
-
+    private int id;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

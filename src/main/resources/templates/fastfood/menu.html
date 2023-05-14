@@ -30,7 +30,7 @@
 <!--		<a href="#" th:onclick="|javascript:allDelete(${user.getId()})|">로그아웃</a>-->
 
 		<a class="btn btn-outline dropdown-toggle showId" href="#" role="button" id="dropdownMenuLink"
-		   data-bs-toggle="dropdown" aria-expanded="false">
+		   data-bs-toggle="dropdown" aria-expanded="false" th:value="${user}">
 		</a>
 		<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 			<li><a class="dropdown-item" th:href="@{/fastfood/CustomerInfoUpdate}">정보수정</a></li>

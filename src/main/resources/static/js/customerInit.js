@@ -32,7 +32,6 @@ function login(){
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(loginForm),
     }).done(function(response){
-        localStorage.setItem("Authorization", response.grantType+response.accessToken);
         window.location.href="/fastfood/menu";
     }).fail(function(error){
         alert(error);

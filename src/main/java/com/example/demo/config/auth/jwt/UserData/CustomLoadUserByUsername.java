@@ -1,7 +1,9 @@
 package com.example.demo.config.auth.jwt.UserData;
 
+import com.example.demo.Service.CustomerService;
 import com.example.demo.config.auth.dto.SessionUser;
 import com.example.demo.domain.Customer;
+import com.example.demo.dto.CustomerResponseDto;
 import com.example.demo.exception.TokenCheckException;
 import com.example.demo.exception.message.ExceptionMessage;
 import com.example.demo.persistence.CustomerRepository;
@@ -33,6 +35,7 @@ public class CustomLoadUserByUsername{
         }
         CustomUserDetail customUserDetail=new CustomUserDetail();
         customUserDetail.setCustomer(customer.get(0));
+        customUserDetail.setId(customer.get(0).getId());
         return customUserDetail;
     }
 

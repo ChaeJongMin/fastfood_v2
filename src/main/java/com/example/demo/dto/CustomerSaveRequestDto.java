@@ -17,6 +17,7 @@ public class CustomerSaveRequestDto {
     private String cardNum;
     private String cardCompany;
     private String phoneNum;
+
     public void setEncorderPasswd(String convertPasswd){
         this.userPasswd=convertPasswd;
     }

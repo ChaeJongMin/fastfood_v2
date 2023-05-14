@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 @Slf4j
@@ -110,20 +111,23 @@ public class CustomerService {
     }
 
     @Transactional
-    public TokenDto login(String id, String password, String rtoken) {
-        Customer customer=this.auth(id,password);
-        String token=this.jwtTokenProvider.generateToken(customer.getUserId(), JwtTokenProvider.ACCESS_TIME);
-        //쿠기에 리프레쉬 토큰이 이미 존재하나 만료되었을 경우!!
-        //그럴 경우 테이블에 있는 리프레쉬 토큰을 삭제 해야한다.
-        boolean flag=refreshTokenService.findRefreshTokenbyUser(id);
-
-        //리프레쉬 토큰이 만료될 경우
-        if(flag && refreshTokenService.checkExpireTime(rtoken)){
-            refreshTokenService.delete(id);
+    public void login(String id, String password, String rtoken, HttpServletResponse response) {
+        String userId=this.auth(id,password).getUserId();
+        RefreshTokens refreshToken=null;
+        String refreshTokenValue=rtoken;
+//        로그인한 유저의 리프레쉬 토큰이 일단 존재할 시
+        if(!rtoken.equals("not exist") || refreshTokenService.findRefreshTokenbyUser(id)){
+            //리프레쉬 토큰이 만료 또는 유효하지 않을 경우
+            if(refreshTokenService.checkExpireTime(jwtTokenProvider.getExpiredTime(rtoken))){
+                //새로 업데이트
+                refreshTokenValue=jwtTokenProvider.refreshGenerateToken(userId,jwtTokenProvider.REFRESH_TIME);
+                refreshTokenService.update(userId,refreshTokenValue,jwtTokenProvider.getExpiredTime(refreshTokenValue));
+            }
+        } else{
+            refreshTokenValue=refreshTokenService.save(userId, JwtTokenProvider.REFRESH_TIME).getValue();
         }
-        RefreshTokens refreshToken=refreshTokenService.save(customer.getUserId(), JwtTokenProvider.REFRESH_TIME);
-        jwtTokenProvider.setRefreshTokenAtCookie(refreshToken);
-        return TokenDto.createTokenDto(token);
+        jwtTokenProvider.setAccessTokenAndRefreshToken(jwtTokenProvider.generateToken(userId,jwtTokenProvider.ACCESS_TIME),
+                refreshTokenValue,response);
     }
     @Transactional(readOnly = true)
     public void logout(String accessToken){
@@ -188,6 +192,26 @@ public class CustomerService {
     public String findByidForUserId(int id){
         return customerRepo.findById(id).get().getUserId();
     }
+    @Transactional(readOnly = true)
+    public Customer findByEmailToCustomer(String email){
+        return customerRepo.findByEmail(email).orElseThrow(()->
+                new IllegalArgumentException("해당 유저는 없습니다."));
+    }
+    @Transactional(readOnly = true)
+    public boolean existToSocialFromEmail(String email){
+        Customer customer=findByEmailToCustomer(email);
+        if(customer.getSocialId().equals("empty"))
+            return false;
+        return true;
+    }
 
-
+    @Transactional
+    public int updateForInitSocialUser(CustomerSaveRequestDto customerRequestDto){
+        Customer customer=findByEmailToCustomer(customerRequestDto.getEmail());
+        customerRequestDto.setEncorderPasswd(passwordEncoder.encode(customerRequestDto.getUserPasswd()));
+        customer.updateForSocial(customerRequestDto.getUserId()
+                ,customerRequestDto.getUserPasswd(), customerRequestDto.getCardNum(), customerRequestDto.getCardCompany(),
+                customerRequestDto.getPhoneNum());
+        return customer.getId();
+    }
 }

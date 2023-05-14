@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -30,11 +31,14 @@ public class Customer {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role;
-
+	@Enumerated(EnumType.STRING)
+	private SocialType socialType;
+	@ColumnDefault("empty")
+	private String socialId;
 	@Builder
 	public Customer(String userId,String userPasswd,String email
 			,String cardNum,String cardCompany,String phoneNum,List<Boards> boardList
-			,List<Comment> commentList, Role role){
+			,List<Comment> commentList, Role role,SocialType socialType,String socialId){
 		this.userId=userId;
 		this.userPasswd=userPasswd;
 		this.email=email;
@@ -44,12 +48,22 @@ public class Customer {
 		this.boardList=boardList;
 		this.commentList=commentList;
 		this.role=role;
+		this.socialType=socialType;
+		this.socialId=socialId;
 	}
 
 	public void update(String userId,String email
 			,String cardNum,String cardCompany,String phoneNum){
 		this.userId=userId;
 		this.email=email;
+		this.cardNum=cardNum;
+		this.cardCompany=cardCompany;
+		this.phoneNum=phoneNum;
+	}
+	public void updateForSocial(String userId,String userPasswd
+			,String cardNum,String cardCompany,String phoneNum){
+		this.userId=userId;
+		this.userPasswd=userPasswd;
 		this.cardNum=cardNum;
 		this.cardCompany=cardCompany;
 		this.phoneNum=phoneNum;

@@ -4,6 +4,7 @@ import com.example.demo.Service.BoardsService;
 import com.example.demo.Service.CustomerService;
 import com.example.demo.config.auth.LoginUser;
 import com.example.demo.config.auth.dto.SessionUser;
+import com.example.demo.config.auth.jwt.UserData.CustomUserDetail;
 import com.example.demo.domain.Boards;
 import com.example.demo.domain.Customer;
 import com.example.demo.dto.BoardsDto;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,8 @@ public class BoardController {
     private final CustomerService customerService;
     private String currentUserId;
     @GetMapping("/board")
-    public String showBoard(Model model, @LoginUser SessionUser user, @PageableDefault(size = 10) Pageable pageable
-    ,String target ,String searchKeyword){
+    public String showBoard(Model model, @AuthenticationPrincipal CustomUserDetail customUser, @PageableDefault(size = 10) Pageable pageable
+    , String target , String searchKeyword){
 
         Page<BoardsDto> boards=null;
 
@@ -49,7 +51,7 @@ public class BoardController {
         }
         model.addAttribute("nextPage", nextPage);
         System.out.println("페이지 위치: "+pageDto.getStartPage()+" "+pageDto.getEndPage());
-        model.addAttribute("userId",currentUserId=customerService.findById(user.getId()).getUserId());
+        model.addAttribute("userId",currentUserId=customerService.findByidForUserId(customUser.getId()));
         model.addAttribute("pages",pageDto);
         model.addAttribute("boards",boards);
 
@@ -58,13 +60,13 @@ public class BoardController {
     }
 
     @GetMapping("/addPost")
-    public String addBoardContent(Model model, @LoginUser SessionUser user ){
-        model.addAttribute("userId",customerService.findById(user.getId()));
+    public String addBoardContent(Model model, @AuthenticationPrincipal CustomUserDetail customUser ){
+        model.addAttribute("userId",customerService.findById(customUser.getId()));
         return "fastfood/addPost";
     }
 
     @GetMapping("/boardContent")
-    public String showDetailContent(Model model, @RequestParam("id") long id,@LoginUser SessionUser user ){
+    public String showDetailContent(Model model, @RequestParam("id") long id,@AuthenticationPrincipal CustomUserDetail customUser ){
         //댓글 처리
         boardsService.viewsCount(id);
 
@@ -74,9 +76,9 @@ public class BoardController {
         if(commentResponseDtoList!=null && !commentResponseDtoList.isEmpty()){
             model.addAttribute("comments",commentResponseDtoList);
         }
-
+        String userId=customerService.findByidForUserId(customUser.getId());
         model.addAttribute("boards",dto);
-        model.addAttribute("checkedMe",customerService.compareWriter(dto.getUserId(),user.getUserId()));
+        model.addAttribute("checkedMe",customerService.compareWriter(dto.getUserId(),userId));
 
         return "fastfood/boardContent";
     }

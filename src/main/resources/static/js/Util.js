@@ -17,10 +17,9 @@ class UtilController {
         return new Promise((resolve, reject) => {
             const authorizeXhr = new XMLHttpRequest();
             authorizeXhr.open("POST", "/api/auth/authorize", true);
-            authorizeXhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"));
             authorizeXhr.addEventListener("loadend", event => {
                 let status = event.target.status;
-                console.log(" sendAuthorize 가져온 상태 "+status+" 메시지: "+event.target.responseText);
+                // console.log(" sendAuthorize 가져온 상태 "+status+" 메시지: "+event.target.responseText);
                 if ((status >= 400 && status <= 500) || (status > 500)) {
                     let responseJson= JSON.parse(event.target.responseText);
                     if(status==401 && this.checkExpired(responseJson.code)){
@@ -55,19 +54,15 @@ class UtilController {
         console.log("sendReissue");
         const reissueXhr = new XMLHttpRequest();
         reissueXhr.open("POST", "/api/auth/reissue", false);
-        reissueXhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"));
-
         reissueXhr.addEventListener("loadend", event => {
             let status = event.target.status;
-            console.log(" sendReissue 가져온 상태 "+status+" 메시지: "+event.target.responseText);
+            // console.log(" sendReissue 가져온 상태 "+status+" 메시지: "+event.target.responseText);
             // let responseS = JSON.stringify(event.target.responseText);
             // let responseValue=JSON.parse(responseS);
-            let responseValue=JSON.parse(event.target.responseText);
+            // let responseValue=JSON.parse(event.target.responseText);
             //새로 받아온 accessToken을 다시 로컬스토리지에 저장
             // if (((status >= 400 && status <= 500) || (status > 500)) === false)
             if (status == 200) {
-                console.log("access토큰: "+responseValue.grantType+" "+responseValue.accessToken);
-                localStorage.setItem("Authorization", responseValue.grantType+responseValue.accessToken);
             }
             else{
                 this.sendDelete();
@@ -107,6 +102,6 @@ class UtilController {
     }
     deleteCookie(name){
         console.log("deleteCookie 작동");
-        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;domain=C.kr; path=/;';
+        document.cookie = name + '=; expires=Thu, 01 Jan 1979 00:00:10 GMT;domain=C.kr; path=/;';
     }
 }

@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.config.auth.jwt.JwtTokenProvider;
 import com.example.demo.config.auth.jwt.domain.RefreshTokens;
 import com.example.demo.config.auth.jwt.domain.Util.TokenUtils;
+import com.example.demo.config.auth.jwt.domain.dto.RefreshTokenDto;
 import com.example.demo.dto.TokenDto;
 import com.example.demo.exception.CustomException;
 import com.example.demo.exception.TokenCheckException;
@@ -28,15 +29,26 @@ public class RefreshTokenService {
     private final TokenUtils tokenUtils;
     @Transactional
     public RefreshTokens save(String userId, long expirationTime){
-        return refreshTokenRepository.save(RefreshTokens.from(userId,jwtTokenProvider.refreshGenerateToken(userId,expirationTime),expirationTime));
+        String value=jwtTokenProvider.refreshGenerateToken(userId,expirationTime);
+        long expireTime=jwtTokenProvider.getExpiredTime(value);
+        return refreshTokenRepository.save(RefreshTokens.from(userId,value,expireTime));
     }
+
     @Transactional(readOnly = true)
-    public RefreshTokens findTokenById(String userId){
-        return refreshTokenRepository.findByKeyId(userId).orElseThrow(()->new TokenNotFoundException(ExceptionMessage.TOKEN_NOT_FOUND));
+    public RefreshTokenDto findTokenById(String userId){
+        RefreshTokens refreshTokens=refreshTokenRepository.findByKeyId(userId).orElseThrow(()->new TokenNotFoundException(ExceptionMessage.TOKEN_NOT_FOUND));
+        return new RefreshTokenDto(refreshTokens);
     }
     @Transactional
     public void delete(String userId){
         refreshTokenRepository.deleteByKeyId(userId);
+    }
+
+    @Transactional
+    public String update(String userId,String value,long time){
+        RefreshTokens refreshTokens=refreshTokenRepository.findByKeyId(userId).orElseThrow(()->new TokenNotFoundException(ExceptionMessage.TOKEN_NOT_FOUND));
+        refreshTokens.update(value,jwtTokenProvider.REFRESH_TIME);
+        return refreshTokens.getValue();
     }
 
     @Transactional
@@ -49,10 +61,11 @@ public class RefreshTokenService {
     }
 
     @Transactional(readOnly = true)
-    public boolean checkExpireTime(String refreshToken){
-        if(!refreshToken.equals("not exist") && jwtTokenProvider.validateRefreshToken(refreshToken))
-            return true;
-        return false;
+    public boolean checkExpireTime(long expiredTime){
+        long nowTime=new Date().getTime()/1000;
+        if(expiredTime<nowTime)
+            return false;
+        return true;
     }
     @Transactional(readOnly = true)
     public TokenDto reissue(String refreshToken) {
@@ -62,13 +75,16 @@ public class RefreshTokenService {
             return null;
         }
         log.info("해당 리프레쉬 토큰은 유효");
-        return createRefreshToken(refreshToken,refreshTokenObject.get().getKeyId());
+        return createAccessToken(refreshToken,refreshTokenObject.get().getKeyId());
     }
     @Transactional
-    public TokenDto createRefreshToken(String refreshToken, String userId) {
+    public TokenDto createAccessToken(String refreshToken, String userId) {
         String accessToken=jwtTokenProvider.generateToken(userId,JwtTokenProvider.ACCESS_TIME);
         log.info("새롭게 만든 토큰: "+accessToken);
         return TokenDto.createTokenDto(accessToken);
     }
-
+    @Transactional(readOnly = true)
+    public boolean checkValue(String value){
+        return refreshTokenRepository.existsByValue(value);
+    }
 }

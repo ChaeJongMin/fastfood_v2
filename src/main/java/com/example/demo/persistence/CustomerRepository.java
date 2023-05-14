@@ -1,6 +1,8 @@
 package com.example.demo.persistence;
 import java.util.List;
+import java.util.Optional;
 
+import com.example.demo.domain.SocialType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +13,9 @@ import com.example.demo.domain.Customer;
 
 public interface CustomerRepository extends CrudRepository<Customer, Integer>{
 	public List<Customer> findByUserId(String searchword);
+	public Optional<Customer> findByEmail(String searchword);
 	public List<Customer> findByRole(int searchword);
 	public boolean existsByUserId(String id);
-	
+	public Optional<Customer> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
+
 }

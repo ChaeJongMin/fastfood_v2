@@ -20,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
@@ -37,11 +38,11 @@ public class JwtTokenProvider {
     private final RefreshTokenRepository refreshTokenRepository;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
-    public static final long ACCESS_TIME =   1000L * 60;
+    public static final long ACCESS_TIME =   1000L * 60*30;
     //1000L * 60 * 60 * 1;
-    public static final long REFRESH_TIME =   1000L * 60*60;
+    public static final long REFRESH_TIME =   1000L * 60*60*3;
     //1000L * 60 * 60 * 6
-    public static final String TOKEN_HEADER = "Authorization";
+//    public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer-";
     private Key key;
     private final CustomLoadUserByUsername customLoadUserByUsername;
@@ -180,10 +181,15 @@ public class JwtTokenProvider {
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS256).compact();
     }
-    public long getRemainTime(String token) {
+    public boolean checkRemainTime(String token) {
         Date expiration = parseClaim(token).getExpiration();
         Date now = new Date();
-        return expiration.getTime() - now.getTime();
+        if(expiration.getTime() < now.getTime()/1000){
+            log.info("만료시간: "+expiration.getTime()+" 현재시간: "+now.getTime()/1000);
+            return false;
+        }
+
+        return true;
     }
     //Bearer-액세스 토큰 value에서 value만 추출
     public String resolveToken(String token) {
@@ -193,23 +199,50 @@ public class JwtTokenProvider {
         return null;
     }
     public String parseToken(String token) {
-
         return parseClaim(token).getSubject();
-
+    }
+    public long getExpiredTime(String token){
+        long expiredTime=parseClaim(token).getExpiration().getTime();
+        log.info("getExpiredTime메소드 : "+expiredTime);
+        return expiredTime;
     }
 
-    public void setRefreshTokenAtCookie(RefreshTokens refreshToken) {
+    public void setRefreshTokenAtCookie(RefreshTokens refreshToken, HttpServletResponse response) {
         ResponseCookie refreshCookie=ResponseCookie.from("refreshToken",refreshToken.getValue())
-                .maxAge(60 * 60 * 12)
+                .maxAge(60 * 60 * 3)
                 .secure(true)
                 .httpOnly(true)
                 .path("/")
                 .sameSite("None")
                 .build();
 
-        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes()).getResponse();
         response.setHeader("Set-Cookie",refreshCookie.toString());
+    }
+    public void setAccessTokenAtCookie(String AccessToken, HttpServletResponse response) {
+        ResponseCookie accessCookie=ResponseCookie.from("accessToken",TOKEN_PREFIX+AccessToken)
+                .maxAge(60*30)
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("None")
+                .build();
+
+        response.setHeader("Set-Cookie",accessCookie.toString());
+    }
+    public void setAccessTokenAndRefreshToken(String accessTokenInfo, String refreshTokenInfo, HttpServletResponse response){
+        Cookie accessCookie=new Cookie("accessToken",TOKEN_PREFIX+accessTokenInfo);
+        accessCookie.setPath("/");
+        accessCookie.setSecure(true);
+        accessCookie.setHttpOnly(true);
+        accessCookie.setMaxAge(60*30);
+        response.addCookie(accessCookie);
+
+        Cookie refreshCookie=new Cookie("refreshToken",refreshTokenInfo);
+        refreshCookie.setPath("/");
+        refreshCookie.setSecure(true);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setMaxAge(60*60*30);
+        response.addCookie(refreshCookie);
     }
     public Claims parseClaim(String token) {
         log.info("parseClaim 메소드 작동");
@@ -225,7 +258,7 @@ public class JwtTokenProvider {
             throw new CustomException(FAIL_TOKEN_CHECK);
         }
     }
-
+    //필요없는 코드이나 커스텀 예외/ 토큰 별로 에러 메시지 확인하기 위해 만들어둠
     public boolean validateRefreshToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
