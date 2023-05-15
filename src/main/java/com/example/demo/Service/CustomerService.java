@@ -98,6 +98,7 @@ public class CustomerService {
 //
 
     /********************************************************************************************/
+    @Transactional(readOnly = true)
     public Customer auth(String id, String password){
 
         if(!customerRepo.existsByUserId(id)){
@@ -116,7 +117,7 @@ public class CustomerService {
         RefreshTokens refreshToken=null;
         String refreshTokenValue=rtoken;
 //        로그인한 유저의 리프레쉬 토큰이 일단 존재할 시
-        if(!rtoken.equals("not exist") || refreshTokenService.findRefreshTokenbyUser(id)){
+        if(!rtoken.equals("not exist") && refreshTokenService.findRefreshTokenbyUser(id)){
             //리프레쉬 토큰이 만료 또는 유효하지 않을 경우
             if(refreshTokenService.checkExpireTime(jwtTokenProvider.getExpiredTime(rtoken))){
                 //새로 업데이트

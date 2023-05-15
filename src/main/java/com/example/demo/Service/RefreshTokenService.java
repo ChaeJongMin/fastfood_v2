@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
@@ -70,12 +71,13 @@ public class RefreshTokenService {
     @Transactional(readOnly = true)
     public TokenDto reissue(String refreshToken) {
         Optional<RefreshTokens> refreshTokenObject=refreshTokenRepository.findByValue(refreshToken);
-        if(refreshTokenObject==null || !jwtTokenProvider.validateRefreshToken(refreshToken)) {
-            //에러 발생
-            return null;
+        if(refreshTokenObject!=null && jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            //이미 JWT Exception 필터에서 예외처리가 발생
+            return createAccessToken(refreshToken,refreshTokenObject.get().getKeyId());
+
         }
         log.info("해당 리프레쉬 토큰은 유효");
-        return createAccessToken(refreshToken,refreshTokenObject.get().getKeyId());
+        return null;
     }
     @Transactional
     public TokenDto createAccessToken(String refreshToken, String userId) {

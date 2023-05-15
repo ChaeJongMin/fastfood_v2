@@ -1,4 +1,8 @@
-let basket = {
+import { UtilController } from './Util.js';
+const util=new UtilController();
+
+
+const basket = {
     totalCount: 0, 
     totalPrice: 0,
     //체크한 장바구니 상품 비우기
@@ -111,14 +115,19 @@ Number.prototype.formatNumber = function(){
     return nstr;
 };
 function callAjax(){
-    let id=document.querySelector('#userId').value;
-    $.ajax({
-        type: 'DELETE',
-        url : '/api/basket/'+id,
-        contentType: 'application/json; charset=utf-8'
-    }).done(function(){
-         window.location.href="/fastfood/menu";
-    }).fail(function(error){
-        alert(JSON.stringify(error));
+    util.sendAuthorize().then(result=> {
+        if (result === true) {
+            let id=document.querySelector('#userId').value;
+            $.ajax({
+                type: 'DELETE',
+                url : '/api/basket/'+id,
+                contentType: 'application/json; charset=utf-8'
+            }).done(function(){
+                window.location.href="/fastfood/menu";
+            }).fail(function(error){
+                alert(JSON.stringify(error));
+            });
+        }
     });
+
 }

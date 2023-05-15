@@ -1,4 +1,4 @@
-class UtilController {
+export class UtilController {
     showToastMessage(message) {
         Toastify({
             text: message,

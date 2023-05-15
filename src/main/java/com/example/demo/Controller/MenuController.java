@@ -44,6 +44,7 @@ public class MenuController {
         model.addAttribute("id",id);
         model.addAttribute("user",user);
         System.out.println("menu 작동");
+        log.info(id+" "+user);
         return "fastfood/menu";
     }
 

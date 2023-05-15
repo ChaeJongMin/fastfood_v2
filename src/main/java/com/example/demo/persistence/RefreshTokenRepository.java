@@ -12,7 +12,4 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshTokens,Long
     void deleteByValue(String refreshToken);
     boolean existsByKeyId(String key);
     boolean existsByValue(String token);
-
-
-
 }

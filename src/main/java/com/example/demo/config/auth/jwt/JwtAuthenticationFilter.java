@@ -30,40 +30,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/fastfood/login", "/api/auth/delete", "/favicon.ico","/fastfood/register","/login"
         };
 
-    //    @Override
-    //    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    //        //CookieUtils 생성 필요
-    //        String accessToken=jwtTokenProvider.getHeaderToken(request,"Access");
-    //        String refreshToken=jwtTokenProvider.getHeaderToken(request,"Refresh");
-    //        if(accessToken != null){
-    //            if(jwtTokenProvider.validateToken(accessToken)){
-    //                setAuthentication(jwtTokenProvider.getIdFromToken(accessToken));
-    //            }
-    //            else if(refreshToken!=null){
-    //                boolean flag=jwtTokenProvider.refreshValidateToken(refreshToken);
-    //                if(flag){
-    //                    String userId=jwtTokenProvider.getIdFromToken(refreshToken);
-    //                    String newAccessToken=jwtTokenProvider.createToken(userId,"Access");
-    //                    jwtTokenProvider.setHeaderAccessToken(response,newAccessToken);
-    //                    setAuthentication(jwtTokenProvider.getIdFromToken(accessToken));
-    //                }
-    //                else {
-    //                    //리프레쉬 토큰 만료
-    //                    //1.쿠기 삭제
-    //                    Cookie[] cookie = request.getCookies();
-    //                    for(int i=0; i<cookie.length; i++){
-    //                        cookie[i].setMaxAge(0);
-    //                        cookie[i].setPath("/");
-    //                        response.addCookie(cookie[i]);
-    //                    }
-    //                    //2. 다시 로그인 유도
-    //                    jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
-    //                    return;
-    //                }
-    //            }
-    //        }
-    //        filterChain.doFilter(request,response);
-    //    }
         /*************************************************************************************************************/
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

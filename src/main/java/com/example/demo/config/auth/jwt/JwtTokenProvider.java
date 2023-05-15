@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,110 +51,9 @@ public class JwtTokenProvider {
     private String secretKey;
     @PostConstruct
     public void init() {
-        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
-        key = Keys.hmacShaKeyFor(secretByteKey);
+//        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
+        key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
-//    public String getHeaderToken(HttpServletRequest request, String type) {
-//        Cookie[] cookies=request.getCookies();
-//        if(cookies==null){
-//            return null;
-//        }
-//        String bearerToken=type.equals("Access") ? cookies[0].getValue() :cookies[1].getValue();
-//       return bearerToken;
-//    }
-//    public TokenDto generateAllToken(String id) {
-//        return new TokenDto("Bearer",createToken(id, "Access"),createToken(id, "Refresh"));
-//    }
-//    public String createToken(String id, String type){
-//        System.out.println("--------------------------createToken--------------------------");
-//        System.out.println("id: "+id);
-//        UserDetails userDetails=customLoadUserByUsername.loadUserByUsername(id);
-//
-//        System.out.println("id: "+id);
-//        String authorities = userDetails.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-//        Date date=new Date();
-//        long time= type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
-//        if(type.equals("Access")) {
-//            return Jwts.builder()
-//                    .setSubject(id)
-//                    .claim("auth", authorities)
-//                    .setExpiration(new Date(System.currentTimeMillis() + time))
-//                    .setIssuedAt(date)
-//                    .signWith(key, SignatureAlgorithm.HS256)
-//                    .compact();
-//        }
-//        return Jwts.builder()
-//                .setSubject(id)
-//                .setExpiration(new Date(System.currentTimeMillis() + time))
-//                .setIssuedAt(date)
-//                .signWith(key, SignatureAlgorithm.HS256)
-//                .compact();
-//    }
-//
-//    public Authentication getAuthentication(String accessToken) {
-//        //토큰 복호화
-//        Claims claims = parseClaims(accessToken);
-//
-//        if (claims.get("auth") == null) {
-//            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-//        }
-//
-//        Collection<? extends GrantedAuthority> authorities =
-//                Arrays.stream(claims.get("auth").toString().split(","))
-//                        .map(SimpleGrantedAuthority::new)
-//                        .collect(Collectors.toList());
-//
-//        UserDetails principal = new User(claims.getSubject(), "", authorities);
-//        System.out.println("getAuthentication : "+principal.getUsername());
-//        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
-//    }
-//    public Authentication setAuthentication(String loginId){
-//        UserDetails userDetails= customLoadUserByUsername.loadUserByUsername(loginId);
-//        System.out.println("setAuthentication "+userDetails.getUsername());
-//        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
-//    }
-//
-//
-//    public boolean refreshValidateToken(String token) {
-//        if(!validateToken(token)) return false;
-//        Optional<RefreshToken> refreshToken =refreshTokenRepository.findByKeyId(getIdFromToken(token));
-//        return refreshToken.isPresent() && token.equals(refreshToken.get().getValue());
-//    }
-//    private Claims parseClaims(String accessToken) {
-//        try {
-//            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-//        } catch (ExpiredJwtException e) {
-//            return e.getClaims();
-//        }
-//
-//    }
-//    public String getIdFromToken(String token){
-//        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-//    }
-//    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-//        ResponseCookie accessCookie=ResponseCookie.from("accessToken",accessToken)
-//                .maxAge(10)
-//                .secure(true)
-//                .httpOnly(true)
-//                .path("/")
-//                .sameSite("None")
-//                .build();
-//        response.setHeader("Access-Cookie",accessCookie.toString());
-//    }
-//
-//    // 리프레시 토큰 헤더 설정
-//    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-//        ResponseCookie refreshCookie=ResponseCookie.from("refreshToken",refreshToken)
-//                .maxAge(100)
-//                .secure(true)
-//                .httpOnly(true)
-//                .path("/")
-//                .sameSite("None")
-//                .build();
-//        response.setHeader("Refresh-Cookie",refreshCookie.toString());
-//    }
 
     /********************************************************************************/
     public String generateToken(String userId, long expirationTime){
@@ -264,15 +164,116 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new GlobalException(INVALID_REFRESH_TOKEN);
+            throw new CustomException(INVALID_REFRESH_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new GlobalException(TIMELIMIT_REFRESH_TOKEN);
+            throw new CustomException(TIMELIMIT_REFRESH_TOKEN);
         } catch (UnsupportedJwtException e) {
-            throw new GlobalException(UNSUPPORT_REFRESH_TOKEN);
+            throw new CustomException(UNSUPPORT_REFRESH_TOKEN);
         } catch (IllegalArgumentException e) {
-            throw new GlobalException(EMPTY_REFRESH_TOKEN);
+            throw new CustomException(EMPTY_REFRESH_TOKEN);
         }
     }
 
 }
+//    public String getHeaderToken(HttpServletRequest request, String type) {
+//        Cookie[] cookies=request.getCookies();
+//        if(cookies==null){
+//            return null;
+//        }
+//        String bearerToken=type.equals("Access") ? cookies[0].getValue() :cookies[1].getValue();
+//       return bearerToken;
+//    }
+//    public TokenDto generateAllToken(String id) {
+//        return new TokenDto("Bearer",createToken(id, "Access"),createToken(id, "Refresh"));
+//    }
+//    public String createToken(String id, String type){
+//        System.out.println("--------------------------createToken--------------------------");
+//        System.out.println("id: "+id);
+//        UserDetails userDetails=customLoadUserByUsername.loadUserByUsername(id);
+//
+//        System.out.println("id: "+id);
+//        String authorities = userDetails.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.joining(","));
+//        Date date=new Date();
+//        long time= type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+//        if(type.equals("Access")) {
+//            return Jwts.builder()
+//                    .setSubject(id)
+//                    .claim("auth", authorities)
+//                    .setExpiration(new Date(System.currentTimeMillis() + time))
+//                    .setIssuedAt(date)
+//                    .signWith(key, SignatureAlgorithm.HS256)
+//                    .compact();
+//        }
+//        return Jwts.builder()
+//                .setSubject(id)
+//                .setExpiration(new Date(System.currentTimeMillis() + time))
+//                .setIssuedAt(date)
+//                .signWith(key, SignatureAlgorithm.HS256)
+//                .compact();
+//    }
+//
+//    public Authentication getAuthentication(String accessToken) {
+//        //토큰 복호화
+//        Claims claims = parseClaims(accessToken);
+//
+//        if (claims.get("auth") == null) {
+//            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+//        }
+//
+//        Collection<? extends GrantedAuthority> authorities =
+//                Arrays.stream(claims.get("auth").toString().split(","))
+//                        .map(SimpleGrantedAuthority::new)
+//                        .collect(Collectors.toList());
+//
+//        UserDetails principal = new User(claims.getSubject(), "", authorities);
+//        System.out.println("getAuthentication : "+principal.getUsername());
+//        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+//    }
+//    public Authentication setAuthentication(String loginId){
+//        UserDetails userDetails= customLoadUserByUsername.loadUserByUsername(loginId);
+//        System.out.println("setAuthentication "+userDetails.getUsername());
+//        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+//    }
+//
+//
+//    public boolean refreshValidateToken(String token) {
+//        if(!validateToken(token)) return false;
+//        Optional<RefreshToken> refreshToken =refreshTokenRepository.findByKeyId(getIdFromToken(token));
+//        return refreshToken.isPresent() && token.equals(refreshToken.get().getValue());
+//    }
+//    private Claims parseClaims(String accessToken) {
+//        try {
+//            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+//        } catch (ExpiredJwtException e) {
+//            return e.getClaims();
+//        }
+//
+//    }
+//    public String getIdFromToken(String token){
+//        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+//    }
+//    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+//        ResponseCookie accessCookie=ResponseCookie.from("accessToken",accessToken)
+//                .maxAge(10)
+//                .secure(true)
+//                .httpOnly(true)
+//                .path("/")
+//                .sameSite("None")
+//                .build();
+//        response.setHeader("Access-Cookie",accessCookie.toString());
+//    }
+//
+//    // 리프레시 토큰 헤더 설정
+//    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
+//        ResponseCookie refreshCookie=ResponseCookie.from("refreshToken",refreshToken)
+//                .maxAge(100)
+//                .secure(true)
+//                .httpOnly(true)
+//                .path("/")
+//                .sameSite("None")
+//                .build();
+//        response.setHeader("Refresh-Cookie",refreshCookie.toString());
+//    }
 

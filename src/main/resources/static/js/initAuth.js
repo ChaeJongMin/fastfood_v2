@@ -1,3 +1,5 @@
+import { UtilController } from './Util.js';
+
 class initLoads extends UtilController{
     constructor() {
         super();
@@ -65,6 +67,16 @@ class initLoads extends UtilController{
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    const initLoad = new initLoads();
-    initLoad.init();
+    // const initLoad = new initLoads();
+    // initLoad.init();
+    const util=new UtilController();
+    util.sendAuthorize().then(result=>{
+        if(result===true)
+            console.log("토큰 인증 성공");
+        else
+            console.log("실패");
+    })
+        .catch(result=>{
+            console.log(result);
+        })
 });
