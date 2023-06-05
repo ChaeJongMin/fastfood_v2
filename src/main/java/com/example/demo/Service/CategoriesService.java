@@ -2,7 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.domain.Categories;
 import com.example.demo.domain.Product;
-import com.example.demo.dto.ProductResponseDto;
+import com.example.demo.dto.Response.ProductResponseDto;
 import com.example.demo.persistence.CategoriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,5 +36,9 @@ public class CategoriesService {
 
     public String findCateName(int id){
         return categoriesRepo.findById(id).get().getCategoryName();
+    }
+
+    public List<String> findCateNameList(){
+        return categoriesRepo.findByCateNameList();
     }
 }

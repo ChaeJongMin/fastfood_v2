@@ -1,9 +1,9 @@
 package com.example.demo.Service;
 
 import com.example.demo.domain.Basket;
-import com.example.demo.domain.Product;
-import com.example.demo.domain.Product_option_info;
-import com.example.demo.dto.*;
+import com.example.demo.dto.Response.BasketResponseDto;
+import com.example.demo.dto.Response.ProductOptionResponseDto;
+import com.example.demo.dto.Response.ProductSideAndDrinkResponseDto;
 import com.example.demo.persistence.BasketRepository;
 import com.example.demo.persistence.OptionInfoRepo;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +79,7 @@ public class ProductOptionService {
         return result;
     }
     @Transactional(readOnly = true)
-    public List<ProductSideAndDrinkResponseDto> setForSideAndDrinkName(List<BasketResponseDto> basketList,int basketListSize){
+    public List<ProductSideAndDrinkResponseDto> setForSideAndDrinkName(List<BasketResponseDto> basketList, int basketListSize){
         List<ProductSideAndDrinkResponseDto> result=new ArrayList<>();
         String sideName="";
         String drinkName="";

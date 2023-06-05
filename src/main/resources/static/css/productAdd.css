@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+a{
+    text-decoration: none;
+}
+body{
+    background-color: beige;
+}
+#wrap{
+    width: 100%;
+    height: 1000px;
+    background-color: beige;
+}
+/* ---------- header ---------- */
+#head{
+    width: 100%;
+    height: 60px;
+    background-color: #fca0a0;
+    justify-content: space-between;
+}
+#head h4{
+    line-height: 60px;
+    padding-left: 20px;
+    color: aliceblue;
+}
+/* ---------- nav ---------- */
+nav{
+    width: 15%;
+    height: 100%;
+    background-color: aliceblue;
+    float: left;
+}
+.card-user{
+    width: 100%;
+    height: 130px;
+    position: relative;
+    background-image: url(../img/superHome/user-img-background.jpg);
+    margin-bottom: 20px;
+}
+.card-user img{
+    background-color: #e8dfdf;
+    border-radius: 40px;
+    width: 50px;
+    position: absolute;
+    left:17px;
+    top: 15px;
+}
+.card-user #user-info{
+    position: absolute;
+    left:20px;
+    top: 75px;
+    color: aliceblue;
+    font-size: 13px;
+}
+
+nav > .subMenu {
+    margin: 0 auto;
+    margin-bottom: 30px;
+    width: 100%;
+}
+nav li{
+    height: 55px;
+    line-height: 45px;
+    margin-bottom: -5px;
+}
+.side-btn{
+    text-align: left;
+    padding-left: 20px;
+    width: 100%;
+    color: #9d9595;
+    font-size:20px;
+    border: 0px;
+    background-color:aliceblue;
+    border: 2px solid #f45252;
+    border-radius: 14px;
+    transition: all 0.4s;
+}
+.side-btn:hover{
+    cursor: pointer;
+    color: red;
+    width: 80%;
+    background-color:#e67f7f;
+}
+
+/* ---------- section ---------- */
+
+/* article-box */
+section{
+    width: 81.8%;
+    height: 100%;
+    top: 0;
+    float: left;
+    left: 250px;
+    background-color: beige;
+}
+#title{
+    position: relative;
+    height: 10%;
+    left: 2%;
+}
+#title span{
+    font-weight: 400;
+    font-size: 50px;
+    color: #FFA09A;
+
+}
+
+#totalInfo{
+    position: relative;
+    width: 85%;
+    height: 70%;
+    left: 5%;
+    top:5%;
+}
+#editForm {
+    width: 100%;
+    height: 100%;
+}
+#infoAdd{
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+#pname{
+    width: 100%;
+    height: 10%;
+    border-bottom: 2px solid #f5a3a3;
+    border-top: 2px solid #f5a3a3;
+}
+.ptext{
+    font-size: 28px;
+    position: relative;
+    top: 4%;
+}
+
+#pname .pname-text{
+    position: relative;
+    left: 10%;
+    width: 40%;
+    height: 60%;
+    font-size: 24px;
+}
+#pprice{
+    width: 100%;
+    height: 10%;
+    position: relative;
+    top:4%;
+    border-bottom: 2px solid #f5a3a3;
+}
+#pprice .pname-text{
+    position: relative;
+    left: 7%;
+    width: 20%;
+    height: 50%;
+    font-size: 24px;
+    top:3%;
+}
+#pcate{
+    position: relative;
+    top: 6%;
+    height: 10%;
+    border-bottom: 2px solid #f5a3a3;
+}
+#pcate span{
+    font-size: 20px;
+    position: relative;
+    top: 3%;
+}
+#pcate select{
+    position: relative;
+    width: 25%;
+    height: 60%;
+    left:10%;
+    top: 7%;
+    font-size: 20px;
+}
+#pcate select option{
+    font-size: 20px;
+}
+#pcheck{
+    position: relative;
+    top: 7%;
+    height: 10%;
+    border-bottom: 2px solid #f5a3a3;
+}
+#pcheck span{
+    font-size: 20px;
+    position: relative;
+    top: 3%;
+}
+#pcheck input[type="checkbox"] {
+    display: none;
+}
+
+#pcheck input[type="checkbox"] + label {
+    display: inline-block;
+    width: 4%;
+    height: 45%;
+    position: relative;
+    left: 10%;
+    top: 25%;
+    border: 2px solid #f5a3a3;
+}
+
+#pcheck input[id="check1"]:checked + label::after {
+    content: '✔';
+    font-size: 24px;
+    color: #ff9d00;
+    width: 4.5%;
+    height: 45%;
+    text-align: center;
+    position: absolute;
+    left: 6%;
+    top: -30%;
+}
+
+#btnSet{
+    position: relative;
+    height: 10%;
+    top: 20%;
+
+}
+.custom-btn{
+    position: relative;
+    width: 30%;
+    height: 60%;
+    left: 35%;
+    top: 20%;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    border: none;
+    background-color: #f5a3a3;
+    border-radius: 20px;
+
+}
+.custom-btn span{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 10%;
+    color: #fff;
+}
+.custom-btn:hover{
+    cursor: pointer;
+}
+#imgAdd{
+    position: relative;
+    overflow: hidden;
+    float: left;
+    border-left: 2px solid #f5a3a3;
+    width: 50%;
+    height: 85%;
+
+}
+#showBox{
+    position: relative;
+    height: 75%;
+    width: 90%;
+    left: 5%;
+    top : 8%;
+    background-color: snow;
+}
+#showBox .showImg{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+#imgbtn{
+    position: relative;
+    height: 10%;
+    top: 12%;
+    width: 90%;
+    left: 6%;
+}
+#imgbtn label{
+    display: inline-block;
+    width: 100px;
+    height: 45px;
+    background-color: #f5a3a3;
+    color: #fff;
+    cursor: pointer; /* 마우스 호버시 a링크 기능 추가 */
+    line-height: 45px;
+    border-radius: 5px;
+    text-align: center;
+}
+#imgbtn input[type="file"]{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0,0,0,0); /* 클립에 범위만큼만 노출시킴 */
+    overflow: hidden;
+    padding: 0;
+}
+#imgbtn .upload-name {
+    display: inline-block;
+    width:70%;
+    height: 35px;
+    font-size:18px;
+    padding: 0 10px;
+    vertical-align: middle;
+    background-color: #f5f5f5;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    position: relative;
+    left:5%;
+    overflow: hidden;
+}
+
+@media (max-width:1600px){
+    #wrap {width: 97%;}
+
+}
+@media (max-width:1440px){
+    #wrap {width: 97%;}
+}
+@media (max-width:1200px){
+    #wrap {width: 95%;}
+    #imgbtn .upload-name {width: 60%}
+}
+@media (max-width:768px){
+    #wrap {width: 90%;}
+    #imgbtn .upload-name {width: 50%}
+}
+@media (max-width: 480px){
+    #wrap {width: 100%;}
+    nav {float: none; width: 100%; height: 300px;}
+    section {float: none; width: 100%; height: 300px;}
+}

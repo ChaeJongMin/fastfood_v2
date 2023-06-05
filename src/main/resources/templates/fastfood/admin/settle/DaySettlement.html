@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> AdminPage </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/DaySettleMent.css}">
+
+</head>
+
+<body>
+<div id="wrap">
+    <header>
+        <div id="head">
+            <h4>ADMIN</h4>
+        </div>
+    </header>
+
+    <nav>
+        <div class="card-user">
+            <img src="/img/superHome/admin.png">
+            <div id="user-info">
+                <h5 th:text="${customer.getUserId()}"></h5>
+                <p th:text="${customer.getEmail()}"> </p>
+            </div>
+        </div>
+        <ul class="subMenu">
+            <li><button type="button" class="side-btn">Home</button></li>
+            <li><button type="button" class="side-btn">LOGOUT</button></li>
+            <li><button type="button" class="side-btn">고객 관리</button></li>
+            <li><button type="button" class="side-btn">메뉴 추가</button></li>
+            <li><button type="button" class="side-btn">메뉴 관리</button></li>
+            <li><button type="button" class="side-btn">결산</button></li>
+        </ul>
+    </nav>
+
+    <section>
+        <table id="month">
+            <tr>
+                <th:block th:each="month : ${monthList}">
+                    <td th:text="${month}"
+                        th:onclick="|location.href='@{/fastfood/DaySettlement(yearMonth=${month})}'|">
+                    </td>
+                </th:block>
+            </tr>
+        </table>
+        <div id="currentDate">
+            <p th:text="${currentDate}"></p>
+        </div>
+        <div id="totalPrice">
+            <p>월 판매액: </p>
+            <span th:text="${totalPrice}"></span>
+        </div>
+        <table id="bor" >
+            <tr>
+                <th>No</th>
+                <th>카테고리</th>
+                <th>제품</th>
+                <th>가격</th>
+                <th>상세</th>
+                <th>구매자</th>
+            </tr>
+            <tbody>
+            <tr th:each="order , orderState : ${ordersDto}">
+                <td th:text="${orderState.count}"></td>
+                <td th:text="${order.getCategoryName()}"></td>
+                <td th:text="${order.getProductName()}"></td>
+                <td th:text="${order.getPrice()}"></td>
+                <td th:text="${order.getEtc()}"></td>
+                <td th:text="${order.getUserId()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pageings">
+            <nav aria-label="Page navigation" id="pagingBox">
+                <ul id="pageInfo" class="pagination" style="justify-content: center;">
+                    <li th:if="${pages.isPrev()}" class="page-item">
+                        <a class="page-link" th:href="@{/fastfood/DaySettlement(page=${pages.getCurrentPage()-6},yearMonth=${param.yearMonth})}">Previous</a>
+                    </li>
+                    <th:block th:each="page : ${#numbers.sequence(pages.getStartPage(),pages.getEndPage())}">
+                        <li class="page-item" th:classappend="${pages.getCurrentPage()==page} ? ' active':''">
+                            <a class="page-link"
+                               th:href="@{/fastfood/DaySettlement(page=${page - 1},yearMonth=${param.yearMonth})}"
+                               th:text="${page}"></a>
+                        </li>
+                    </th:block>
+                    <li th:if="${pages.isNext()}" class="page-item">
+                        <a class="page-link" th:href="@{/fastfood/DaySettlement(page=${nextPage},yearMonth=${param.yearMonth})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <footer>
+
+    </footer>
+</div>
+</body>
+<script src="/js/initAuth.js" type="module"></script>
+</html>

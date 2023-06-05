@@ -1,5 +1,6 @@
 package com.example.demo.config.auth.jwt;
 
+import com.example.demo.config.auth.JsonCustomLogin.Service.CustomLoginService;
 import com.example.demo.config.auth.jwt.UserData.CustomLoadUserByUsername;
 import com.example.demo.config.auth.jwt.domain.RefreshTokens;
 import com.example.demo.exception.CustomException;
@@ -37,6 +38,7 @@ import static com.example.demo.exception.errorCode.RefreshErrorCode.*;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
     private final RefreshTokenRepository refreshTokenRepository;
+
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
     public static final long ACCESS_TIME =   1000L * 60*30;
@@ -102,11 +104,17 @@ public class JwtTokenProvider {
         return parseClaim(token).getSubject();
     }
     public long getExpiredTime(String token){
+        //리프레쉬, 액세스 차별 여부 필요
         long expiredTime=parseClaim(token).getExpiration().getTime();
         log.info("getExpiredTime메소드 : "+expiredTime);
         return expiredTime;
     }
-
+    public long getRefreshTokenExpiredTime(String token){
+        //리프레쉬, 액세스 차별 여부 필요
+        long expiredTime=parseClaimRefreshToken(token).getExpiration().getTime();
+        log.info("getExpiredTime메소드 : "+expiredTime);
+        return expiredTime;
+    }
     public void setRefreshTokenAtCookie(RefreshTokens refreshToken, HttpServletResponse response) {
         ResponseCookie refreshCookie=ResponseCookie.from("refreshToken",refreshToken.getValue())
                 .maxAge(60 * 60 * 3)
@@ -159,14 +167,11 @@ public class JwtTokenProvider {
         }
     }
     //필요없는 코드이나 커스텀 예외/ 토큰 별로 에러 메시지 확인하기 위해 만들어둠
-    public boolean validateRefreshToken(String token) {
+    public Claims parseClaimRefreshToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new CustomException(INVALID_REFRESH_TOKEN);
-        } catch (ExpiredJwtException e) {
-            throw new CustomException(TIMELIMIT_REFRESH_TOKEN);
         } catch (UnsupportedJwtException e) {
             throw new CustomException(UNSUPPORT_REFRESH_TOKEN);
         } catch (IllegalArgumentException e) {

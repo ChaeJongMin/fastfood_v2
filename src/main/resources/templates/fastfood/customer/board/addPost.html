@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+        <meta http-equiv="X-UA-Compatible" content = "ie=edge">
+        <title> 게시판 </title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+
+
+
+<style>
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+</style>
+</head>
+
+<body>
+
+	<article>
+
+		<div class="container" role="main">
+
+			<h2 style="margin-bottom: 40px">글 작성</h2>
+
+			<form name="form" id="form" role="form">
+
+				<div class="mb-3">
+
+					<label for="title">제목</label>
+
+					<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+
+				</div>
+
+				
+
+				<div class="mb-3">
+
+					<label for="writer">작성자</label>
+
+					<input type="text" class="form-control" name="writer" id="writer" th:value="${userId.getUserId()}" disabled>
+
+				</div>
+
+				
+
+				<div class="mb-3">
+
+					<label for="content">내용</label>
+
+					<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요 
+※. 욕설, 비방은 삼가해주세요....." ></textarea>
+
+				</div>								
+			</form>
+
+			<div >
+
+				<button type="button" class="btn btn-sm btn-primary" id="btn-save-board">저장</button>
+				<button type="button" class="btn btn-sm btn-primary" id="btn-cancel" th:onclick="|location.href='@{/fastfood/board}'|">돌아가기</button>
+
+			</div>
+		</div>
+
+	</article>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+	<script type="module" th:src="@{/js/initAuth.js}"></script>
+	<script type="text/javascript" src="/js/Boardinit.js"></script>
+</body>
+
+</html>

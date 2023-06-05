@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Login</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/loginstyle.css}">
+    <!--외부 css 연결-->
+</head>
+
+<body>
+    <div id="container">
+        <div class="imgae-box">
+            <h4 class="title-msg" style="font-family: 'Caveat', cursive" >Buger Queen</h4>
+        </div>
+        <div class="loginbox">
+            <h1>로그인</h1>
+<!--            <form class="login-form" method="post" th:action="@{/api/register}">-->
+                <div class="input-field">
+                    <input type="text" class="login-box" id="loginid" name="userId" placeholder="아이디"><br/>
+                </div>
+                <div class="input-field">
+                    <input type="password" class="login-box" id="loginpw" name="userPasswd" placeholder="비밀번호">
+                </div>
+                <div class="search">
+                    <a href="#" style="font-family: 'Caveat', cursive">forget id or passwd?</a>
+                </div>
+<!--                <div class="remember-box">-->
+<!--                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>-->
+<!--                    <label class="form-check-label" for="rememberMe">로그인 유지</label>-->
+<!--                </div>-->
+                <h4 class="error-msg" style="color:red;"></h4>
+                <div class="btnwrap">
+                    <input type="button" class="loginbtn" value="SIGN IN" style="font-family: 'Caveat', cursive">
+                    <a th:href="@{/fastfood/register}" style="text-align:center;font-family: 'Caveat', cursive">SIGN UP</a>
+                    <button type="button" class="oauthBtn" value="NAVER IN" onclick="location.href='/oauth2/authorization/naver'" >
+                        <img src="\img\loginImg\naverLogin2.png">
+                    </button>
+                    <button type="button" class="googleBtn" value="NAVER IN" onclick="location.href='/oauth2/authorization/naver'" >
+                        <img src="\img\loginImg\btn_google_signin_dark_focus_web.png">
+                    </button>
+                </div>
+<!--            </form>-->
+        </div>
+</div>
+    <script type="text/javascript"
+            src="https://code.jquery.com/jquery.min.js"></script>
+    <script type="module" src="/js/customerInit.js"></script>
+</body>
+</html>

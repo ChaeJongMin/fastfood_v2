@@ -65,18 +65,19 @@ class initLoads extends UtilController{
     }
 
 };
-
-document.addEventListener("DOMContentLoaded", () => {
+// function showIds(){
+//     const showIds=document.querySelector(".showId");
+//     const userId= document.querySelector(".hidden-id").value;
+//     showIds.textContent=userId;
+// }
+window.onload = function () {
     // const initLoad = new initLoads();
     // initLoad.init();
-    const util=new UtilController();
-    util.sendAuthorize().then(result=>{
-        if(result===true)
-            console.log("토큰 인증 성공");
-        else
-            console.log("실패");
+    const util = new UtilController();
+    util.sendAuthorize().then(result => {
+        console.log(result);
     })
-        .catch(result=>{
+        .catch(result => {
             console.log(result);
-        })
-});
+        });
+}

@@ -1,15 +1,16 @@
 package com.example.demo.Service;
 
 import com.example.demo.domain.*;
-import com.example.demo.dto.*;
+import com.example.demo.dto.Request.BasketSaveRequestDto;
+import com.example.demo.dto.Request.BasketUpdateRequestDto;
+import com.example.demo.dto.Request.ProductSaveToMenuRequestDto;
+import com.example.demo.dto.Response.BasketResponseDto;
 import com.example.demo.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -187,7 +188,7 @@ public class BasketService {
         return result;
     }
     @Transactional
-    public int basketUpdate(List<BasketUpdateRequestDto> list,int userId){
+    public int basketUpdate(List<BasketUpdateRequestDto> list, int userId){
         List<Basket> basketList=basketRepository.findByCustomer_Id(userId);
         if(!basketList.isEmpty()){
             //삭제할 아이템들

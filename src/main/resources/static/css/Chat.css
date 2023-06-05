@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Raleway:wght@100;200;300;400;500;600;700;800&display=swap');
+*{
+    font-family: 'Raleway', sans-serif;
+    padding: 0; margin: 0;
+}
+#wrap{
+    width: 100%;
+    height:1460px;
+    position: relative;
+    padding-top: 78px;
+}
+button{
+    cursor:pointer;
+}
+/*------------------header------------------*/
+header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    font-weight:bold;
+    background-color: #f57676;
+    position: fixed;
+    z-index: 98;
+    left: 0;
+    right: 0;
+    top:0;
+}
+header span{
+    font-size : 40px;
+    text-decoration: none;
+    color:#fa6e07;
+    z-index: 99;
+    height: 100px;
+}
+header div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header div > a {
+    width: 100px;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #f79146;
+    color: #fff;
+    margin: 0 10px;
+}
+header span img{
+    position: relative;
+    top: 15%;
+}
+.logo-text{
+    position: relative;
+    top: 15%;
+    font-family: 'Caveat', cursive;
+}
+.btn-outline{
+    background-color: #f79146;
+    background-image: none;
+    text-align: center;
+    border:1px;
+    display:inline-block;
+}
+.btn:hover{
+    background-color: #f79146;
+}
+.dropdown-item:hover{
+    cursor: pointer;
+}
+/*------------------aside------------------*/
+aside{
+    width: 30%;
+    top : 0;
+    height : 100%;
+    float: left;
+}
+#user-aside{
+
+    width: 100%;
+    position: relative;
+    height : 100%;
+    float:left;
+}
+#recent-user{
+    width: 100%;
+    height : 45%;
+    overflow-y: scroll;
+    background-color: #ffe7d5;
+}
+.util-btns{
+    width: 100%;
+    height: 13%;
+}
+.btn-design{
+    width: 35%;
+    height: 80%;
+    border:none;
+    background-color: #ffd9e0;
+    position: relative;
+    top:10%;
+}
+.btn-design:hover{
+    cursor:pointer;
+}
+#refresh-btn{
+    position: relative;
+    left:8%;
+}
+#back-btn{
+    position: relative;
+    left:21%;
+}
+#user-list{
+    width: 100%;
+    height : 55%;
+    overflow-y: scroll;
+    background: #ffd3b2;
+}
+.user-box{
+    width: 100%;
+    height: 15%;
+    margin-bottom:1%;
+    position: relative;
+    left:4%;
+}
+.user-name{
+    font-size: 18px;
+}
+.user-last-comment{
+    border: 1px solid #0089ff;
+    width: 50%;
+    height: 30%;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    top:10%;
+    left: 2%;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.start-btn{
+    width: 15%;
+    height: 60%;
+    display: inline-block;
+    background-color: #ffd9e0;
+    position: relative;
+    top:-5%;
+    left:4%;
+    border: none;
+    border-radius: 20px;
+    text-align:center;
+}
+.start-btn:hover{
+    cursor: pointer;
+}
+.find-user{
+    width: 100%;
+    height: 10%;
+    margin-bottom:1%;
+    position: relative;
+    left:10%;
+    top:5%;
+}
+.write-userId{
+    width: 35%;
+    position: relative;
+    left: 1%;
+}
+.find-result{
+    width: 100%;
+    height: 90%;
+
+}
+.find-result span{
+    font-size: 18px;
+
+}
+.find-box{
+    width: 50%;
+    height: 15%;
+    position: relative;
+    left:18%;
+    margin-bottom: 1%;
+}
+.find-box .user-name{
+    position: relative;
+    top:7%;
+}
+.find-box .start-btn{
+    width: 50%;
+    height: 60%;
+    position: relative;
+    top:5%;
+    left:15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#recent-user::-webkit-scrollbar,
+#user-list::-webkit-scrollbar
+{
+    display: none;
+}
+/*------------------section------------------*/
+section{
+    height: 100%;
+    width: 70%;
+    background-color: #f0d5c1;
+    float: left;
+}
+.opponent{
+    width: 30%;
+    height: 7%;
+}
+.opponent-name{
+    font-size: 20px;
+    line-height: 3em;
+    padding-left: 1em;
+}
+.chat-box{
+    width:80%;
+    height: 67%;
+    position: relative;
+    left: 5%;
+    background-color: #ffb9b9;
+}
+.time-text{
+    font-size: 10px;
+    vertical-align:bottom;
+}
+.opponent-userId{
+    display: block;
+    position: relative;
+    left:2%;
+    color: #fcfc3a;
+    font-size: 15px;
+}
+.ballon{
+    max-width: 65%;
+    border: 2px solid #f79146;
+    background-color: azure;
+    border-radius: 8px;
+    font-size: 18px;
+    display: inline-block;
+    position: relative;
+    word-break:break-all;
+    padding: 1em;
+    margin: 1em;
+}
+.opponentB{
+    margin: 0.5em;
+}
+.me-ballon{
+    text-align: right;
+}
+.opponent-ballon{
+    text-align: left;
+}
+
+.chat-btn{
+    width:100%;
+    height: 25%;
+}
+.text-box{
+    width: 50%;
+    height: 90%;
+    position: relative;
+    left:17%;
+    top:5%;
+    float: left;
+}
+.chat-text{
+    width: 70%;
+    max-height: 100%;
+    overflow-y: hidden;
+    resize: none;
+    min-height: 2rem;
+    text-align: left;
+    font-size:18px;
+}
+.chat-detail-btn{
+    width: 10%;
+    height: 100%;
+    position: relative;
+    float: left;
+    left:19%;
+    top:5%;
+}
+.text-btn{
+    display: block;
+    width: 100%;
+    height: 30%;
+    border: none;
+    border-radius: 14px;
+    background-color: #fc8398;
+    margin-bottom: 15%;
+}
+.text-btn:hover{
+    cursor: pointer;
+}
+@media (max-width:1600px){
+    #wrap {width: 97%;}
+
+}
+@media (max-width:1440px){
+    #wrap {width: 97%;}
+}
+@media (max-width:1200px){
+    #wrap {width: 95%;}
+    .user-name {font-size: 14px}
+    .user-last-comment{width : 40%}
+    .start-btn {font-size: 14px}
+    .opponent-name{font-size: 14px}
+    .ballon {font-size: 14px}
+    .text-btn{font-size: 14px}
+
+}
+@media (max-width:768px){
+    #wrap {width: 90%;}
+    .user-name {font-size: 10px }
+    .user-last-comment{width : 30%}
+    .start-btn {font-size: 10px}
+    .opponent-name{font-size: 14px}
+    .ballon {font-size: 14px}
+    .text-btn{font-size: 14px}
+
+}
+@media (max-width: 480px){
+    #wrap {width: 100%;}
+    .user-name {font-size: 7px }
+    .start-btn {font-size: 7px}
+    .user-last-comment{width: 20%}
+    .opponent-name{font-size: 14px}
+    .ballon {font-size: 14px}
+    .text-btn{font-size: 14px}
+
+}

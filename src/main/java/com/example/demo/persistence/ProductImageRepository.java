@@ -19,5 +19,5 @@ public interface ProductImageRepository extends CrudRepository<ProductImage, Int
 //	public List<ProductImage> findByImageLoad(String searchword);
 	
 	public List<ProductImage> findByProduct(Product searchword);
-    
+    public void deleteByProduct(Product product);
 }

@@ -1,17 +1,11 @@
 package com.example.demo.config.auth.jwt.UserData;
 
-import com.example.demo.Service.CustomerService;
-import com.example.demo.config.auth.dto.SessionUser;
 import com.example.demo.domain.Customer;
-import com.example.demo.dto.CustomerResponseDto;
 import com.example.demo.exception.TokenCheckException;
 import com.example.demo.exception.message.ExceptionMessage;
 import com.example.demo.persistence.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Slf4j
@@ -33,7 +26,7 @@ public class CustomLoadUserByUsername{
         if(customer==null || customer.isEmpty()){
             throw new TokenCheckException(ExceptionMessage.USER_NOT_FOUND);
         }
-        CustomUserDetail customUserDetail=new CustomUserDetail();
+        CustomUserDetail customUserDetail=new CustomUserDetail(customer.get(0));
         customUserDetail.setCustomer(customer.get(0));
         customUserDetail.setId(customer.get(0).getId());
         return customUserDetail;

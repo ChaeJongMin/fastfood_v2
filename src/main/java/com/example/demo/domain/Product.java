@@ -44,11 +44,16 @@ public class Product {
 	private List<Product_option_info> infoList=new ArrayList<Product_option_info>();
 
 	@Builder
-	public Product(String productName, int price, boolean allSale,Categories categories){
+	public Product(String productName, int price, boolean allSale,Categories categories
+	,List<Product_option_info> infoList){
 		this.productName=productName;
 		this.price=price;
 		this.allSale=allSale;
 		this.categories=categories;
+		this.infoList=infoList;
 	}
-
+	public void update(int price, boolean allSale){
+		this.price=price;
+		this.allSale=allSale;
+	}
 }

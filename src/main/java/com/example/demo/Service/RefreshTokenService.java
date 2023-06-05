@@ -4,19 +4,16 @@ import com.example.demo.config.auth.jwt.JwtTokenProvider;
 import com.example.demo.config.auth.jwt.domain.RefreshTokens;
 import com.example.demo.config.auth.jwt.domain.Util.TokenUtils;
 import com.example.demo.config.auth.jwt.domain.dto.RefreshTokenDto;
-import com.example.demo.dto.TokenDto;
-import com.example.demo.exception.CustomException;
-import com.example.demo.exception.TokenCheckException;
+import com.example.demo.dto.Response.TokenDto;
 import com.example.demo.exception.TokenNotFoundException;
 import com.example.demo.exception.message.ExceptionMessage;
 import com.example.demo.persistence.RefreshTokenRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -47,8 +44,9 @@ public class RefreshTokenService {
 
     @Transactional
     public String update(String userId,String value,long time){
+        //업데이트 다시 수정
         RefreshTokens refreshTokens=refreshTokenRepository.findByKeyId(userId).orElseThrow(()->new TokenNotFoundException(ExceptionMessage.TOKEN_NOT_FOUND));
-        refreshTokens.update(value,jwtTokenProvider.REFRESH_TIME);
+        refreshTokens.update(value,time);
         return refreshTokens.getValue();
     }
 
@@ -69,9 +67,9 @@ public class RefreshTokenService {
         return true;
     }
     @Transactional(readOnly = true)
-    public TokenDto reissue(String refreshToken) {
+    public TokenDto reissue(String refreshToken) throws JsonProcessingException {
         Optional<RefreshTokens> refreshTokenObject=refreshTokenRepository.findByValue(refreshToken);
-        if(refreshTokenObject!=null && jwtTokenProvider.validateRefreshToken(refreshToken)) {
+        if(refreshTokenObject!=null && tokenUtils.vaildateRefreshToken(refreshToken)) {
             //이미 JWT Exception 필터에서 예외처리가 발생
             return createAccessToken(refreshToken,refreshTokenObject.get().getKeyId());
 

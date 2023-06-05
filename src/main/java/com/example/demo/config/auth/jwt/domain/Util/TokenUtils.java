@@ -38,6 +38,15 @@ public class TokenUtils {
         System.out.println("** vaildateToken 메소드 종료 **");
         return true;
     }
+    public boolean vaildateRefreshToken(String token) throws JsonProcessingException {
+        if(!StringUtils.hasText(token))
+            throw new CustomException(REFRESH_TOKEN_NOT_FOUND);
+        else if(this.jwtTokenProvider.parseClaim(token).getExpiration().before(new Date())){
+            throw new CustomException(TIMELIMIT_REFRESH_TOKEN);
+        }
+        System.out.println("** vaildateToken 메소드 종료 **");
+        return true;
+    }
     public Authentication getAuthentication(String token){
         String userName = this.jwtTokenProvider.parseToken(token);
         if(userName == null){

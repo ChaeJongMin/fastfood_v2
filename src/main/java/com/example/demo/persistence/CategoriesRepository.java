@@ -17,4 +17,7 @@ public interface CategoriesRepository extends CrudRepository<Categories, Integer
 	
 	@Query("select b from Categories b where b.categoryName=:name1 or b.categoryName=:name2")
 	public List<Categories> findbyDrinkMenu(String name1, String name2);
+
+	@Query("select b.categoryName from Categories b")
+	public List<String> findByCateNameList();
 }

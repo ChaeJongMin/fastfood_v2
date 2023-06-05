@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         private static final String[] ALL_WHITELIST = {
             "/api/auth/reissue", "/fastfood/api/auth/reissue",
             "/api/customer/logout", "/fastfood/api/customer/logout",
-            "/fastfood/login", "/api/auth/delete", "/favicon.ico","/fastfood/register","/login"
+            "/fastfood/login", "/api/auth/delete", "/favicon.ico","/fastfood/register","/login","/api/customer/login"
         };
 
         /*************************************************************************************************************/

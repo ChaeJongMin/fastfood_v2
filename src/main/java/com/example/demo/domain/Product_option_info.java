@@ -55,4 +55,7 @@ public class Product_option_info {
       this.price=price;
 
    }
+   public void update(int price){
+      this.price+=price;
+   }
 }

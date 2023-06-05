@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>결제 화면</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet prefetch"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet prefetch"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/Paystyle.css}">
+
+
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12 col-md-4 main-body" >
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table">
+                    <div class="row display-tr">
+                        <h3 class="panel-title display-td">결제 정보</h3>
+                        <div class="display-td">
+<!--                            <img class="img-responsive pull-right"-->
+<!--                                 src="https://i76.imgup.net/accepted_c22e0.png">-->
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<h1 th:text="${userId}+님"></h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label class="panel-title display-td">&nbsp;&nbsp;&nbsp;&nbsp;카드 번호</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="cardNumber"
+                                       placeholder="카드번호 입력" autocomplete="cc-number"
+                                       autofocus id="card-num"> <span class="input-group-addon"><i
+                                    class="fa fa-credit-card"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-7 col-md-7">
+                        <div class="form-group">
+                            <select class="box" id="card-company" name="cardCompany">
+                                <option value="카카오뱅크" selected >카카오뱅크</option>
+                                <option value="신한은행" >신한은행</option>
+                                <option value="국민은행" >국민은행</option>
+                                <option value="농협" >농협</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label class="panel-title display-td">&nbsp;&nbsp;&nbsp;&nbsp;결제 금액</label>
+                            <input type="text" class="form-control" name="price" th:value="${totalprice}+원" disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span class="error-text" style="color: red; padding: 10px; font-weight: bold"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-success btn-lg btn-block" id="order-save-btn" type="button">결제
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-success btn-lg btn-block" type="button"
+                                th:onclick="|location.href='@{/fastfood/my_baket}'|">장바구니
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-success btn-lg btn-block" type="button"
+                                th:onclick="|location.href='@{/fastfood/menu}'|">메뉴이동
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="user-id" th:value="${ids}" >
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+<script type="module" th:src="@{/js/initAuth.js}"></script>
+<script type="module" src="/js/orderInit.js"></script>
+</body>
+
+</html>

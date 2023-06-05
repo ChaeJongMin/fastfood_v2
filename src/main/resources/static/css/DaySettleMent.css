@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+a{
+    text-decoration: none;
+}
+body{
+    background-color: beige;
+}
+#wrap{
+    width: 100%;
+    height: 1000px;
+    background-color: beige;
+}
+/* ---------- header ---------- */
+#head{
+    width: 100%;
+    height: 60px;
+    background-color: #fca0a0;
+    justify-content: space-between;
+}
+#head h4{
+    line-height: 60px;
+    padding-left: 20px;
+    color: aliceblue;
+}
+/* ---------- nav ---------- */
+nav{
+    width: 15%;
+    height: 100%;
+    background-color: aliceblue;
+    float: left;
+}
+.card-user{
+    width: 100%;
+    height: 130px;
+    position: relative;
+    background-image: url(../img/superHome/user-img-background.jpg);
+    margin-bottom: 20px;
+}
+.card-user img{
+    background-color: #e8dfdf;
+    border-radius: 40px;
+    width: 50px;
+    position: absolute;
+    left:17px;
+    top: 15px;
+}
+.card-user #user-info{
+    position: absolute;
+    left:20px;
+    top: 75px;
+    color: aliceblue;
+    font-size: 13px;
+}
+
+nav > .subMenu {
+    margin: 0 auto;
+    margin-bottom: 30px;
+    width: 100%;
+}
+nav li{
+    height: 55px;
+    line-height: 45px;
+    margin-bottom: -5px;
+}
+.side-btn{
+    text-align: left;
+    padding-left: 20px;
+    width: 100%;
+    color: #9d9595;
+    font-size:20px;
+    border: 0px;
+    background-color:aliceblue;
+    border: 2px solid #f45252;
+    border-radius: 14px;
+    transition: all 0.4s;
+}
+.side-btn:hover{
+    cursor: pointer;
+    color: red;
+    width: 80%;
+    background-color:#e67f7f;
+}
+
+/* ---------- section ---------- */
+
+/* article-box */
+section{
+    width: 81.8%;
+    height: 100%;
+    top: 0;
+    float: left;
+    left: 250px;
+    background-color: beige;
+}
+#month{
+    position: relative;
+    width: 100%;
+    height:6%;
+    left: 3%;
+    overflow: hidden;
+}
+#month td {
+    width: 8%;
+    color: #a0a0a0;
+    font-size: 12px;
+    text-align: center;
+}
+
+#month td:hover {
+    border-bottom: 2px solid #f4d552;
+    color: #51aec3;
+    cursor: pointer;
+}
+.active {
+    border-bottom: 2px red;
+}
+#currentDate{
+    float: left;
+    position: relative;
+    top:2%;
+    width: 15%;
+    left: 10%;
+}
+#currentDate p{
+    font-size: 25px;
+    font-weight: 700;
+}
+#totalPrice{
+    position: relative;
+    top:2%;
+    overflow: hidden;
+    float: right;
+    width: 26%;
+}
+#totalPrice p, #totalPrice span{
+    display: inline-block;
+    font-size: 25px;
+    color: black;
+}
+#totalPrice span{
+    font-weight: 700;
+}
+
+#bor {
+    position: relative;
+    width: 80%;
+    border-top: 2px solid #808080;
+    margin: 60px auto;
+    top: 2%;
+}
+#bor th,
+#bor td {
+    height: 60px;
+    text-align: center;
+    border-left:none;
+    border-right:none;
+    border-top: 1px solid #808080;
+}
+
+.pageings{
+    position: relative;
+    background-color: beige;
+    left: 43%;
+
+}
+.page-link {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #f7a0a0;
+}
+#pagingBox {
+    background-color:transparent;
+}
+.page-item.active .page-link {
+    z-index: 1;
+    color: #f1f1f1;
+    font-weight:bold;
+    background-color: #f77676;
+    border-color: #f77676;
+
+}
+.page-link:focus, .page-link:hover {
+    color: #f1f1f1;
+    background-color: #f77676;
+    border-color: #ccc;
+}
+
+@media (max-width:1600px){
+    #wrap {width: 97%;}
+}
+@media (max-width:1440px){
+    #wrap {width: 97%;}
+}
+@media (max-width:1200px){
+    #wrap {width: 95%;}
+}
+@media (max-width:768px){
+    #wrap {width: 90%;}
+}
+@media (max-width: 480px){
+    #wrap {width: 100%;}
+    nav {float: none; width: 100%; height: 300px;}
+    section {float: none; width: 100%; height: 300px;}
+}

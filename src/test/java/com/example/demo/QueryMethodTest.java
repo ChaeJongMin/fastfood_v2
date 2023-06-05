@@ -2,36 +2,14 @@ package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-
+import com.example.demo.persistence.*;
+import com.example.demo.persistence.ConnectCustomerRepository;
+import com.example.demo.persistence.QueryFor.VisitorSummary;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.example.demo.domain.Basket;
-import com.example.demo.domain.Categories;
-import com.example.demo.domain.Customer;
-import com.example.demo.domain.Orders;
-import com.example.demo.domain.Product;
-import com.example.demo.domain.ProductImage;
-import com.example.demo.domain.Product_option_info;
-import com.example.demo.domain.Worker;
-
-import com.example.demo.persistence.BasketRepository;
-import com.example.demo.persistence.CategoriesRepository;
-import com.example.demo.persistence.CustomerRepository;
-import com.example.demo.persistence.OptionInfoRepo;
-import com.example.demo.persistence.OrdersRepository;
-import com.example.demo.persistence.ProductImageRepository;
-import com.example.demo.persistence.ProductRepository;
-import com.example.demo.persistence.WorkerRepository;
-
-
-import org.junit.jupiter.api.BeforeEach;
+import java.util.List;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations={"spring-servlet.xml"})
@@ -57,9 +35,47 @@ class QueryMethodTest {
 	private BasketRepository basketRepo;
 	@Autowired
 	private ProductImageRepository ProImgRepo;
-
+	@Autowired
+	private ConnectCustomerRepository connectCustomerRepository;
 	@Autowired
 	private OptionInfoRepo OptionRepository;
+	@Autowired
+	private OrdersRepository ordersRepository;
+	@Autowired
+	private BoardsRepository boardsRepository;
+
+	@Test
+	public void testQuery(){
+//		long totalBoard=boardsRepository.countCurrentMonthBorads(5,2023);
+//		System.out.println("총 게시판 수(월): "+totalBoard);
+//		//총 주문 수
+//		long totalCnt=ordersRepository.countCurrentByMonthOrders(5,2023);
+//		System.out.println("총 주문 수(월): "+totalCnt);
+//		//총 판매액
+//		long totalSale=ordersRepository.sumCurrentPriceByMonthOrders(5,2023);
+//		System.out.println("총 판매액(월): "+totalSale);
+//		//베스트 셀러
+//		List<BestSellerNameAndCnt> list1=ordersRepository.findBestSellerNameAndCnt(5,2023);
+//		System.out.println("---------------베스트셀러: "+list1.size()+" ---------------");
+//		for(BestSellerNameAndCnt bsnac : list1 ){
+//			System.out.println(bsnac.getName()+" "+bsnac.getCnt());
+//		}
+//		System.out.println("-----------------------------------------------------");
+//		// 카테고리별 구매한 제품 수
+//		List<CategoryNameAndCnt> list2=ordersRepository.findCategoriesNameAndCnt();
+//		System.out.println("---------------카테고리별: "+list2.size()+" ---------------");
+//		for(CategoryNameAndCnt cnac : list2){
+//			System.out.println(cnac.getName()+" "+cnac.getCnt());
+//		}
+//		System.out.println("-----------------------------------------------------");
+//		List<OrderSummary> list=ordersRepository.getOrderSummaries();
+//		for(OrderSummary o : list){
+//			System.out.println(o.getYearMonth()+" "+o.getTotal());
+//		}
+		long value=connectCustomerRepository.getPastUser();
+		System.out.println(value);
+	}
+
 //	@Test
 //	public void testInsertProduct() {
 //        String str_cate[]= {"버거","탄산","커피","사이드","디저트"};

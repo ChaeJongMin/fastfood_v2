@@ -2,30 +2,28 @@ import { UtilController } from './Util.js';
 const util=new UtilController();
 
 window.onload = function (){
-    let saveEle=document.querySelectorAll('#save-button');
-    let saveSetEle=document.querySelectorAll('#save-set-button');
-    // let buyEle=document.querySelector('#basket-update-btn');
-    if(saveEle!=null){
-        saveEle.forEach(function (btnItem) {
-            btnItem.addEventListener('click',function (){
-                let savaForm=this.closest('.single').querySelector('#save-product-form');
-                save(savaForm);
-            })
-        })
-    }
-    if(saveSetEle!=null){
-        saveSetEle.forEach(function (btnItem) {
-            btnItem.addEventListener('click',function (){
-                let savaForm=this.closest('.sets').querySelector('#save-set-form');
-                setSave(savaForm);
-            })
-        })
-    }
-    // if(buyEle!=null){
-    //     buyEle.addEventListener('click', function (){
-    //         buys();
-    //     })
-    // }
+
+            let saveEle=document.querySelectorAll('#save-button');
+            let saveSetEle=document.querySelectorAll('#save-set-button');
+            // let buyEle=document.querySelector('#basket-update-btn');
+            if(saveEle!=null){
+                saveEle.forEach(function (btnItem) {
+                    btnItem.addEventListener('click',function (){
+                        let savaForm=this.closest('.single').querySelector('#save-product-form');
+                        save(savaForm);
+                    })
+                })
+            }
+            if(saveSetEle!=null){
+                saveSetEle.forEach(function (btnItem) {
+                    btnItem.addEventListener('click',function (){
+                        let savaForm=this.closest('.sets').querySelector('#save-set-form');
+                        setSave(savaForm);
+                    })
+                })
+            }
+
+
 }
 function save(saveForm) {
     util.sendAuthorize().then(result=> {

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> AdminPage </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link href="/css/productList.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+<div id="wrap">
+  <header>
+    <div id="head">
+      <h4>ADMIN</h4>
+    </div>
+  </header>
+
+  <nav>
+    <div class="card-user">
+      <img src="/img/superHome/admin.png">
+      <div id="user-info">
+        <h5 th:text="${customer.getUserId()}"></h5>
+        <p th:text="${customer.getEmail()}"> </p>
+      </div>
+    </div>
+
+    <ul class="subMenu">
+      <li><button type="button" class="side-btn">Home</button></li>
+      <li><button type="button" class="side-btn">LOGOUT</button></li>
+      <li><button type="button" class="side-btn">고객 관리</button></li>
+      <li><button type="button" class="side-btn">메뉴 추가</button></li>
+      <li><button type="button" class="side-btn">메뉴 관리</button></li>
+      <li><button type="button" class="side-btn">결산</button></li>
+    </ul>
+  </nav>
+
+  <section>
+    <div id="cateTab">
+      <th:block th:each="cateName : ${cateNameList}">
+      <div class="categories">
+        <span th:text="${cateName}" th:value="${cateName}" class="tabName"
+              th:onclick="|location.href='@{/fastfood/productList(cateName=${cateName})}'|"></span>
+      </div>
+      </th:block>
+    </div>
+    <input type="hidden" th:value="${param.cateName}" id="hidden-cateName">
+    <script type="text/javascript">
+      const tabItem= document.querySelector("#hidden-cateName").value;
+      const tabItems= document.querySelectorAll(".categories");
+      const tab_array=[...tabItems];
+      tab_array.forEach((tab)=>{
+        let spanValue=tab.querySelector('.tabName').textContent;
+        console.log("클래스 이름: "+tab.firstElementChild.className);
+        console.log("자식: "+spanValue);
+        tab.classList.add("active");
+        if(spanValue===tabItem){
+          tab.classList.remove("active");
+        }
+      })
+    </script>
+    <table id="bor">
+      <tr>
+        <th>No</th>
+        <th>제품</th>
+        <th>가격</th>
+        <th>품절</th>
+      </tr>
+      <tbody>
+      <tr th:each="product , productState : ${productDto}" th:onclick="|location.href='@{/fastfood/productManage(productName=${product.getProductName()})}'|">
+        <td th:text="${productState.count}"></td>
+        <td th:text="${product.getProductName()}"></td>
+        <td th:text="${product.getPrice()}"></td>
+        <td><input type="checkBox" id="chk"
+                   th:checked="${product.isAllSale() ? false : 'checked'}" disabled ></td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+  <footer>
+
+  </footer>
+</div>
+</body>
+</html>

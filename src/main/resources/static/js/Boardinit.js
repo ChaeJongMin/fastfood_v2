@@ -1,5 +1,6 @@
 import { UtilController } from './Util.js';
 const util=new UtilController();
+
 const index={
     init : function(){
         var _this=this;
@@ -184,4 +185,6 @@ const index={
         });
     }
 };
-index.init();
+window.onload = function () {
+    index.init();
+}
