@@ -5,6 +5,7 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> 상세페이지 </title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
     <link th:href="@{/css/boardContent.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -68,11 +69,11 @@
                             <span style="font-size: small" th:text="${comment.getWriter()}"></span>
                             <span style="font-size: xx-small" th:text="${comment.getCreateDate()}"></span>&nbsp;
                             <button type="button" class="badge bi bi-pencil-square"
-                                    th:disabled="${checkedMe ? false : true}"
+                                    th:disabled="${connectId.equals(comment.getWriter()) ? false : 'disabled'}"
                                     data-toggle="collapse" th:data-target="|.multi-collapse-${comment.getNo()}|">수정</button>
 
                              <button type="button" class="badge bi bi-pencil-square" id="btn-comment-delete"
-                                     th:disabled="${checkedMe ? false : true}"
+                                     th:disabled="${connectId.equals(comment.getWriter()) ? false : 'disabled'}"
                                      th:value="${comment.getNo()}">삭제</button>
                         </span>
                         <p th:class="'collapse multi-collapse-'+${comment.getNo()}+' show'"
@@ -108,6 +109,7 @@
     <input type="hidden" name="hidden-id" th:value="${boards.getNo()}" id="hidden-id">
 
 </article>
+<th:block th:replace="common/footer :: footerFragment"></th:block>
 <script type="text/javascript"
         src="https://code.jquery.com/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>

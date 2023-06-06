@@ -15,7 +15,12 @@ table {
    border-collapse: collapse;
 }
 
-
+footer{
+   color: black;
+}
+footer a{
+   color: black;
+}
 /*  ó§ çî */
 header {
    height: 80px; 

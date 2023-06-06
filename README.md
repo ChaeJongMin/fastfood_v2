@@ -5,7 +5,7 @@
 ### 환경
  IDE: 인텔리제이, Brackets</br>
  프레임워크: Spring Boot</br>
- Skill: JPA, Spring Security, Thymeleaf, JUnit, AWS(현재 사용하지 않고있습니다.)</br> 
+ Skill: JPA, Spring Security, Thymeleaf, JUnit, AWS(현재 사용하지 않고있습니다.),OAUTH2, JPA</br> 
  사용한 언어: HTML5/CSS3, Java, JavaScript</br> 
  DB : MySQL</br>
  OS : Windows, Linux(aws 배포 시 사용)</br>
@@ -53,7 +53,24 @@ Entity Repository Dto Service Controller로 분리를 해봤습니다.</br>
 ### 23.03.26
 JWT 기능(발급, 재발급, 로그아웃 완료) 구현했으나 모든페이지 적용 X ---> 기능만 확인
 
+----------- V2 시작 -----------
+### 23.05.15 
+JWT 모든 API 적용 및 OAUTH2 기능( 네이버 , 구글) 적용
 
+### 23.06.05 
+관리자 기능 및 페이지 전체적인 수정
+
+### 23.06.06 
+채팅 기능 추가
+
+### 23.06.07
+커스텀 JSON 로그인 필터 추가
+메일 기능 (비밀번호 초기화) 추가
+
+### 23.06.10
+AWS의 r3를 통해 이미지 파일 관리 기능 추가
+
+----------- 참조 문서 -----------
 ### 해당 프로젝트의 진행에 대한 포스트한 블로그
 = https://velog.io/@dico2760/series/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8</br>
 (23.02 시작한 게시판 기능 부터 ~~)

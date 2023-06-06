@@ -15,12 +15,17 @@ import com.example.demo.domain.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	public List<Customer> findByUserId(String searchword);
 	public Optional<Customer> findByEmail(String searchword);
-	public List<Customer> findByRole(int searchword);
-	public boolean existsByUserId(String id);
 	public Optional<Customer> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
 
 	public List<Customer> findByUserIdContainingIgnoreCase(String search);
 
+	public boolean existsByUserIdAndEmail(String userId, String email);
+
+<<<<<<< HEAD
+	public boolean existsByUserId(String userId);
+	public boolean existsByEmail(String email);
+=======
+>>>>>>> fastfoodv2/master
 	///chat
 	@Query(value = "select ch.chat_id from Customer c inner join Chat as ch on c.id = ch.receiver_id or c.id = ch.sender_id where (ch.sender_id =:myId or ch.sender_id =:opponentId) and (ch.receiver_id =:myId or ch.receiver_id =:opponentId) limit 1" , nativeQuery = true)
 	Optional <Integer> getChatCount(@Param("myId") int myId, @Param("opponentId") int opponentId);

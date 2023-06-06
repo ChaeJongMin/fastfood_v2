@@ -1,6 +1,6 @@
 package com.example.demo.config.auth.jwt;
 
-import com.example.demo.exception.CustomException;
+import com.example.demo.exception.Exception.CustomException;
 import com.example.demo.exception.errorCode.ErrorCode;
 import org.json.JSONObject;
 import org.springframework.security.access.AccessDeniedException;

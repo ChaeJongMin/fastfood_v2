@@ -3,9 +3,11 @@ package com.example.demo.Controller.Api;
 import com.example.demo.Service.CommentService;
 import com.example.demo.config.auth.formLogin.LoginUser;
 import com.example.demo.config.auth.formLogin.dto.SessionUser;
+import com.example.demo.config.auth.jwt.UserData.CustomUserDetail;
 import com.example.demo.dto.Request.CommentRequestDto;
 import com.example.demo.dto.Request.CommentUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,8 +17,8 @@ public class CommentApiController {
 
     @PostMapping("/api/post/{id}/comment")
     public Long save(@PathVariable Long id, @RequestBody CommentRequestDto requestDto,
-                     @LoginUser SessionUser user){
-        return commentService.save(requestDto, user.getUserId(),id);
+                     @AuthenticationPrincipal CustomUserDetail customUser){
+        return commentService.save(requestDto, customUser.getCustomer().getUserId(),id);
     }
 
     @PutMapping("/api/update/{postId}/comment/{commentId}")

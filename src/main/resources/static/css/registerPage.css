@@ -16,7 +16,12 @@ input[type="number"]::-webkit-inner-spin-button {
 body {
 
 }
-
+footer{
+    color: black;
+}
+footer a{
+    color: black;
+}
 .joinForm {
     position:absolute;
     width:400px;

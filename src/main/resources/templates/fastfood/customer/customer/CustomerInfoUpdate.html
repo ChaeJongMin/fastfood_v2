@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 정보 수정</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
     <link rel="stylesheet" href="/css/adminmenuStyle.css" type="text/css">
 
 </head>
@@ -73,6 +74,7 @@
             <button type="button" th:onclick="|location.href='@{/fastfood/menu}'|">돌아가기</button>
             <input type="hidden" id="id" th:value="${id}" disabled>
         </div>
+        <th:block th:replace="common/footer :: footerFragment"></th:block>
     </div>
 </main>
 </body>

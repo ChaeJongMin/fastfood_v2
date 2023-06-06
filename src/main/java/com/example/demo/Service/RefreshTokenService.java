@@ -5,7 +5,7 @@ import com.example.demo.config.auth.jwt.domain.RefreshTokens;
 import com.example.demo.config.auth.jwt.domain.Util.TokenUtils;
 import com.example.demo.config.auth.jwt.domain.dto.RefreshTokenDto;
 import com.example.demo.dto.Response.TokenDto;
-import com.example.demo.exception.TokenNotFoundException;
+import com.example.demo.exception.Exception.TokenNotFoundException;
 import com.example.demo.exception.message.ExceptionMessage;
 import com.example.demo.persistence.RefreshTokenRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +29,15 @@ public class RefreshTokenService {
     public RefreshTokens save(String userId, long expirationTime){
         String value=jwtTokenProvider.refreshGenerateToken(userId,expirationTime);
         long expireTime=jwtTokenProvider.getExpiredTime(value);
-        return refreshTokenRepository.save(RefreshTokens.from(userId,value,expireTime));
+
+        Optional<RefreshTokens> refreshTokens=refreshTokenRepository.findByKeyId(userId);
+
+        if(refreshTokens.isPresent()){
+            update(userId,value,expireTime);
+        } else{
+            return refreshTokenRepository.save(RefreshTokens.from(userId,value,expireTime));
+        }
+        return refreshTokens.get();
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +77,7 @@ public class RefreshTokenService {
     @Transactional(readOnly = true)
     public TokenDto reissue(String refreshToken) throws JsonProcessingException {
         Optional<RefreshTokens> refreshTokenObject=refreshTokenRepository.findByValue(refreshToken);
-        if(refreshTokenObject!=null && tokenUtils.vaildateRefreshToken(refreshToken)) {
+        if(refreshTokenObject!=null && jwtTokenProvider.vaildateRefreshToken(refreshToken)) {
             //이미 JWT Exception 필터에서 예외처리가 발생
             return createAccessToken(refreshToken,refreshTokenObject.get().getKeyId());
 

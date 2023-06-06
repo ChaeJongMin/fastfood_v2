@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title> AdminPage </title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
   <link th:href="@{/css/productMange.css}" rel="stylesheet" type="text/css">
 </head>
 
@@ -26,25 +27,28 @@
       </div>
     </div>
     <ul class="subMenu">
-      <li><button type="button" class="side-btn">Home</button></li>
-      <li><button type="button" class="side-btn">LOGOUT</button></li>
+      <li><button type="button" class="side-btn" th:onclick="|location.href='@{/fastfood/superMainHome}'|">Home</button></li>
+      <li><button type="button" class="side-btn" onclick="logout()">LOGOUT</button></li>
       <li><button type="button" class="side-btn">고객 관리</button></li>
-      <li><button type="button" class="side-btn">메뉴 추가</button></li>
-      <li><button type="button" class="side-btn">메뉴 관리</button></li>
-      <li><button type="button" class="side-btn">결산</button></li>
+      <li><button type="button" class="side-btn"
+                  th:onclick="|location.href='@{/fastfood/productAdd}'|">메뉴 추가</button></li>
+      <li><button type="button" class="side-btn"
+                  th:onclick="|location.href='@{/fastfood/productList(cateName=버거)}'|">메뉴 관리</button></li>
+      <li><button type="button" class="side-btn"
+                  th:onclick="|location.href='@{/fastfood/DaySettlement(yearMonth=${currentDate})}'|">결산</button></li>
     </ul>
   </nav>
 
   <section>
     <div id="title">
-      <span>제품 추가</span>
+      <span>제품 관리</span>
     </div>
     <div id="totalInfo">
       <form name="editForms" id="editForm" onSubmit="return false">
         <div id="infoAdd">
           <div id="pname">
             <span class="ptext">제품명 </span>
-            <input type="text" class="pname-text" id="name" th:value="${product.getProductName()}" disabled>
+            <input type="text" class="pname-text" id="name" th:value="${product.getProductName()}" >
           </div>
           <div id="pprice">
             <span class="ptext"> 가격(원) </span>
@@ -74,7 +78,7 @@
         </div>
         <div id="imgAdd">
           <div id="showBox">
-            <img class="showImg" th:src="'/img/'+${product.getProductName()}+'.jpg'">
+            <img class="showImg" th:src="@{${product.getImgUrl()}}">
           </div>
           <div id="imgbtn">
             <label for="file">파일찾기</label>
@@ -86,6 +90,7 @@
     </div>
   </section>
 </div>
+<th:block th:replace="common/footer :: footerFragment"></th:block>
 <input type="hidden" th:value="${id}" id="hidden-product-id">
 <script type="text/javascript"
         src="https://code.jquery.com/jquery.min.js"></script>

@@ -2,11 +2,7 @@ package com.example.demo.config.auth.jwt.domain.Util;
 
 import com.example.demo.config.auth.jwt.JwtTokenProvider;
 import com.example.demo.config.auth.jwt.UserData.CustomLoadUserByUsername;
-import com.example.demo.config.auth.jwt.UserData.CustomUserDetail;
-import com.example.demo.exception.CustomException;
-import com.example.demo.exception.TokenCheckException;
-import com.example.demo.exception.errorCode.ErrorCode;
-import com.example.demo.exception.message.ExceptionMessage;
+import com.example.demo.exception.Exception.CustomException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -17,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 import static com.example.demo.exception.errorCode.ErrorCode.*;

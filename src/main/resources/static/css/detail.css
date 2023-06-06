@@ -91,6 +91,7 @@ body {
 nav{
   position: fixed;
 }
+
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -258,7 +259,10 @@ a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
   text-decoration: none;
 }
-
+footer{
+  width: 100%;
+  position: relative;
+}
 pre,
 code,
 kbd,

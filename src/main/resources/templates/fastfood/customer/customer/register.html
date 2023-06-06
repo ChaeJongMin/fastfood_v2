@@ -3,6 +3,7 @@
 <head>
     <title>회원가입</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/registerPage.css}" >
 </head>
 <body>
@@ -42,6 +43,7 @@
     </div>
     <input type="submit" id="save-button" class="btn" value="J O I N"/>
     <input type="submit" class="back-btn" value="돌아가기" th:onclick="|location.href='@{/fastfood/login}'|"/>
+    <th:block th:replace="common/footer :: footerFragment"></th:block>
 </div>
 
 <script type="text/javascript"

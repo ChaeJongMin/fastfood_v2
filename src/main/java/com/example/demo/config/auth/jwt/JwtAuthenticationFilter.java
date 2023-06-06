@@ -1,7 +1,7 @@
 package com.example.demo.config.auth.jwt;
 
 import com.example.demo.config.auth.jwt.domain.Util.TokenUtils;
-import com.example.demo.exception.CustomException;
+
 import com.example.demo.exception.errorCode.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,28 +75,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         /*************************************************************************************************************/
 
-        // 헤더에서 토큰 추출
-    //    private String resolveToken(HttpServletRequest request) {
-    //        String bearerToken = request.getHeader("Authorization");
-    //        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-    //            return bearerToken.substring(7);
-    //        }
-    //        return null;
-    //    }
-    //
-    //    public void setAuthentication(String id) {
-    //        Authentication authentication = jwtTokenProvider.setAuthentication(id);
-    //        SecurityContextHolder.getContext().setAuthentication(authentication);
-    //    }
-    //    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
-    //        response.setStatus(status.value());
-    //        response.setContentType("application/json");
-    //        try {
-    //            String json = new ObjectMapper().writeValueAsString(new HttpResponseDto(msg, status.value()));
-    //            response.getWriter().write(json);
-    //        } catch (Exception e) {
-    //            log.error(e.getMessage());
-    //        }
-    //    }
+
 
 }

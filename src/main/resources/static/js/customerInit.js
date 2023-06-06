@@ -43,8 +43,10 @@ function login(){
             window.location.href="/fastfood/superMainHome";
         else if(response.role=='[ROLE_USER]')
             window.location.href="/fastfood/menu";
-        else
+        else {
+            console.log(response.status);
             alert("현재 로그인한 정보가 이상합니다?!");
+        }
     }).fail(function(error){
         const errorMessage=JSON.parse(error.responseText);
         console.log(errorMessage.error);
@@ -70,8 +72,13 @@ function save(){
     }).done(function(){
         alert("회원가입 완료!!!!");
          window.location.href="/fastfood/login";
-    }).fail(function(error){
-        alert(JSON.stringify(error));
+    }).fail(function(data,status){
+        console.log(data.responseText);
+        const errorResponse =JSON.parse(data.responseText);
+        console.log(errorResponse);
+        if(status==409){
+            alert(errorResponse.headers.message);
+        }
     });
 }
 function update(){

@@ -23,7 +23,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 public class Product_option_info {
@@ -42,6 +41,7 @@ public class Product_option_info {
    @ManyToOne
    @JoinColumn(name="tid",nullable=false)
    private Temperature temperature;
+
    private boolean isUse=true; //옵션 사용 여부
    private Integer price;
 

@@ -1,4 +1,4 @@
-package com.example.demo.exception;
+package com.example.demo.exception.Exception;
 import com.example.demo.exception.errorCode.RefreshErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

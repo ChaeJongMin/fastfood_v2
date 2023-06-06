@@ -5,6 +5,7 @@ window.onload = function (){
 
             let saveEle=document.querySelectorAll('#save-button');
             let saveSetEle=document.querySelectorAll('#save-set-button');
+            let orderEle=document.querySelector('#order-move-btn');
             // let buyEle=document.querySelector('#basket-update-btn');
             if(saveEle!=null){
                 saveEle.forEach(function (btnItem) {
@@ -22,7 +23,11 @@ window.onload = function (){
                     })
                 })
             }
-
+    if(orderEle!=null){
+        orderEle.addEventListener('click', function () {
+            buys();
+        });
+    }
 
 }
 function save(saveForm) {
@@ -120,13 +125,4 @@ function buys(){
     });
 
 }
-function emptyCheck(cnt){
-    if(cnt==0){
-      alert("장바구니가 비어있습니다... 음식을 담아주세요.")
-    } else {
-        if(confirm("장바구니로 이동하겠습니까??")){
-                window.location.href="/fastfood/my_baket";
-        }
 
-    }
-}

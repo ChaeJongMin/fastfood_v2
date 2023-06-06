@@ -1,10 +1,11 @@
 import { UtilController } from './Util.js';
 const util=new UtilController();
 
-
-const basket = {
+console.log("안녕!!!");
+export const basket = {
     totalCount: 0, 
     totalPrice: 0,
+
     //체크한 장바구니 상품 비우기
     delCheckedItem: function(){
         if(document.querySelectorAll("input[name=buy]:checked").length==
@@ -88,6 +89,7 @@ const basket = {
         this.updateUI();
     },
     delItem: function () {
+        console.log("delItem 함수 호출");
         if(document.querySelectorAll("input[name=buy]").length==1){
             if(confirm("마지막 음식까지 삭제하면 메뉴페이지로 돌아갑니다.")){
                 event.target.parentElement.parentElement.parentElement.remove();
@@ -102,7 +104,6 @@ const basket = {
             this.reCalc();
             this.updateUI();
         }
-
     }
 }
 
@@ -131,3 +132,5 @@ function callAjax(){
     });
 
 }
+
+window.basket = basket;

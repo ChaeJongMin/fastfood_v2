@@ -5,10 +5,13 @@
    <meta name="viewport" content="width=device-width">
    <title>장바구니</title>
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="/css/boardUi.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="/css/boardUi.css" />
+
+
 </head>
 <body>
-   
+
     <div id="basket-form" >
             <div class="basketdiv" id="basket">
                 <div class="row head">
@@ -33,7 +36,7 @@
                 <form class="row data" id="basket-info" method="post">
                     <div class="subdiv">
                         <div class="check"><input type="checkbox" name="buy" checked="" th:value="${baskets.getBid()}"  th:onclick="|javascript:basket.checkItem()|">&nbsp;</div>
-                        <div class="img"><img th:src="'/img/'+${productList[count.index].getProductName()}+'.jpg'" width="60" height="40"></div>
+                        <div class="img"><img th:src="@{${productList[count.index].getImgUrl()}}" width="60" height="40"></div>
                         <div class="pname" id="item-name">
                             <strong th:text="${productList[count.index].getProductName()}"></strong><br>
                             <span th:text="'사이즈: '+${productList[count.index].getSizeName()}"></span>
@@ -63,7 +66,9 @@
                         <div class="sum" id="item-sum" th:text="${baskets.getTotalPrice()}+'원'" ></div>
                     </div>
                     <div class="subdiv">
-                        <div class="basketcmd"><a href="javascript:void(0)" class="abutton" th:onclick="|javascript:basket.delItem()|">삭제</a></div>
+                        <div class="basketcmd">
+                            <a href="javascript:void(0)" class="abutton" th:onclick="|javascript:basket.delItem()|">삭제</a>
+                        </div>
                     </div>
                 </form>
                 </th:block>
@@ -84,15 +89,17 @@
                 <div class="buttongroup center-align cmd">
                     <button class="move" th:onclick="|location.href='@{/fastfood/menu}'|"><i class="fa fa-angle-left"></i>메뉴이동</button>
 <!--                    <button class="move" name="order" id="basket-update-btn">주문하기<i class="fa fa-angle-right"></i></button>-->
-                    <button class="move" name="order" th:onclick="|javascript:buys()|">주문하기<i class="fa fa-angle-right"></i></button>
+                    <button id="order-move-btn" class="move" name="order" >주문하기<i class="fa fa-angle-right"></i></button>
                 </div>
             </div>
+            <th:block th:replace="common/footer :: footerFragment"></th:block>
         </div>
+
     <input type="hidden" id="userId" th:value="${userId}">
 
    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
-    <script type="text/javascript" src="/js/basketUi.js"></script>
    <script type="module" src="/js/basketInit.js"></script>
+    <script type="module" src="/js/basketUi.js"></script>
 </body>
 
 </html>

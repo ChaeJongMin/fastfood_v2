@@ -23,7 +23,7 @@ public interface OptionInfoRepo extends JpaRepository<Product_option_info, Integ
 	public List<Product_option_info> findBySize(Size searchword);
 	public List<Product_option_info> findByTemperature(Temperature searchword);
 	
-	
+	public void deleteByInfoid(int id);
 	
 	@Modifying
 	@Query("select b from Product_option_info b where b.product=:product and b.size=:size and b.temperature=:temperature")
@@ -33,6 +33,7 @@ public interface OptionInfoRepo extends JpaRepository<Product_option_info, Integ
 
 	public Product_option_info findByProduct_PidAndSize_SidAndTemperature_Tid(int pid, int sid, int tid);
 
+	public void deleteAllByProduct(Product product);
 }
 
 

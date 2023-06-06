@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
+
 <head>
 	<title>회원가입</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
 </head>
 <style>
+footer{
+    color: black;
+}
+footer a{
+    color: black;
+}
 html{
 	height:100%;
 }
@@ -56,6 +64,7 @@ label{
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <th:block th:replace="common/footer :: footerFragment"></th:block>
 </div>
 <br>
 <a th:href="@{/fastfood/login}">로그인 화면으로 돌아가기</a>

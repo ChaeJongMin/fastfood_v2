@@ -17,9 +17,10 @@ public class RefreshTokens extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //유저아이디(PK)
+
     @Column(nullable = false)
     private String keyId;
+
     //refresh 토큰 값
     @Column(nullable = false)
     private String value;

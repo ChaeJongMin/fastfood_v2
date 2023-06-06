@@ -181,3 +181,10 @@ section{
 .dropdown-toggle{
     line-height: 230%;
 }
+footer{
+    width: 100%;
+    position: relative;
+}
+footer nav{
+    position: static;
+}

@@ -7,6 +7,7 @@
     <title> AdminPage </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/DaySettleMent.css}">
 
 </head>
@@ -28,12 +29,15 @@
             </div>
         </div>
         <ul class="subMenu">
-            <li><button type="button" class="side-btn">Home</button></li>
-            <li><button type="button" class="side-btn">LOGOUT</button></li>
+            <li><button type="button" class="side-btn" th:onclick="|location.href='@{/fastfood/superMainHome}'|">Home</button></li>
+            <li><button type="button" class="side-btn" onclick="logout()">LOGOUT</button></li>
             <li><button type="button" class="side-btn">고객 관리</button></li>
-            <li><button type="button" class="side-btn">메뉴 추가</button></li>
-            <li><button type="button" class="side-btn">메뉴 관리</button></li>
-            <li><button type="button" class="side-btn">결산</button></li>
+            <li><button type="button" class="side-btn"
+                        th:onclick="|location.href='@{/fastfood/productAdd}'|">메뉴 추가</button></li>
+            <li><button type="button" class="side-btn"
+                        th:onclick="|location.href='@{/fastfood/productList(cateName=버거)}'|">메뉴 관리</button></li>
+            <li><button type="button" class="side-btn"
+                        th:onclick="|location.href='@{/fastfood/DaySettlement(yearMonth=${currentDate})}'|">결산</button></li>
         </ul>
     </nav>
 
@@ -94,9 +98,7 @@
             </nav>
         </div>
     </section>
-    <footer>
-
-    </footer>
+    <th:block th:replace="common/footer :: footerFragment"></th:block>
 </div>
 </body>
 <script src="/js/initAuth.js" type="module"></script>

@@ -1,7 +1,7 @@
 package com.example.demo.config.auth.jwt.UserData;
 
 import com.example.demo.domain.Customer;
-import com.example.demo.exception.TokenCheckException;
+import com.example.demo.exception.Exception.TokenCheckException;
 import com.example.demo.exception.message.ExceptionMessage;
 import com.example.demo.persistence.CustomerRepository;
 import lombok.RequiredArgsConstructor;

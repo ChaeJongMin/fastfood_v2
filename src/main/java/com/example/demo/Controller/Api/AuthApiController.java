@@ -3,7 +3,7 @@ package com.example.demo.Controller.Api;
 import com.example.demo.Service.RefreshTokenService;
 import com.example.demo.config.auth.jwt.JwtTokenProvider;
 import com.example.demo.dto.Response.TokenDto;
-import com.example.demo.exception.UserAuthException;
+import com.example.demo.exception.Exception.UserAuthException;
 import com.example.demo.exception.message.ExceptionMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;

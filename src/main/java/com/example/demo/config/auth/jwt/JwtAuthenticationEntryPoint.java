@@ -1,7 +1,6 @@
 package com.example.demo.config.auth.jwt;
 
-import com.example.demo.exception.CustomException;
-import com.example.demo.exception.ErrorResponse;
+
 import com.example.demo.exception.errorCode.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;

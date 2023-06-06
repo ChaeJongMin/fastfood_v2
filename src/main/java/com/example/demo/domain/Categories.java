@@ -35,7 +35,7 @@ public class Categories {
 	private Integer categoryId;
 	private String categoryName;
 	
-	@OneToMany(mappedBy="categories", fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="categories", fetch=FetchType.EAGER,cascade=CascadeType.REMOVE)
 	   private List<Product> productList = new ArrayList<Product>();
 
 	@Builder

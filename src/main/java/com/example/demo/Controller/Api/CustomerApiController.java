@@ -2,21 +2,16 @@ package com.example.demo.Controller.Api;
 
 import com.example.demo.Service.ConnectCustomerService;
 import com.example.demo.Service.CustomerService;
-import com.example.demo.domain.Role;
 import com.example.demo.dto.Request.CustomerSaveRequestDto;
-import com.example.demo.exception.UserAuthException;
+import com.example.demo.exception.Exception.UserAuthException;
 import com.example.demo.exception.message.ExceptionMessage;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.Map;
 
 
 @Slf4j
@@ -32,20 +27,14 @@ public class CustomerApiController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(customerService.findByUserId(principal.getName()));
     }
-//    @PostMapping("/api/customer/login")
-//    public ResponseEntity<?> loginSuccess(@RequestBody Map<String, String> loginForm,
-//                                       HttpServletResponse response) throws JsonProcessingException {
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        connectCustomerService.increaseCurrentMonthCnt();
-//        Role role=customerService.login(loginForm.get("userId"), loginForm.get("userPasswd"),response);
-//        return ResponseEntity.status(HttpStatus.OK).body(role);
-//    }
+
     @PostMapping("/api/customer")
     public int sava(@RequestBody CustomerSaveRequestDto customerSaveRequestDto){
         //소셜 로그인한 유저일 경우!
         //최초 사용자가 소셜 로그인을 이용 시 customer 테이블에 이메일과 소셜 정보가 이미 존재하므로
         //이 정보를 바탕으로 구분
+        // 해당 이메일 아이디가 이미 존재하면 넘어가야한다. (따로 처리 필요)
+        log.info("/api/customer");
         if(customerService.existToSocialFromEmail(customerSaveRequestDto.getEmail())){
             return customerService.updateForInitSocialUser(customerSaveRequestDto);
         }

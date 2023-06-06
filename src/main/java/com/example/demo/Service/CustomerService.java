@@ -1,13 +1,12 @@
 package com.example.demo.Service;
 
-//import com.example.demo.config.auth.jwt.JwtTokenProvider;
 import com.example.demo.domain.Customer;
 import com.example.demo.dto.Request.CardInfoRequestDto;
 import com.example.demo.dto.Request.CustomerSaveRequestDto;
 import com.example.demo.dto.Response.CustomerResponseDto;
 import com.example.demo.dto.chat.ChatFindUserResponseDto;
-import com.example.demo.exception.UserAuthException;
-import com.example.demo.exception.message.ExceptionMessage;
+import com.example.demo.exception.Exception.DuplicateException;
+import com.example.demo.exception.errorCode.ControllerErrorCode;
 import com.example.demo.persistence.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +32,8 @@ public class CustomerService {
 
 
     /********************************************************************************************/
+<<<<<<< HEAD
+=======
 //    @Transactional(readOnly = true)
 //    public Customer auth(String id, String password){
 //
@@ -74,9 +75,10 @@ public class CustomerService {
 //        log.info("로그아웃 서비스");
 //        String userId=jwtTokenProvider.parseToken(jwtTokenProvider.resolveToken(accessToken));
 //        log.info("가져온 유저아이디: "+userId);
-//        refreshTokenRepository.deleteByKeyId(userId);
+//        refreshTokenRepository.ㅇByKeyId(userId);
 
     }
+>>>>>>> fastfoodv2/master
 
     @Transactional(readOnly = true)
     public int getUserPkId(String userId){
@@ -84,8 +86,25 @@ public class CustomerService {
     }
     @Transactional
     public int save(CustomerSaveRequestDto customerSaveRequestDto){
+        log.info("save");
+        if(customerRepo.existsByUserId(customerSaveRequestDto.getUserId())) {
+            log.info("existsByUserId");
+            throw new DuplicateException(ControllerErrorCode.USERID_DUPLICATION);
+        }
+
+        if(customerRepo.existsByEmail(customerSaveRequestDto.getEmail())) {
+            log.info("existsByEmail");
+            throw new DuplicateException(ControllerErrorCode.EMAIL_DUPLICATION);
+        }
+
         customerSaveRequestDto.setEncorderPasswd(passwordEncoder);
-        return customerRepo.save(customerSaveRequestDto.toCustomerEntitiy()).getId();
+        Customer customer=customerRepo.save(customerSaveRequestDto.toCustomerEntitiy());
+<<<<<<< HEAD
+
+=======
+        log.info("새로 회원가입한 유저의 권한 "+customer.getRole());
+>>>>>>> fastfoodv2/master
+        return customer.getId();
     }
     @Transactional(readOnly = true)
     public CustomerResponseDto findById(int id){
@@ -95,9 +114,9 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public CustomerResponseDto findByUserId(String userId){
         List<Customer> list= customerRepo.findByUserId(userId);
-        if(list.isEmpty()){
-            new UserAuthException(ExceptionMessage.NOT_FOUND_USER);
-        }
+//        if(list.isEmpty()){
+//            new UserAuthException(ExceptionMessage.NOT_FOUND_USER);
+//        }
         return new CustomerResponseDto(customerRepo.findById(list.get(0).getId()).get());
     }
 
@@ -132,15 +151,22 @@ public class CustomerService {
     public String findByidForUserId(int id){
         return customerRepo.findById(id).get().getUserId();
     }
+
     @Transactional(readOnly = true)
     public Customer findByEmailToCustomer(String email){
-        return customerRepo.findByEmail(email).orElseThrow(()->
-                new IllegalArgumentException("해당 유저는 없습니다."));
+        Optional<Customer> customer= customerRepo.findByEmail(email);
+        //소셜로 회원가입할 소셜 유저는 이메일, 소셜 값만 존재해야한다.
+        //만약 다른 사용자가 소셜 유저의 이메일을 입력할 수 있기 떄문이다.(업데이트 되버린다.)
+        if(customer.isPresent() && customer.get().getUserId().isEmpty()){
+            return customer.get();
+        }
+        return null;
+
     }
     @Transactional(readOnly = true)
     public boolean existToSocialFromEmail(String email){
         Customer customer=findByEmailToCustomer(email);
-        if(customer.getSocialId().equals("empty"))
+        if(customer==null)
             return false;
         return true;
     }

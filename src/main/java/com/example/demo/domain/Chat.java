@@ -16,17 +16,17 @@ public class Chat extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_id")
     private Long id;
-
+    //채팅방 객체
     @ManyToOne
     @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
-
+    //송신자(Customer객체)
     @ManyToOne
     private Customer sender;
-
+    //수신자(Customer객체)
     @ManyToOne
     private Customer receiver;
-
+    //메시지
     @Column(columnDefinition = "text")
     private String message;
 
@@ -37,5 +37,4 @@ public class Chat extends BaseTime {
         this.message = message;
         this.chatRoom = chatRoom;
     }
-
 }

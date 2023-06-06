@@ -160,15 +160,22 @@ public class AdminController {
 		return "fastfood/admin/settle/DaySettlement";
 	}
 
+	// 선택한 카테고리명을 parameter(cateName)으로 받음
 	@GetMapping("/productList")
 	public String showProductList(@AuthenticationPrincipal CustomUserDetail customUser, Model model, String cateName) {
-		//카테고리 리스트
+		//카테고리 이름을 리스트형태로 얻어온다.
 		List<String> cateNameList=categoriesService.findCateNameList();
-		//제품 정보 리스트
+
+		//현재 선택된 카테고리
 		String cname="";
 		cname=cateName;
-		List<ProductResponseDto> productDto=productService.findByCateName(cateName);
 
+		//해당 카테고리에 속한 모든 제품들의 정보를 얻습니다./
+		List<ProductResponseDto> productDto=productService.findByCateName(cateName);
+		for(ProductResponseDto responseDto : productDto){
+			System.out.println(responseDto.getProductName()+" "+responseDto.isAllSale());
+		}
+		//관리자의 정보를 얻습니다.
 		CustomerResponseDto customerResponseDto =customerService.findById(customUser.getId());
 
 		model.addAttribute("customer", customerResponseDto);
@@ -179,18 +186,24 @@ public class AdminController {
 
 	@GetMapping(value="/productAdd")
 	public String showProductAdd(@AuthenticationPrincipal CustomUserDetail customUser,Model model){
+		//관리자의 정보를 얻습니다.
 		CustomerResponseDto customerResponseDto =customerService.findById(customUser.getId());
 		model.addAttribute("customer", customerResponseDto);
 		return "fastfood/admin/product/productAdd";
 	}
 
+	//parameter로 제품의 이름을 받아온다.
 	@GetMapping("/productManage")
 	public String showProductList(Model model, String productName,@AuthenticationPrincipal CustomUserDetail customUser){
+		//받아온 제품명으로 제품 정보 dto를 얻어온다.
 		ProductResponseDto responseDto=productService.findByProductName(productName);
+		log.info(responseDto.getImgUrl());
+		//수정 페이지에 카테고리 선택을 위해 카테고리명 리스트를 전달
 		List<String> cateNameList=categoriesService.findCateNameList();
 		model.addAttribute("product",responseDto);
 		model.addAttribute("cateNameList",cateNameList);
 
+		//관리자의 정보를 얻습니다.
 		CustomerResponseDto customerResponseDto =customerService.findById(customUser.getId());
 		model.addAttribute("customer", customerResponseDto);
 

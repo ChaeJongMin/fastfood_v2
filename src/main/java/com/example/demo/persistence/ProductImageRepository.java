@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.CrudRepository;
@@ -15,7 +16,7 @@ import com.example.demo.domain.Product;
 import com.example.demo.domain.ProductImage;
 
 @EnableJpaRepositories
-public interface ProductImageRepository extends CrudRepository<ProductImage, Integer> {
+public interface ProductImageRepository extends JpaRepository<ProductImage, Integer> {
 //	public List<ProductImage> findByImageLoad(String searchword);
 	
 	public List<ProductImage> findByProduct(Product searchword);

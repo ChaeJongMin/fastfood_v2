@@ -73,7 +73,7 @@ public class BoardController {
         String userId=customerService.findByidForUserId(customUser.getId());
         model.addAttribute("boards",dto);
         model.addAttribute("checkedMe",customerService.compareWriter(dto.getUserId(),userId));
-
+        model.addAttribute("connectId",customUser.getCustomer().getUserId());
         return "fastfood/customer/board/boardContent";
     }
 

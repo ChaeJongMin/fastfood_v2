@@ -20,14 +20,19 @@ import java.util.Map;
 
 @Slf4j
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+    //커스텀 로그인 필터를 통과하여 인증 실패가 되었을 때(로그인 실패)
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
+        //에러 메시지를 JSON 문자로 변경하기 위해 선언
         ObjectMapper objectMapper = new ObjectMapper();
+
         log.info("로그인 실패 핸들러! " +exception.toString());
+        //에러 메시지를 담은 변수
         String error="";
 
-        if(exception  instanceof UsernameNotFoundException){
+        // 각 예외처리에 맞는 에러 메시지를 설정
+        if(exception instanceof UsernameNotFoundException){
             error="존재하지 않는 사용자입니다.";
         }
         else if(exception instanceof BadCredentialsException) {
@@ -46,7 +51,7 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         else{
             error="원인을 모르겠습니다.. 나중에 다시 로그인해 주세요.";
         }
-//        error = URLEncoder.encode(error, "UTF-8");
+        //응답값 설정
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
@@ -57,7 +62,5 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         String result=objectMapper.writeValueAsString(errorMap);
 
         response.getWriter().write(result);
-//        setDefaultFailureUrl("/fastfood/login?error=yes&msg="+error);
-//        super.onAuthenticationFailure(request, response, exception);
     }
 }

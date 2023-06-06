@@ -9,6 +9,7 @@
         <title> 게시판 </title>
 
 <!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
 
@@ -19,7 +20,15 @@ body {
   padding-top: 70px;
   padding-bottom: 30px;
 }
-
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	color: black;
+}
+footer a:visited{
+	color: black;
+}
 </style>
 </head>
 
@@ -72,9 +81,10 @@ body {
 		</div>
 
 	</article>
+	<th:block th:replace="common/footer :: footerFragment"></th:block>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
 	<script type="module" th:src="@{/js/initAuth.js}"></script>
-	<script type="text/javascript" src="/js/Boardinit.js"></script>
+	<script type="module" src="/js/Boardinit.js"></script>
 </body>
 
 </html>
