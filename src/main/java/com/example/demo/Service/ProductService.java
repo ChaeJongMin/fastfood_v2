@@ -75,46 +75,70 @@ public class ProductService {
         return sidePriceLists;
     }
 
-    //제품추가페이지
+    //제품 추가
+    /*
+     1. 먼저 product 테이블에 저장
+     2. productImage 테이블에 저장
+     3. product_option_info 테이블에 저장
+     정리하면 3가지 과정이 진행되야하며 항상 먼저 product 테이블에 먼저 저장되어야한다.
+     why??) productImage, product_option_info은 product 기본키를 외래키로 사용하기 떄문
+     */
     @Transactional
     public int save(ProductSaveRequestDto requestDto, MultipartFile file) throws IOException {
         int result=0;
+        //dto에 카테고리명을 얻어 Categories 객체를 얻어온다.
         Categories categories=categoriesRepository.findByCategoryName(requestDto.getCateName()).get(0);
+        //Categories 객체를 product 객체 생성 메소드에 전달한 후 저장
         Product product=productRepository.save(requestDto.toProductEntity(categories));
-
+        //삽입한 이미지를 저장한다.
         productImageRepository.save(requestDto.toProductImageEntity(product));
+        //삽입한 이미지를 따로 지정한 로컬 저장소에 저장한다.
         saveImgFile(file,requestDto.getName());
-
+        //추가할 제품의 옵션을 저장한다.
         optionsSave(product);
         return product.getPid();
     }
+    //이미지 파일을 로컬 저장소에 저장하는 메소드
     public void saveImgFile(MultipartFile file, String name) throws IOException {
+        //저장할 경로를 지정한다. (BASE_PATH는 기본 경로)
         String finalPath=BASE_PATH+name+".jpg";
+        //File 객체를 생성해 지정된 경로에 이미지 파일을 저장한다.
         File newFile=new File(finalPath);
         file.transferTo(newFile);
     }
+    //옵션을 저장하는 메소드
     @Transactional
     public void optionsSave(Product product){
+        //크기, 온도에 관한 모든 객체를 가져온다.
         Iterable<Size> sizeList = sizeRepository.findAll();
         Iterable<Temperature> tempList = temperRepository.findAll();
 
+        //사이즈 크키 * 온도 크기 만큼 반복
         for (Size s : sizeList) {
             for (Temperature t : tempList) {
-                // Set price
+                // 옵션 테이블에 저장할 데이터를 지정
                 String sizeName=s.getSizename();
                 String tempName=t.getTempname();
                 String cateName=product.getCategories().getCategoryName();
 
+                //가격을 지정하는 로직
+                //옵션에 따라 할당되는 가격은 항상 기본 제품의 가격에 기반된다.
                 int price = product.getPrice();
+                //사이즈가 미디엄 , 그란데(커피 전용) 일 경우 기본 제품 가격 +500
                 if (sizeName.equals("Medium") || sizeName.equals("Grande")) {
                     price += 500;
+                // 사이즈가 라지, 벤티(커피 전용) 일 경우 기본 제품 가격 +1000
                 } else if (sizeName.equals("Large") || sizeName.equals("Venti")) {
                     price += 1000;
                 }
 
-                if ((cateName.equals("Coffee") && !tempName.equals("None") && (sizeName.equals("Tall") || sizeName.equals("Grande") || sizeName.equals("Venti"))) ||
-                        ((cateName.equals("버거") || cateName.equals("Soda") || cateName.equals("Side") || cateName.equals("Dessert")) && tempName.equals("None") && (sizeName.equals("Small") || sizeName.equals("Medium") || sizeName.equals("Large"))) ||
+                //1. 제품의 카테고리가 커피이며 온도가 None이 아닐 경우 (커피의 온도는 무조건 Hot or Ice 이다) 그리고 커피 전용 크기일 경우
+                //2. 제품의 카테고리가 버거/탄산/사이드/디저트 이고 온도가 None (해당 제품들은 온도가 이미 지정되어 있어 None로 결정) 이고 사이즈가 음식 전용 크기일 경우
+                //3. 제품의 카테고리가 세트 이고 온도가 None(2번 조건과 동일) 사이즈가 small, Large 일 경우
+                if ((cateName.equals("커피") && !tempName.equals("None") && (sizeName.equals("Tall") || sizeName.equals("Grande") || sizeName.equals("Venti"))) ||
+                        ((cateName.equals("버거") || cateName.equals("탄산") || cateName.equals("사이드") || cateName.equals("디저트")) && tempName.equals("None") && (sizeName.equals("Small") || sizeName.equals("Medium") || sizeName.equals("Large"))) ||
                         (cateName.equals("Set") && tempName.equals("None") && (sizeName.equals("Small") || sizeName.equals("Large")))) {
+                    //결정한 데이터들로 테이블에 저장
                     optionInfoRepo.save(Product_option_info.builder()
                                     .size(s)
                                     .product(product)
@@ -124,62 +148,56 @@ public class ProductService {
                                     .build());
                 }
 
-                // Set size by category
-//				if (cateName.equals( "Coffee") && !t.getTempname().equals("None")) {
-//					if(sizeName.equals("Tall") || sizeName.equals("Grande") || sizeName.equals("Venti")){
-//						optionInfoRepo.save();
-//					}
-//				} else if ((cateName.equals("Burger") || cateName.equals("Soda")|| cateName.equals("Side") || cateName.equals("Dessert")) &&
-//						tempName.equals("None")) {
-//					if(sizeName.equals("Small") || sizeName.equals("Medium") || sizeName.equals("Large")){
-//						optionInfoRepo.save();
-//					}
-//
-//				} else if((cateName.equals("Set") && tempName.equals("None")) {
-//					if(sizeName.equals("Small") || sizeName.equals("Large")){
-//						optionInfoRepo.save();
-//					}
-//				}
-
             }
         }
 
     }
+    //수정될 떄 제품 먼저 수정되고 제품 이미지, 옵션이 수정되어야합니다.
     @Transactional
     public int update(int id, ProductUpdateRequestDto requestDto,MultipartFile file) throws IOException {
+        //제품 아이디를 수정할 제품 엔티티를 가져옵니다.
         Product product=productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 제품이 없습니다. id=" + id));
+        //옵션에 따른 가격을 수정하기 위해 기존 가격을 저장합니다.
         int priorPrice=product.getPrice();
+        //가져온 정보를 제품 정보 수정
         product.update(requestDto.getPrice(), requestDto.isAllSale());
+
+        //제품 이미지가 변경될 시 이미지 파일을 변경한다.
         if(file!=null && !file.isEmpty())
             saveImgFile(file, product.getProductName());
 
+        //해당 제품의 옵션 객체를 가져온다.
         List<Product_option_info> optionInfoList=optionInfoRepo.findByProduct(product);
+        //해당 제품의 옵션들의 가격을 변경한다. (한 제품의 옵션은 여러 개이다 => 크기가 여러 개가 존재)
         for(Product_option_info optionInfo : optionInfoList){
             log.info("바뀐 가격: "+requestDto.getPrice() +" 원래 가격: "+product.getPrice());
+            //변경된 금액은 변경된 가격 - 기존 가격
             optionInfo.update(requestDto.getPrice()-priorPrice);
         }
         return id;
     }
+    //productImage, product_option_info 테이블은 product 기본키를 외래키를 사용
+    //그래서 productImage, product_option_info 삭제 후 product를 삭제해야 한다.
     @Transactional
     public void delete(int id){
-        //옵션 삭제
+        //제품 아이디로 삭제할 제품을 얻습니다.
         Product product=productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 제품이 없습니다. id=" + id));
-
+        //해당 제품의 옵션을 얻어옵니다.
         List<Product_option_info> optionInfoList=optionInfoRepo.findByProduct(product);
         for(Product_option_info optionInfo : optionInfoList){
+            //옵션 엔티티를 삭제합니다.
             optionInfoRepo.delete(optionInfo);
-
         }
         //이미지 삭제
         productImageRepository.deleteByProduct(product);
-
         //제품 삭제
         productRepository.delete(product);
     }
-
+    //카테고리명에 해당하는 제품들은 얻는 메소드
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findByCateName(String cname){
+        //람다식으로 Product를 ProductResponseDto로 변환 및 리스트로 만들어 반환합니다.
         return productRepository.findByCategoryName(cname).stream().map(ProductResponseDto::new).collect(Collectors.toList());
     }
 

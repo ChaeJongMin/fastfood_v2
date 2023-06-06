@@ -52,6 +52,7 @@ public class Product {
 		this.categories=categories;
 		this.infoList=infoList;
 	}
+	//제품 정보를 수정하는 메소드이면 (가격과 품절여부만 수정)
 	public void update(int price, boolean allSale){
 		this.price=price;
 		this.allSale=allSale;

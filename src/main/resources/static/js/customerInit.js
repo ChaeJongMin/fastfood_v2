@@ -43,8 +43,10 @@ function login(){
             window.location.href="/fastfood/superMainHome";
         else if(response.role=='[ROLE_USER]')
             window.location.href="/fastfood/menu";
-        else
+        else {
+            console.log(response.status);
             alert("현재 로그인한 정보가 이상합니다?!");
+        }
     }).fail(function(error){
         const errorMessage=JSON.parse(error.responseText);
         console.log(errorMessage.error);

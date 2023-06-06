@@ -13,6 +13,4 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom,Long>  {
     //주기적으로 검사하여 삭제 필요!
     @Query("SELECT cr FROM ChatRoom cr WHERE cr.roomId NOT IN (SELECT DISTINCT ch.chatRoom.roomId FROM Chat ch)")
     List<ChatRoom> findChatroomsWithNoMatchingChats();
-
-
 }

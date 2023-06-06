@@ -2,7 +2,7 @@ package com.example.demo.config.auth;
 
 import com.example.demo.Service.ConnectCustomerService;
 import com.example.demo.Service.RefreshTokenService;
-import com.example.demo.config.auth.JsonCustomLogin.CustomAuthenticationManager;
+import com.example.demo.config.auth.JsonCustomLogin.Manager.CustomAuthenticationManager;
 import com.example.demo.config.auth.JsonCustomLogin.Service.CustomLoginService;
 import com.example.demo.config.auth.JsonCustomLogin.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import com.example.demo.config.auth.JsonCustomLogin.handler.LoginFailureHandler;
@@ -17,16 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
@@ -68,12 +64,8 @@ public class SecurityConfig {
                 .successHandler(oAuth2LoginSuccessHandler)
                 .userInfoEndpoint().userService(customOAuth2UserService);
 
-
-//                .exceptionHandling()
-                //인증 실패
-//                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                //인가 실패
-//                .accessDeniedHandler(new JwtAccessDeniedHandler())
+        //필터를 등록하는 부분
+        // JwtExceptionFilter -> JwtAuthenticationFilter -> customJsonUsernamePasswordAuthenticationFilter -> LogoutFilter 순서
         httpSecurity.addFilterBefore(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider,tokenUtils), CustomJsonUsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(new JwtExceptionFilter(),JwtAuthenticationFilter.class );
@@ -81,13 +73,19 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+    // customJsonUsernamePasswordAuthenticationFilter 제가 직접 만든 필터이므로 각 필터에 필요한 직접 만든 핸들러, authenticationManager
+    // customLoginService,passwordEncoder를 미리 설정 해줘야한다.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     @Bean
+    public CustomLoginService customLoginService(){
+        return new CustomLoginService(customerRepository);
+    }
+    @Bean
     public CustomAuthenticationManager authenticationManager(){
-        return new CustomAuthenticationManager(customerRepository,passwordEncoder());
+        return new CustomAuthenticationManager(customerRepository,passwordEncoder(),customLoginService());
     }
     @Bean
     public LoginSuccessHandler loginSuccessHandler(){
@@ -97,11 +95,13 @@ public class SecurityConfig {
     public LoginFailureHandler loginFailureHandler(){
         return new LoginFailureHandler();
     }
+    //CustomJsonUsernamePasswordAuthenticationFilter 빈 등록을 한다. (직접 만든 커스텀 필터이므로)
     @Bean
     public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
         CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
                 = new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
         customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+
         customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
         customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
         return customJsonUsernamePasswordLoginFilter;
