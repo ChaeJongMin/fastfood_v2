@@ -172,7 +172,9 @@ public class AdminController {
 
 		//해당 카테고리에 속한 모든 제품들의 정보를 얻습니다./
 		List<ProductResponseDto> productDto=productService.findByCateName(cateName);
-
+		for(ProductResponseDto responseDto : productDto){
+			System.out.println(responseDto.getProductName()+" "+responseDto.isAllSale());
+		}
 		//관리자의 정보를 얻습니다.
 		CustomerResponseDto customerResponseDto =customerService.findById(customUser.getId());
 
@@ -195,6 +197,7 @@ public class AdminController {
 	public String showProductList(Model model, String productName,@AuthenticationPrincipal CustomUserDetail customUser){
 		//받아온 제품명으로 제품 정보 dto를 얻어온다.
 		ProductResponseDto responseDto=productService.findByProductName(productName);
+		log.info(responseDto.getImgUrl());
 		//수정 페이지에 카테고리 선택을 위해 카테고리명 리스트를 전달
 		List<String> cateNameList=categoriesService.findCateNameList();
 		model.addAttribute("product",responseDto);

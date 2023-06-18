@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.hibernate.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,7 +19,7 @@ import com.example.demo.domain.Customer;
 import com.example.demo.domain.Product;
 
 
-public interface ProductRepository extends CrudRepository<Product,Integer> {
+public interface ProductRepository extends JpaRepository<Product,Integer> {
 	public List<Product> findByProductName(String searchword);
 
 	@Transactional
@@ -28,6 +29,7 @@ public interface ProductRepository extends CrudRepository<Product,Integer> {
 
 	List<Product> findByCategories_CategoryId(int id);
 	List<Product> findByCategories_CategoryIdOrCategories_CategoryId(int id1, int id2);
+
 
 	//카테고리명에 해당하는 제품 리스트를 얻는 쿼리메소드
 	@Query("select p from Product p inner join Categories c on p.categories.categoryId=c.categoryId where c.categoryName=:cname")

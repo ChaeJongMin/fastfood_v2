@@ -55,10 +55,10 @@ public class MenuController {
             for(ProductResponseDto p : sideList){
                 System.out.println(p.getProductName());
             }
-            //온도, 크기 리스트
+            //사이드, 드링크 리스트
             model.addAttribute("sideList",sideList);
             model.addAttribute("drinkList",drinkList);
-            //각 온도, 크기별로 가격리스트
+            //사이드, 드링크 별로 가격리스트
             model.addAttribute("spList",productService.findSidePrice(sideList));
             model.addAttribute("dpList",productService.findDrinkPrice(drinkList));
         }

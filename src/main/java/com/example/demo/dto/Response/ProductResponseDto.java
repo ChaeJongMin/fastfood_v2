@@ -17,16 +17,19 @@ public class ProductResponseDto {
     private boolean allSale=false;
     private List<Product_option_info>  infoList;
 
+    private String imgUrl;
+
     private String cateName;
-    public ProductResponseDto(Product entitiy){
+    public ProductResponseDto(Product entitiy,String url){
         this.productName= entitiy.getProductName();
         this.price=entitiy.getPrice();
         this.allSale=entitiy.isAllSale();
         this.pId=entitiy.getPid();
         this.infoList=entitiy.getInfoList();
         this.cateName=entitiy.getCategories().getCategoryName();
+        this.imgUrl=url;
     }
-
+    //서비스 계층으로 옮겨야한다.!!! dto 클래스에 옳지 않다.
     public ArrayList<String> getSize() {
         ArrayList<String> size = new ArrayList<String>();
         for (Product_option_info info : infoList) {

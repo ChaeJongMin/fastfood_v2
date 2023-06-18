@@ -28,12 +28,15 @@
     </div>
 
     <ul class="subMenu">
-      <li><button type="button" class="side-btn">Home</button></li>
-      <li><button type="button" class="side-btn">LOGOUT</button></li>
+      <li><button type="button" class="side-btn" th:onclick="|location.href='@{/fastfood/superMainHome}'|">Home</button></li>
+      <li><button type="button" class="side-btn" onclick="logout()">LOGOUT</button></li>
       <li><button type="button" class="side-btn">고객 관리</button></li>
-      <li><button type="button" class="side-btn">메뉴 추가</button></li>
-      <li><button type="button" class="side-btn">메뉴 관리</button></li>
-      <li><button type="button" class="side-btn">결산</button></li>
+      <li><button type="button" class="side-btn"
+                  th:onclick="|location.href='@{/fastfood/productAdd}'|">메뉴 추가</button></li>
+      <li><button type="button" class="side-btn"
+                  th:onclick="|location.href='@{/fastfood/productList(cateName=버거)}'|">메뉴 관리</button></li>
+      <li><button type="button" class="side-btn"
+                  th:onclick="|location.href='@{/fastfood/DaySettlement(yearMonth=${currentDate})}'|">결산</button></li>
     </ul>
   </nav>
 
@@ -74,7 +77,7 @@
         <td th:text="${product.getProductName()}"></td>
         <td th:text="${product.getPrice()}"></td>
         <td><input type="checkBox" id="chk"
-                   th:checked="${product.isAllSale() ? false : 'checked'}" disabled ></td>
+                   th:checked="${product.isAllSale() ? true : false}" disabled ></td>
       </tr>
       </tbody>
     </table>

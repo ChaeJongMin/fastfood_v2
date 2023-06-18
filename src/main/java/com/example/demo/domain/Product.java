@@ -27,20 +27,23 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude="categories")
 @Entity
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer pid;//PK
+
 	private String productName;
+
 	private Integer price;
+
 	private boolean allSale=false;
+
 	@ManyToOne
 	@JoinColumn(name="categoryId",nullable=false)
 	private Categories categories;
 	
-	@OneToMany(mappedBy="product",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="product", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
 	private List<Product_option_info> infoList=new ArrayList<Product_option_info>();
 
 	@Builder

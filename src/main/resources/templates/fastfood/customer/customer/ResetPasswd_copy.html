@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> AdminPage </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ResetPasswd.css}">
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header>
+            <div id="head">
+                <span>BUGGER QUEEN</span>
+                <p>비밀번호를 초기화하기 위해 아이디와 이메일을 입력해주세요</p>
+                <p class="sub-info">인증코드를 받아도 해당 화면에 벗어나면 다시 인증코드를 받아야합니다.</p>
+            </div>
+        </header>
+
+        <section>
+            <div class="set-box-size">
+                <input type="text" class="insert-field userId" placeholder="아이디를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디를 입력해주세요'">
+                <input type="email" class="insert-field userEmail" placeholder="이메일을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '이메일을 입력해주세요'"
+                required>
+                <p class="error-text">아이디가 존재하지 않습니다.</p>
+                <button class="btn" id="check-info-btn">다음</button>
+            </div>
+            <div class="set-box-size">
+                <p>이메일로 비밀번호 초기화 코드를 보냈습니다, 코드를 입력해주세요</p>
+                <input type="text" class="insert-field sendEmail" placeholder="초기화 코드를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '초기화 코드를 입력해주세요'">
+                <p class="error-text">잘못된 코드입니다. 다시 입력해주세요</p>
+                <button class="btn" id="check-code-ptn">확인</button>
+            </div>
+            <div class="set-box-size">
+                <p>입력한 코드가 인증되었습니다, 변경할 비밀번호를 입력해주세요</p>
+                <input type="password" class="insert-field passwd" placeholder="새로운 비밀번호를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '새로운 비밀번호를 입력해주세요'">
+                <input type="password" class="insert-field repeatPasswd" placeholder="위에 입력한 비밀번호를 다시 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '위에 입력한 비밀번호를 다시 입력해주세요'">
+                <p class="error-text">비밀번호 서로가 다릅니다. 다시 입력해주세요.</p>
+                <button class="btn" id="reset-passwd-btn">변경하기</button>
+            </div>
+            <div class="set-add-info">
+                <span>다시 로그인 페이지로 돌아고싶으면? </span>
+                <a href="#">로그인 페이지</a>
+            </div>
+        </section>
+        
+    </div>
+
+    <footer>
+        
+    </footer>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="chart.js" type="text/javascript"></script>
+</body>
+</html>

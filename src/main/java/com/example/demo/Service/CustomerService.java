@@ -74,7 +74,7 @@ public class CustomerService {
 //        log.info("로그아웃 서비스");
 //        String userId=jwtTokenProvider.parseToken(jwtTokenProvider.resolveToken(accessToken));
 //        log.info("가져온 유저아이디: "+userId);
-//        refreshTokenRepository.deleteByKeyId(userId);
+//        refreshTokenRepository.ㅇByKeyId(userId);
 
     }
 
@@ -85,7 +85,9 @@ public class CustomerService {
     @Transactional
     public int save(CustomerSaveRequestDto customerSaveRequestDto){
         customerSaveRequestDto.setEncorderPasswd(passwordEncoder);
-        return customerRepo.save(customerSaveRequestDto.toCustomerEntitiy()).getId();
+        Customer customer=customerRepo.save(customerSaveRequestDto.toCustomerEntitiy());
+        log.info("새로 회원가입한 유저의 권한 "+customer.getRole());
+        return customer.getId();
     }
     @Transactional(readOnly = true)
     public CustomerResponseDto findById(int id){

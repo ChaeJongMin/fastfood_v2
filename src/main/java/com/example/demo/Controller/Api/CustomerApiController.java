@@ -32,15 +32,7 @@ public class CustomerApiController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(customerService.findByUserId(principal.getName()));
     }
-//    @PostMapping("/api/customer/login")
-//    public ResponseEntity<?> loginSuccess(@RequestBody Map<String, String> loginForm,
-//                                       HttpServletResponse response) throws JsonProcessingException {
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        connectCustomerService.increaseCurrentMonthCnt();
-//        Role role=customerService.login(loginForm.get("userId"), loginForm.get("userPasswd"),response);
-//        return ResponseEntity.status(HttpStatus.OK).body(role);
-//    }
+
     @PostMapping("/api/customer")
     public int sava(@RequestBody CustomerSaveRequestDto customerSaveRequestDto){
         //소셜 로그인한 유저일 경우!

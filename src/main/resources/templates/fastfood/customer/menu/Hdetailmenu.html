@@ -28,12 +28,25 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <button class="btn btn-outline-dark" type="submit"
-                    th:onclick="|javascript:emptyCheck(document.querySelector('#h-basket-size').value)|" style="margin-left: 5px">
+                    onclick="emptyCheck()" style="margin-left: 5px">
                 <i class="bi-cart-fill me-1"></i>
                 Cart
                 <span id="basketCounts" class="badge bg-dark text-white ms-1 rounded-pill"
                       th:text="${basketSize}"></span>
             </button>
+            <script type="text/javascript">
+                function emptyCheck(){
+                    let cnt=document.querySelector('#h-basket-size').value;
+                    if(cnt==0){
+                        alert("장바구니가 비어있습니다... 음식을 담아주세요.")
+                    } else {
+                        if(confirm("장바구니로 이동하겠습니까??")){
+                            window.location.href="/fastfood/my_baket";
+                        }
+
+                    }
+                }
+            </script>
             <input type="hidden" th:value="${basketSize}" id="h-basket-size">
             <div class="dropdown" style="margin-left: 5px">
                 <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -86,7 +99,7 @@
                             <!--                                </a>-->
                             <a href=#
                                th:onclick="|javascript:document.getElementById('id0'+${products.getPId()}).style.display='block'|">
-                                <img class="card-img-top" th:src="'/img/'+${products.getProductName()}+'.jpg'"
+                                <img class="card-img-top" th:src="@{${products.getImgUrl()}}"
                                      alt="..."/>
                             </a>
                             <div th:if="${menuid}!='6'">
@@ -101,7 +114,7 @@
                                             <p style="text-align: center;">
 
                                                 <img style="width:400px; height:400px;" class="card-img-top"
-                                                     th:src="'/img/'+${products.getProductName()}+'.jpg'" alt="..."/>
+                                                     th:src="@{${products.getImgUrl()}}" alt="..."/>
                                             </p>
                                             <input type="hidden" id="form-id" th:value="${products.getPId()}">
                                             <hr>
@@ -194,7 +207,7 @@
                                             <p style="text-align: center;">
 
                                                 <img style="width:400px; height:400px;" class="card-img-top"
-                                                     th:src="'/img/'+${products.productName}+'.jpg'" alt="..."/>
+                                                     th:src="@{${products.getImgUrl()}}" alt="..."/>
                                             </p>
                                             <p>
                                             <form id="save-set-form">

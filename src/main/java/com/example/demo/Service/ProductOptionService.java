@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.domain.Basket;
 import com.example.demo.dto.Response.BasketResponseDto;
 import com.example.demo.dto.Response.ProductOptionResponseDto;
+import com.example.demo.dto.Response.ProductResponseDto;
 import com.example.demo.dto.Response.ProductSideAndDrinkResponseDto;
 import com.example.demo.persistence.BasketRepository;
 import com.example.demo.persistence.OptionInfoRepo;
@@ -12,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductOptionService {
     private final OptionInfoRepo optionInfoRepo;
     private final BasketRepository basketRepository;
+    private final S3UploadFileService s3UploadFileService;
 
 //    public Iterable<Product_option_info> findAllOption(){
 //        return optionInfoRepo.findAll();
@@ -70,13 +73,12 @@ public class ProductOptionService {
 //    }
     /*****************************************************************************************************/
     @Transactional(readOnly = true)
-    public List<ProductOptionResponseDto> findByCustomerForProductOption(int userId){
-        List<Basket> basketList=basketRepository.findByCustomer_Id(userId);
-        List<ProductOptionResponseDto> result=new ArrayList<>();
-        for(Basket basket:basketList){
-            result.add(new ProductOptionResponseDto(basket.getProductinfo()));
-        }
-        return result;
+    public List<ProductOptionResponseDto> findByCustomerForProductOption(int userId) {
+        return basketRepository.findByCustomer_Id(userId)
+                .stream()
+                .map(basket -> new ProductOptionResponseDto(basket.getProductinfo()
+                        , s3UploadFileService.getFileUrl(basket.getProductinfo().getProduct().getProductName())))
+                .collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
     public List<ProductSideAndDrinkResponseDto> setForSideAndDrinkName(List<BasketResponseDto> basketList, int basketListSize){

@@ -25,9 +25,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         private final JwtTokenProvider jwtTokenProvider;
         private final TokenUtils tokenUtils;
         private static final String[] ALL_WHITELIST = {
-            "/api/auth/reissue", "/fastfood/api/auth/reissue",
-            "/api/customer/logout", "/fastfood/api/customer/logout",
-            "/fastfood/login", "/api/auth/delete", "/favicon.ico","/fastfood/register","/login","/api/customer/login"
+            "/api/auth/reissue",
+            "/fastfood/login", "/api/auth/delete", "/favicon.ico","/fastfood/register","/api/customer/login",
+                "/fastfood/ResetPasswd","/api/customer"
         };
 
         /*************************************************************************************************************/
@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //filterChain.doFilter(request,response); 작동
 //            log.info(request.getRequestURI().toString()+" 호출 !!");
             if(isFilterCheck(request.getRequestURI())){
-//                log.info(request.getRequestURI()+" : "+"인증필터가 무시됨!!!");
+//                log.info(request.getRequestURI().toString()+" 호출 !!");
                 filterChain.doFilter(request,response);
                 return ;
             }
@@ -59,10 +59,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .findFirst()
                     .map(Cookie::getValue)
                     .orElse(null);
-            log.info("가져온 토큰: "+accessToken);
+//            log.info("가져온 토큰: "+accessToken);
             return jwtTokenProvider.resolveToken(accessToken);
         }
         private boolean isFilterCheck(String requestURI){
+            if (requestURI.startsWith("/api/mail") || requestURI.startsWith("/oauth2") || requestURI.startsWith("/login") ) {
+                return true;
+            }
           for(String excludeURi : ALL_WHITELIST){
               if(excludeURi.equals(requestURI))
                   return true;

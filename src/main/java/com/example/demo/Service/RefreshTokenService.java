@@ -29,7 +29,15 @@ public class RefreshTokenService {
     public RefreshTokens save(String userId, long expirationTime){
         String value=jwtTokenProvider.refreshGenerateToken(userId,expirationTime);
         long expireTime=jwtTokenProvider.getExpiredTime(value);
-        return refreshTokenRepository.save(RefreshTokens.from(userId,value,expireTime));
+
+        Optional<RefreshTokens> refreshTokens=refreshTokenRepository.findByKeyId(userId);
+
+        if(refreshTokens.isPresent()){
+            update(userId,value,expireTime);
+        } else{
+            return refreshTokenRepository.save(RefreshTokens.from(userId,value,expireTime));
+        }
+        return refreshTokens.get();
     }
 
     @Transactional(readOnly = true)

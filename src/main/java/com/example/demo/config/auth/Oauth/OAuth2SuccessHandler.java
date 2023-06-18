@@ -43,6 +43,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         try{
             // authentication.getPrincipal() 메소드를 통해 CustomOAuth2User 객체를 얻어온다.
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+            log.info(oAuth2User.getEmail()+" "+oAuth2User.getRole());
             // 현재 찾아온 유저가 역할이 GUEST 이면
             if(oAuth2User.getRole()== Role.GUEST){
                 log.info("신규회원입니다(이메일).: "+oAuth2User.getEmail());

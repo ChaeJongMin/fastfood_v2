@@ -5,7 +5,6 @@ import java.util.*;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Setter
@@ -68,7 +67,10 @@ public class Customer {
 		this.cardNum=cardNum;
 		this.cardCompany=cardCompany;
 		this.phoneNum=phoneNum;
+		this.role=Role.USER;
 	}
 
-
+	public void updateEncryptedPasswd(String encodePasswd){
+		this.userPasswd=encodePasswd;
+	}
 }

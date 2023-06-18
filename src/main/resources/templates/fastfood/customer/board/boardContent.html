@@ -68,11 +68,11 @@
                             <span style="font-size: small" th:text="${comment.getWriter()}"></span>
                             <span style="font-size: xx-small" th:text="${comment.getCreateDate()}"></span>&nbsp;
                             <button type="button" class="badge bi bi-pencil-square"
-                                    th:disabled="${checkedMe ? false : true}"
+                                    th:disabled="${connectId.equals(comment.getWriter()) ? false : 'disabled'}"
                                     data-toggle="collapse" th:data-target="|.multi-collapse-${comment.getNo()}|">수정</button>
 
                              <button type="button" class="badge bi bi-pencil-square" id="btn-comment-delete"
-                                     th:disabled="${checkedMe ? false : true}"
+                                     th:disabled="${connectId.equals(comment.getWriter()) ? false : 'disabled'}"
                                      th:value="${comment.getNo()}">삭제</button>
                         </span>
                         <p th:class="'collapse multi-collapse-'+${comment.getNo()}+' show'"

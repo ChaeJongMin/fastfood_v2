@@ -29,6 +29,7 @@ public class ProductService {
     private final SizeRepository sizeRepository;
     private final TemperRepository temperRepository;
     private final OptionInfoRepo optionInfoRepo;
+    private final S3UploadFileService s3UploadFileService;
 //    public ProductRequsetDto getProductList(String productName){
 //        Product product=productRepository.findByProductName(productName).get(0);
 //        ProductRequsetDto productRequsetDto=new ProductRequsetDto(product.getProductName(),product.getPrice(),product.isAllSale());
@@ -36,15 +37,17 @@ public class ProductService {
 //    }
     /**************************************************************************************************************/
     @Transactional(readOnly = true)
-    public List<ProductResponseDto> findByCate(int id){
+    public List<ProductResponseDto> findByCate(int id) {
         return productRepository.findByCategories_CategoryId(id).stream()
-                .map(ProductResponseDto::new)
+                .map(product -> new ProductResponseDto(product,
+                        s3UploadFileService.getFileUrl(product.getProductName())))
                 .collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findByDessertAndSide(){
         return productRepository.findByCategories_CategoryIdOrCategories_CategoryId(4,5).stream()
-                .map(ProductResponseDto::new)
+                .map(product -> new ProductResponseDto(product,
+                        "none"))
                 .collect(Collectors.toList());
 
     }
@@ -91,7 +94,9 @@ public class ProductService {
         //Categories 객체를 product 객체 생성 메소드에 전달한 후 저장
         Product product=productRepository.save(requestDto.toProductEntity(categories));
         //삽입한 이미지를 저장한다.
-        productImageRepository.save(requestDto.toProductImageEntity(product));
+        ProductImage productImage=requestDto.toProductImageEntity(product);
+        System.out.println(productImage.getProduct()+" "+productImage.getImageName()+" ");
+        productImageRepository.save(productImage);
         //삽입한 이미지를 따로 지정한 로컬 저장소에 저장한다.
         saveImgFile(file,requestDto.getName());
         //추가할 제품의 옵션을 저장한다.
@@ -105,6 +110,8 @@ public class ProductService {
         //File 객체를 생성해 지정된 경로에 이미지 파일을 저장한다.
         File newFile=new File(finalPath);
         file.transferTo(newFile);
+        s3UploadFileService.fileUpload(newFile, name+".jpg");
+
     }
     //옵션을 저장하는 메소드
     @Transactional
@@ -161,11 +168,14 @@ public class ProductService {
         //옵션에 따른 가격을 수정하기 위해 기존 가격을 저장합니다.
         int priorPrice=product.getPrice();
         //가져온 정보를 제품 정보 수정
+        log.info("품절여부: "+requestDto.isAllSale());
         product.update(requestDto.getPrice(), requestDto.isAllSale());
 
         //제품 이미지가 변경될 시 이미지 파일을 변경한다.
-        if(file!=null && !file.isEmpty())
+        if(file!=null && !file.isEmpty()) {
             saveImgFile(file, product.getProductName());
+        }
+
 
         //해당 제품의 옵션 객체를 가져온다.
         List<Product_option_info> optionInfoList=optionInfoRepo.findByProduct(product);
@@ -184,26 +194,37 @@ public class ProductService {
         //제품 아이디로 삭제할 제품을 얻습니다.
         Product product=productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 제품이 없습니다. id=" + id));
         //해당 제품의 옵션을 얻어옵니다.
+        log.info("삭제할 제품 "+product.getProductName());
         List<Product_option_info> optionInfoList=optionInfoRepo.findByProduct(product);
-        for(Product_option_info optionInfo : optionInfoList){
-            //옵션 엔티티를 삭제합니다.
-            optionInfoRepo.delete(optionInfo);
-        }
         //이미지 삭제
         productImageRepository.deleteByProduct(product);
+        for(Product_option_info optionInfo : optionInfoList){
+            //옵션 엔티티를 삭제합니다.
+            log.info("삭제할 옵션 아이디 "+optionInfo.getInfoid());
+            optionInfoRepo.delete(optionInfo);
+        }
         //제품 삭제
+        log.info(product.getProductName()+" "+product.getPrice());
+//        productRepository.deleteProduct(product.getPid());
         productRepository.delete(product);
+        s3UploadFileService.delete(product.getProductName());
     }
+
+
     //카테고리명에 해당하는 제품들은 얻는 메소드
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findByCateName(String cname){
         //람다식으로 Product를 ProductResponseDto로 변환 및 리스트로 만들어 반환합니다.
-        return productRepository.findByCategoryName(cname).stream().map(ProductResponseDto::new).collect(Collectors.toList());
+        return productRepository.findByCategoryName(cname).stream()
+                .map(product -> new ProductResponseDto(product,
+                        "none"))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ProductResponseDto findByProductName(String productName){
-        return new ProductResponseDto(productRepository.findByProductName(productName).get(0));
+        return new ProductResponseDto(productRepository.findByProductName(productName).get(0),
+                s3UploadFileService.getFileUrl(productName));
     }
 
     @Transactional(readOnly = true)

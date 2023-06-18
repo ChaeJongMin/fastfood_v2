@@ -48,9 +48,10 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/api/customer/login","/api/customer/logout","/fastfood/login","/fastfood/register","/fastfood/menu").permitAll()
+                .antMatchers("/api/customer/login","/api/customer/logout","/fastfood/login"
+                        ,"/fastfood/register","/fastfood/menu","/fastfood/ResetPasswd").permitAll()
                 .antMatchers("/css/**","/js/**","/img/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/auth/**", "/api/mail/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/customer").permitAll()
 //                .antMatchers("/fastfood/**","/api/**").hasAnyRole(Role.USER.name())
                 .anyRequest().authenticated()

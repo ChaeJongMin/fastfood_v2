@@ -24,7 +24,7 @@
                     <input type="password" class="login-box" id="loginpw" name="userPasswd" placeholder="비밀번호">
                 </div>
                 <div class="search">
-                    <a href="#" style="font-family: 'Caveat', cursive">forget id or passwd?</a>
+                    <a th:href="@{/fastfood/ResetPasswd}" style="font-family: 'Caveat', cursive">forget id or passwd?</a>
                 </div>
 <!--                <div class="remember-box">-->
 <!--                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>-->
@@ -37,7 +37,7 @@
                     <button type="button" class="oauthBtn" value="NAVER IN" onclick="location.href='/oauth2/authorization/naver'" >
                         <img src="\img\loginImg\naverLogin2.png">
                     </button>
-                    <button type="button" class="googleBtn" value="NAVER IN" onclick="location.href='/oauth2/authorization/naver'" >
+                    <button type="button" class="googleBtn" value="GOOGLE IN" onclick="location.href='/oauth2/authorization/google'" >
                         <img src="\img\loginImg\btn_google_signin_dark_focus_web.png">
                     </button>
                 </div>

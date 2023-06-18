@@ -45,5 +45,9 @@ public class CustomerController {
         model.addAttribute("id", id);
         return "fastfood/customer/customer/CustomerInfoUpdate";
     }
+    @GetMapping("/ResetPasswd")
+    public String resetView(){
+        return "fastfood/customer/customer/ResetPasswd";
+    }
 }
 

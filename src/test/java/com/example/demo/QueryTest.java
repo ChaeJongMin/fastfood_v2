@@ -4,9 +4,7 @@ import com.example.demo.Service.ChatService;
 import com.example.demo.Service.CustomerService;
 import com.example.demo.Service.OrderService;
 import com.example.demo.Service.ProductService;
-import com.example.demo.domain.Chat;
-import com.example.demo.domain.ChatRoom;
-import com.example.demo.domain.Product;
+import com.example.demo.domain.*;
 import com.example.demo.dto.Response.OrdersResponseDto;
 import com.example.demo.dto.Response.ProductResponseDto;
 import com.example.demo.dto.chat.ChatChattedDto;
@@ -16,6 +14,7 @@ import com.example.demo.persistence.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.*;
 import java.util.List;
@@ -57,17 +56,11 @@ public class QueryTest {
     private ChatRoomRepository chatRoomRepository;
 
     @Test
-    public void queryTest(){
-        long id=8;
-        List<ChatChattedDto> list=chatService.getChatList(id);
-        for(ChatChattedDto dto:list){
-            System.out.println(dto.getUserId()+" "+dto.getMessage()+" "+dto.getSendTime());
-        }
+    @Transactional
+    public void queryTest() {
+//        ProductRepo.deleteByPid(53);
 
-
-
-
-
+//        ProductRepo.delete(product);
     }
 
 }
