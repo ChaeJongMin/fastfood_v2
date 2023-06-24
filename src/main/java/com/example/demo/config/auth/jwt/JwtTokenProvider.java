@@ -37,6 +37,7 @@ import static com.example.demo.exception.errorCode.RefreshErrorCode.*;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+    // JWT 토큰에 관한 여러 로직이 담긴 클래스
     private final RefreshTokenRepository refreshTokenRepository;
 
     public static final String ACCESS_TOKEN = "Access_Token";
@@ -53,12 +54,15 @@ public class JwtTokenProvider {
     private String secretKey;
     @PostConstruct
     public void init() {
-//        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
+        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
         key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     /********************************************************************************/
+    //액세스 토큰을 생성하는 메소드
+    // 액세스 토큰에 사용자 정보가 있어도되나 보안적으로 중요한 데이터 (비밀번호 같은 데이터)는 넣는 것은 비추
     public String generateToken(String userId, long expirationTime){
+        
         UserDetails userDetails=customLoadUserByUsername.loadUserByUsername(userId);
         String authorities = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -75,6 +79,8 @@ public class JwtTokenProvider {
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS256).compact();
     }
+    //리프레쉬 토큰을 생성하는 메소드
+    // 리프레쉬 토큰은 사용자의 정보가 필요없다.
     public String refreshGenerateToken(String userId, long expirationTime){
         Date now=new Date();
         Date expireDate=new Date(now.getTime()+expirationTime);
@@ -83,6 +89,7 @@ public class JwtTokenProvider {
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS256).compact();
     }
+    //현재 토큰의 만료 여부를 확인하는 메소드
     public boolean checkRemainTime(String token) {
         Date expiration = parseClaim(token).getExpiration();
         Date now = new Date();
@@ -100,21 +107,26 @@ public class JwtTokenProvider {
         }
         return null;
     }
+    //토큰의 페이로드의 subject(유저 아이디)를 반환하는 메소
     public String parseToken(String token) {
         return parseClaim(token).getSubject();
     }
+    //액세스 토큰의 만료 시간을 얻는 메소드
     public long getExpiredTime(String token){
         //리프레쉬, 액세스 차별 여부 필요
         long expiredTime=parseClaim(token).getExpiration().getTime();
         log.info("getExpiredTime메소드 : "+expiredTime);
         return expiredTime;
     }
+    // 리프레쉬 토큰의 만료 시간을 얻는 메소드
     public long getRefreshTokenExpiredTime(String token){
         //리프레쉬, 액세스 차별 여부 필요
+        //차별을 둔 이유는 서로 다른 예외 메시지를 발급해주기 위해
         long expiredTime=parseClaimRefreshToken(token).getExpiration().getTime();
         log.info("getExpiredTime메소드 : "+expiredTime);
         return expiredTime;
     }
+    //리프레쉬 토큰을 쿠키에 설정하는 메소드드
     public void setRefreshTokenAtCookie(RefreshTokens refreshToken, HttpServletResponse response) {
         ResponseCookie refreshCookie=ResponseCookie.from("refreshToken",refreshToken.getValue())
                 .maxAge(60 * 60 * 3)
@@ -126,6 +138,7 @@ public class JwtTokenProvider {
 
         response.setHeader("Set-Cookie",refreshCookie.toString());
     }
+    //액세스 토큰을 쿠키에 설정하는 메소드드
     public void setAccessTokenAtCookie(String AccessToken, HttpServletResponse response) {
         ResponseCookie accessCookie=ResponseCookie.from("accessToken",TOKEN_PREFIX+AccessToken)
                 .maxAge(60*30)
@@ -137,6 +150,10 @@ public class JwtTokenProvider {
 
         response.setHeader("Set-Cookie",accessCookie.toString());
     }
+    //액세스, 리프레쉬 토큰을 둘 다 쿠키에 설정
+    //액세스 , 액세스+리프레쉬로 나눈 이유는 각 토큰이 따로 발급할 필요가 있다
+    //액세스만 발급은 액세스 토큰이 만료될 떄
+    //액세스+리프레쉬는 로그인 했을 떄떄
     public void setAccessTokenAndRefreshToken(String accessTokenInfo, String refreshTokenInfo, HttpServletResponse response){
         Cookie accessCookie=new Cookie("accessToken",TOKEN_PREFIX+accessTokenInfo);
         accessCookie.setPath("/");
@@ -152,9 +169,16 @@ public class JwtTokenProvider {
         refreshCookie.setMaxAge(60*60*30);
         response.addCookie(refreshCookie);
     }
+    //  JWT 토큰을 파싱하여 클레임(Claims) 객체로 변환하는 메소드
+    // 
     public Claims parseClaim(String token) {
         log.info("parseClaim 메소드 작동");
         try {
+            //토큰이 유효한지 검증하고 Claim 객체를 반환
+            // parserBuilder() -> JWT 파서 빌더를 생성 
+            // setSiginKey(key) -> 파싱 및 검증에 사용할 서명 키를 설정
+            // parseClaimsJws(token) -> 주어진 토큰(token)을 파싱하여 검증
+            // getBody() -> 검증된 JWT의 본문(Claims==Payload)을 반환
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new CustomException(FAIL_TOKEN_CHECK);
