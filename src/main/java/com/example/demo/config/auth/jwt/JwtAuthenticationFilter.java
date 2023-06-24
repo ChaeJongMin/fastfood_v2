@@ -24,31 +24,35 @@ import java.util.Arrays;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
         private final JwtTokenProvider jwtTokenProvider;
         private final TokenUtils tokenUtils;
+        //필터에서 액세스 토큰 검사가 필요없는 uri 배
         private static final String[] ALL_WHITELIST = {
-            "/api/auth/reissue",
-            "/fastfood/login", "/api/auth/delete", "/favicon.ico","/fastfood/register","/api/customer/login",
-                "/fastfood/ResetPasswd","/api/customer"
+            "/api/auth/reissue",  "/api/auth/delete",
+            "/api/customer" , "/api/customer/login", "/api/customer", 
+            "/fastfood/login", "/fastfood/ResetPasswd", "/fastfood/register",  
+            "/favicon.ico"               
         };
 
         /*************************************************************************************************************/
         @Override
-        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            //requestValue를 통해 재발급 api이면
-            //filterChain.doFilter(request,response); 작동
-//            log.info(request.getRequestURI().toString()+" 호출 !!");
-            if(isFilterCheck(request.getRequestURI())){
-//                log.info(request.getRequestURI().toString()+" 호출 !!");
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {            
+           // 액세스 토큰 검사를 할 필요 없는 uri일 시 그냥 필터 통과 
+          if(isFilterCheck(request.getRequestURI())){                    
                 filterChain.doFilter(request,response);
                 return ;
             }
+            // 액세스 토큰 검사가 필요한 uri
             else {
-//                log.info(request.getRequestURI() + " : " + "액세스토큰 검사!!!");
+                //쿠키에 존재하는 액세스 토큰을 가져온다.    
                 String token = this.resolveAccessTokenFromRequest(request);
-//                log.info(token);
+                // 액세스 토큰 유효성 검사
+                // 토큰이 비어있지 않고 정상적이 토큰일 시    
                 if (token != null && this.tokenUtils.vaildateToken(token)) {
+                    // 유효한 토큰을 통해 인증된 유저의 정보를 받아온다.    
                     Authentication authentication = this.tokenUtils.getAuthentication(token);
+                    // 그 정보를 SecurityContextHolder 저장    
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+                //다음 필터 진행
                 filterChain.doFilter(request, response);
             }
         }
@@ -60,6 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .map(Cookie::getValue)
                     .orElse(null);
 //            log.info("가져온 토큰: "+accessToken);
+            //액세스 토큰의 value를     
             return jwtTokenProvider.resolveToken(accessToken);
         }
         private boolean isFilterCheck(String requestURI){
@@ -75,6 +80,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           }
           return false;
         }
+// private boolean isFilterCheck(String requestURI) {
+//   return requestURI.startsWith("/api/mail")
+//       || requestURI.startsWith("/oauth2")
+//       || requestURI.startsWith("/login")
+//       || Arrays.asList(ALL_WHITELIST).contains(requestURI)
+//       || requestURI.matches(".*(css|jpg|png|gif|js|ico)");
+// }
 
         /*************************************************************************************************************/
 
