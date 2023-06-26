@@ -32,44 +32,7 @@ public class CustomerService {
 
 
     /********************************************************************************************/
-<<<<<<< HEAD
-=======
-//    @Transactional(readOnly = true)
-//    public Customer auth(String id, String password){
-//
-//        if(!customerRepo.existsByUserId(id)){
-//            throw new UserAuthException(ExceptionMessage.NOT_FOUND_USER);
-//        }
-//        Customer customer=customerRepo.findByUserId(id).get(0);
-//        if(!passwordEncoder.matches(password , customer.getUserPasswd())){
-//            throw new UserAuthException(ExceptionMessage.MISMATCH_PASSWORD);
-//        }
-//        return customer;
-//    }
-//
-//    @Transactional
-//    public Role login(String id, String password, HttpServletResponse response) {
-//        Customer customer=this.auth(id,password);
-//        String userId=customer.getUserId();
-//        Role role=customer.getRole();
-//        RefreshTokens refreshToken=null;
-//        로그인한 유저의 리프레쉬 토큰이 일단 존재할 시
-//        if(!rtoken.equals("not exist") && refreshTokenService.findRefreshTokenbyUser(id)){
-//            //리프레쉬 토큰이 만료 또는 유효하지 않을 경우
-//            if(refreshTokenService.checkExpireTime(jwtTokenProvider.getRefreshTokenExpiredTime(rtoken))){
-//                //새로 업데이트
-//                refreshTokenValue=jwtTokenProvider.refreshGenerateToken(userId,jwtTokenProvider.REFRESH_TIME);
-//                refreshTokenService.update(userId,refreshTokenValue,jwtTokenProvider.getRefreshTokenExpiredTime(refreshTokenValue));
-//            }
-//        } else{
-//            refreshTokenValue=refreshTokenService.save(userId, JwtTokenProvider.REFRESH_TIME).getValue();
-//        }
-//
-//        String refreshTokenValue=refreshTokenValue=refreshTokenService.save(userId, JwtTokenProvider.REFRESH_TIME).getValue();
-//        jwtTokenProvider.setAccessTokenAndRefreshToken(jwtTokenProvider.generateToken(userId,jwtTokenProvider.ACCESS_TIME),
-//                refreshTokenValue,response);
-//        return role;
-//    }
+
     @Transactional(readOnly = true)
     public void logout(String accessToken){
 //        log.info("로그아웃 서비스");
@@ -78,7 +41,7 @@ public class CustomerService {
 //        refreshTokenRepository.ㅇByKeyId(userId);
 
     }
->>>>>>> fastfoodv2/master
+
 
     @Transactional(readOnly = true)
     public int getUserPkId(String userId){
@@ -99,11 +62,8 @@ public class CustomerService {
 
         customerSaveRequestDto.setEncorderPasswd(passwordEncoder);
         Customer customer=customerRepo.save(customerSaveRequestDto.toCustomerEntitiy());
-<<<<<<< HEAD
 
-=======
         log.info("새로 회원가입한 유저의 권한 "+customer.getRole());
->>>>>>> fastfoodv2/master
         return customer.getId();
     }
     @Transactional(readOnly = true)
