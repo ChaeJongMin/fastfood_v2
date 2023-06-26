@@ -1,6 +1,6 @@
 package com.example.demo.config.auth.jwt;
 
-import com.example.demo.exception.Exception.CustomException;
+import com.example.demo.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,13 +24,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             //클라이언트에 응답할 예외 메시지 및 코드를 생성 후 전달
             log.info(request.getRequestURI().toString()+" : "+e.getErrorCode().name());
             setErrorResponse(response,e);
-//            response.setStatus(e.getErrorCode().getHttpStatus().value());
-//            response.setContentType("application/json;charset=UTF-8");
-//            JSONObject responseJson = new JSONObject();
-//            responseJson.put("message", e.getErrorCode().getDetail());
-//            responseJson.put("code", e.getErrorCode().name());
-//            response.getWriter().print(responseJson);
-
            //아래 코드는 필요없다 지워도 될듯
             response.setStatus(e.getErrorCode().getHttpStatus().value());
             response.setContentType("application/json;charset=UTF-8");
