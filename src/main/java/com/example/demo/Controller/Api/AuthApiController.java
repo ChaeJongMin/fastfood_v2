@@ -21,17 +21,16 @@ import java.security.Principal;
 public class AuthApiController {
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenProvider jwtTokenProvider;
+
     @PostMapping("/api/auth/authorize")
-    public ResponseEntity authorize(@CookieValue("accessToken") String accessToken, Principal principal, HttpServletRequest request) {
+    public ResponseEntity authorize( Principal principal, HttpServletRequest request) {
         System.out.println("authorize 실행");
         if (principal == null || principal.getName() == null) {
             throw new UserAuthException(ExceptionMessage.NOT_AUTHORIZED_ACCESS);
         }
-//        if (principal != null && principal.getName() != null) {
-//            throw new UserAuthException(ExceptionMessage.NOT_AUTHORIZED_ACCESS);
-//        }
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @PostMapping("/api/auth/reissue")
     public ResponseEntity reissue(@CookieValue("refreshToken") String refreshToken, HttpServletResponse response) throws JsonProcessingException {
         log.info("reissue api 실행");
@@ -40,6 +39,7 @@ public class AuthApiController {
         jwtTokenProvider.setAccessTokenAtCookie(accessTokenDto.getAccessToken(), response);
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @DeleteMapping("/api/auth/delete")
     public ResponseEntity<?> delete(@CookieValue("refreshToken") String refreshToken){
         refreshTokenService.deleteByRefreshToken(refreshToken);

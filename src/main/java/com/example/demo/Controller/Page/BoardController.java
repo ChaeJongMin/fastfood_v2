@@ -60,7 +60,7 @@ public class BoardController {
     }
 
     @GetMapping("/boardContent")
-    public String showDetailContent(Model model, @RequestParam("id") long id,@AuthenticationPrincipal CustomUserDetail customUser ){
+    public String showDetailContent(Model model, @RequestParam("id") long id,@AuthenticationPrincipal CustomUserDetail customUser){
         //댓글 처리
         boardsService.viewsCount(id);
 

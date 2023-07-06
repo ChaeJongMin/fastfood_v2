@@ -35,13 +35,9 @@ public class MenuController {
 //        return "fastfood/menu";
 //    }
     @GetMapping("/menu")
-    public String menupageView(Model model, HttpServletRequest request, @AuthenticationPrincipal CustomUserDetail customUser) {
-        int id=customUser.getId();
-        String user=customerService.findByidForUserId(id);
-        model.addAttribute("id",id);
-        model.addAttribute("user",user);
-        System.out.println("menu 작동");
-        log.info(id+" "+user);
+    public String menupageView(Model model, @AuthenticationPrincipal CustomUserDetail customUser) {
+        model.addAttribute("user", customUser.getUsername());
+        int result = 10 / 0;
         return "fastfood/customer/menu/menu";
     }
 

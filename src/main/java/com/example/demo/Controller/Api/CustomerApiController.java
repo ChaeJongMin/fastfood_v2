@@ -20,12 +20,14 @@ import java.security.Principal;
 public class CustomerApiController {
     private final CustomerService customerService;
     private final ConnectCustomerService connectCustomerService;
+
     @GetMapping("/api/customer")
     public ResponseEntity<?> info(Principal principal) {
         if (principal == null || principal.getName() == null) {
             throw new UserAuthException(ExceptionMessage.NOT_AUTHORIZED_ACCESS);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.findByUserId(principal.getName()));
+        log.info("가져온 아이디 정보: "+customerService.findByUserId(principal.getName()).getUserId());
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.findByUserId(principal.getName()).getUserId());
     }
 
     @PostMapping("/api/customer")
@@ -40,14 +42,11 @@ public class CustomerApiController {
         }
         return customerService.save(customerSaveRequestDto);
     }
+
     @PutMapping("/api/customer/{id}")
     public int update(@PathVariable int id, @RequestBody CustomerSaveRequestDto customerSaveRequestDto){
         return customerService.update(id,customerSaveRequestDto);
     }
-//    @DeleteMapping("/api/customer/logout")
-//    public void logout(@RequestHeader("Authorization") String accessToken){
-//        log.info("/api/customer/logout 작동");
-//        customerService.logout(accessToken);
-//    }
+
 
 }

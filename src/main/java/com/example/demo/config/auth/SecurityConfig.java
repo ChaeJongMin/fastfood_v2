@@ -48,15 +48,13 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .authorizeRequests()
-<<<<<<< HEAD
                 .antMatchers("/templates/common/**").permitAll()
-=======
->>>>>>> fastfoodv2/master
                 .antMatchers("/api/customer/login","/api/customer/logout","/fastfood/login"
                         ,"/fastfood/register","/fastfood/menu","/fastfood/ResetPasswd").permitAll()
                 .antMatchers("/css/**","/js/**","/img/**").permitAll()
                 .antMatchers("/api/auth/**", "/api/mail/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/customer").permitAll()
+                .antMatchers("/error/**").permitAll()
 //                .antMatchers("/fastfood/**","/api/**").hasAnyRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
@@ -73,7 +71,7 @@ public class SecurityConfig {
         // JwtExceptionFilter -> JwtAuthenticationFilter -> customJsonUsernamePasswordAuthenticationFilter -> LogoutFilter 순서
         httpSecurity.addFilterBefore(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider,tokenUtils), CustomJsonUsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(new JwtExceptionFilter(),JwtAuthenticationFilter.class );
+        httpSecurity.addFilterBefore(new JwtExceptionFilter(refreshTokenService,jwtTokenProvider),JwtAuthenticationFilter.class );
 
 
         return httpSecurity.build();
@@ -115,49 +113,7 @@ public class SecurityConfig {
     public JwtAuthenticationFilter jwtAuthenticationFilter(){
         return new JwtAuthenticationFilter(jwtTokenProvider,tokenUtils);
     }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//        ;
-//
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/fastfood/menu").hasAnyRole(Role.USER.name())
-//                .antMatchers("/fastfood/CustomerInfoUpdate").hasAnyRole(Role.USER.name())
-//                .antMatchers("/fastfood/Hdetailmenu").hasAnyRole(Role.USER.name())
-//                .antMatchers("/fastfood/mybasket").hasAnyRole(Role.USER.name())
-//                .antMatchers("/fastfood/Payment").hasAnyRole(Role.USER.name())
-//                .antMatchers("/fastfood/superhome").hasAnyRole(Role.ADMIN.name())
-//                .anyRequest().permitAll()
-//        ;
-//
-//        http
-//                .formLogin()
-//                .loginPage("/fastfood/login")
-//                .loginProcessingUrl("/fastfood/login")
-//                .usernameParameter("userId")
-//                .passwordParameter("userPasswd")
-//                .successHandler(customAuthenticationSuccessHandler)
-//                .failureHandler(customAuthenticationFailureHandler)
-//                .and()
-//                .logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/fastfood/logout"))
-//                .logoutSuccessUrl("/fastfood/login")
-//                .invalidateHttpSession(true)
-//        ;
-//
-//        http
-//                .sessionManagement()
-//                .maximumSessions(1)
-//                .maxSessionsPreventsLogin(true)
-//        ;
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(customAuthenticationProvider);
-//    }
+
 
 
 }

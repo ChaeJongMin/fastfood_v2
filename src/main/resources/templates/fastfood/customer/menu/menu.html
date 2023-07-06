@@ -22,16 +22,12 @@
 		<a class="logo-text">BURGER-QUEEN</a>
 	</h1>
 	<div>
-		<!--
-		<a th:text="${session.user.userId}" th:href="@{/fastfood/CustomerUpdate(id=${session.user.id})}" style="color:white"></a>
-        <a th:href="@{/fastfood/logout}">로그아웃</a>
-		<a th:href="@{/fastfood/board(id=${session.user.id})}">게시판</a>
-		-->
-<!--		<a th:text="${user.getUserId()}" th:href="@{/fastfood/CustomerInfoUpdate}" style="color:white"></a>-->
-<!--		<a href="#" th:onclick="|javascript:allDelete(${user.getId()})|">로그아웃</a>-->
 
+<!--		<a class="btn btn-outline dropdown-toggle showId" href="#" role="button" id="dropdownMenuLink"-->
+<!--		   data-bs-toggle="dropdown" aria-expanded="false" th:value="${user}">-->
+<!--		</a>-->
 		<a class="btn btn-outline dropdown-toggle showId" href="#" role="button" id="dropdownMenuLink"
-		   data-bs-toggle="dropdown" aria-expanded="false" th:value="${user}">
+		   data-bs-toggle="dropdown" aria-expanded="false" >
 		</a>
 		<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 			<li><a class="dropdown-item" th:href="@{/fastfood/CustomerInfoUpdate}">정보수정</a></li>
@@ -131,11 +127,6 @@
 				</div>
 			</div>
 		</section>
-<<<<<<< HEAD
-=======
-	<input type="hidden" class="hidden-id" th:value="${user}">
->>>>>>> fastfoodv2/master
-
 	<input type="hidden" class="hidden-id" th:value="${user}">
 		<th:block th:replace="common/footer :: footerFragment"></th:block>
     </div>
@@ -147,9 +138,8 @@
 
 	<script type="text/javascript"
 			src="https://code.jquery.com/jquery.min.js"></script>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 	<script type="module" th:src="@{/js/initAuth.js}"></script>
-	<script type="text/javascript" th:src="@{/js/ForAjax/logout.js}"></script>
+	<script type="module" th:src="@{/js/ForAjax/logout.js}"></script>
 	<script type="text/javascript">
 		const showIds=document.querySelector(".showId");
 		const userId= document.querySelector(".hidden-id").value;

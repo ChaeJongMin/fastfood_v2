@@ -78,7 +78,7 @@ public class RefreshTokenService {
     public TokenDto reissue(String refreshToken) throws JsonProcessingException {
         Optional<RefreshTokens> refreshTokenObject=refreshTokenRepository.findByValue(refreshToken);
         if(refreshTokenObject!=null && jwtTokenProvider.vaildateRefreshToken(refreshToken)) {
-            //이미 JWT Exception 필터에서 예외처리가 발생
+            //이미 전역 예외 컨트롤러에서 예외처리가 발생하면 처리
             return createAccessToken(refreshToken,refreshTokenObject.get().getKeyId());
 
         }

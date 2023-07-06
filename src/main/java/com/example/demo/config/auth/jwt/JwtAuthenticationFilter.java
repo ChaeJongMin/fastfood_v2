@@ -27,16 +27,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //필터에서 액세스 토큰 검사가 필요없는 uri 배
         private static final String[] ALL_WHITELIST = {
             "/api/auth/reissue",  "/api/auth/delete",
-            "/api/customer" , "/api/customer/login", "/api/customer", 
-            "/fastfood/login", "/fastfood/ResetPasswd", "/fastfood/register",  
-            "/favicon.ico"               
+            "/api/customer" , "/api/customer/login", "/fastfood/login",
+            "/favicon.ico"  , "/login", "customer/logout"
         };
 
         /*************************************************************************************************************/
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {            
-           // 액세스 토큰 검사를 할 필요 없는 uri일 시 그냥 필터 통과 
-          if(isFilterCheck(request.getRequestURI())){                    
+           log.info("검사할 uri: "+ request.getRequestURI());
+            // 액세스 토큰 검사를 할 필요 없는 uri일 시 그냥 필터 통과
+          if(isFilterCheck(request.getRequestURI(),request.getMethod())){
                 filterChain.doFilter(request,response);
                 return ;
             }
@@ -67,27 +67,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //액세스 토큰의 value를     
             return jwtTokenProvider.resolveToken(accessToken);
         }
-        private boolean isFilterCheck(String requestURI){
-            if (requestURI.startsWith("/api/mail") || requestURI.startsWith("/oauth2") || requestURI.startsWith("/login") ) {
-                return true;
-            }
-          for(String excludeURi : ALL_WHITELIST){
-              if(excludeURi.equals(requestURI))
-                  return true;
-          }
-          if(requestURI.matches(".*(css|jpg|png|gif|js|ico)")){
-              return true;
-          }
-          return false;
-        }
-// private boolean isFilterCheck(String requestURI) {
-//   return requestURI.startsWith("/api/mail")
-//       || requestURI.startsWith("/oauth2")
-//       || requestURI.startsWith("/login")
-//       || Arrays.asList(ALL_WHITELIST).contains(requestURI)
-//       || requestURI.matches(".*(css|jpg|png|gif|js|ico)");
-// }
 
+    private boolean isFilterCheck(String requestURI,String method) {
+        if (requestURI.matches(".*(css|jpg|png|gif|js|ico)")) {
+            return true;
+        }
+        else if (requestURI.startsWith("/oauth2")
+                || requestURI.startsWith("/api/mail") || requestURI.startsWith("/error")) {
+            return true;
+        }
+        else if(requestURI.startsWith("/api/customer") && "GET".equals(method))
+            return false;
+        for (String excludeURi : ALL_WHITELIST) {
+            if (excludeURi.equals(requestURI))
+                return true;
+        }
+
+        return false;
+    }
         /*************************************************************************************************************/
 
 

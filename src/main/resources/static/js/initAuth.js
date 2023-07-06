@@ -1,83 +1,28 @@
 import { UtilController } from './Util.js';
+import {logout} from "./ForAjax/logout.js";
 
-class initLoads extends UtilController{
-    constructor() {
-        super();
-        this.showIds=document.querySelector(".showId");
-        this.logoutBtn=document.querySelector("#logout-btn");
-    }
-    init(){
-        console.log("init 실행");
-        this.sendAuthorize().then(ret => {
-            if(ret==true){
-                this.#sendMainData();
-            }
-            else {
-
-                //this.sendDelete();
-            }
-        });
-        //로그아웃 버튼 구현
-        this.logoutBtn.addEventListener("click",evt => {
-            console.log("로그아웃 작동");
-            this.sendDelete();
-            // let logoutXhr = new XMLHttpRequest();
-            // logoutXhr.open("DELETE", "/api/customer/logout");
-            // logoutXhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"));
-            // logoutXhr.addEventListener("loadend", event => {
-            //     let status = event.target.status;
-            //
-            //     if (status === 200) {
-            //         this.sendDelete();
-            //     }
-            //     else{
-            //         console.log("로그아웃 실패");
-            //     }
-            // });
-            //
-            // logoutXhr.addEventListener("error", event => {
-            //     this.showToastMessage('로그아웃에 실패하였습니다.');
-            // });
-            //
-            // logoutXhr.send();
-        });
-    }
-    #sendMainData() {
-        console.log("sendMainData 실행");
-        const mainXhr = new XMLHttpRequest();
-        mainXhr.open("GET", "/api/customer");
-        mainXhr.addEventListener("loadend", event => {
-            let status = event.target.status;
-            const responseValue = JSON.parse(event.target.responseText);
-            if (status === 200) {
-                this.showIds.textContent=responseValue["userId"];
-            }
-            else{
-                this.sendDelete();
-            }
-        });
-
-        mainXhr.addEventListener("error", event => {
-            this.showToastMessage('로그인에 실패하였습니다.');
-        });
-
-        mainXhr.send();
-    }
-
-};
-// function showIds(){
-//     const showIds=document.querySelector(".showId");
-//     const userId= document.querySelector(".hidden-id").value;
-//     showIds.textContent=userId;
-// }
 window.onload = function () {
-    // const initLoad = new initLoads();
-    // initLoad.init();
+    console.log("메뉴페이지 실행");
     const util = new UtilController();
     util.sendAuthorize().then(result => {
         console.log(result);
-    })
-        .catch(result => {
+    }).catch(result => {
             console.log(result);
+    });
+
+    fetch("/api/customer", {
+        method: "GET",
+    })
+        .then((response) => {
+            return response.text(); // 스트림을 텍스트로 변환하여 Promise 반환
+        })
+        .then((data) => {
+            const showIds = document.querySelector(".showId");
+            showIds.textContent = data;
+        })
+        .catch((err) => {
+            console.log(err);
+            alert("사용자의 인증 과정에서 알 수 없는 오류가 발생했습니다.");
+            logout();
         });
 }

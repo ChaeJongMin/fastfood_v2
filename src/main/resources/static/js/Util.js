@@ -1,47 +1,31 @@
+import { logout } from '../js/ForAjax/logout.js';
 export class UtilController {
-    showToastMessage(message) {
-        Toastify({
-            text: message,
-            duration: 3000,
-            close: true,
-            position: "center",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)",
-            },
-            onClick: function(){window.location.href="/fastfood/login";}
-        }).showToast();
-    }
+    async sendAuthorize() {
+        try {
+            console.log("sendAuthorize");
+            const response = await fetch("/api/auth/authorize", {
+                method: "POST",
+            });
+            if (response.status >= 400 && response.status <= 500) {
+                console.log("sendAuthorize: "+response);
+                console.log("sendAuthorize: "+response.body);
+                const responseJson = JSON.parse(await response.text());
+                console.log("responseJson: "+ responseJson);
+                if (response.status === 401 && this.checkExpired(responseJson.code)) {
+                    await this.sendReissue();
+                } else if (response.status === 401 || response.status === 403) {
 
-    sendAuthorize() {
-        return new Promise((resolve, reject) => {
-            const authorizeXhr = new XMLHttpRequest();
-            authorizeXhr.open("POST", "/api/auth/authorize", true);
-            authorizeXhr.addEventListener("loadend", event => {
-                let status = event.target.status;
-                // console.log(" sendAuthorize 가져온 상태 "+status+" 메시지: "+event.target.responseText);
-                if ((status >= 400 && status <= 500) || (status > 500)) {
-                    let responseJson= JSON.parse(event.target.responseText);
-                    if(status==401 && this.checkExpired(responseJson.code)){
-                        this.sendReissue();
-                        resolve(true);
-                    }
-                    if(status==401 || status==403) {
-                        this.showToastMessage('인증에 실패하였습니다.');
-                        resolve(false);
-                    }
+                    throw new Error("액세스 토큰 에러 발생");
                 }
-                else
-                    resolve(true);
-            });
-
-            authorizeXhr.addEventListener("error", event => {
-                this.sendDelete();
-            });
-
-            authorizeXhr.send();
-        });
+            }
+            return true;
+        } catch (error){
+            console.log("error: "+error);
+            alert("현재 접속중인 사용자님에 문제가 생겼습니다. 다시 로그인 해주십시오(액세스)" )
+            logout()
+        }
     }
+
     checkExpired(codes){
         console.log("checkExpired: "+codes);
         if(codes==="ACCESS_TOKEN_EXPIRED") {
@@ -50,58 +34,22 @@ export class UtilController {
         }
         return false;
     }
-    sendReissue() {
+    async sendReissue() {
         console.log("sendReissue");
-        const reissueXhr = new XMLHttpRequest();
-        reissueXhr.open("POST", "/api/auth/reissue", false);
-        reissueXhr.addEventListener("loadend", event => {
-            let status = event.target.status;
-            // console.log(" sendReissue 가져온 상태 "+status+" 메시지: "+event.target.responseText);
-            // let responseS = JSON.stringify(event.target.responseText);
-            // let responseValue=JSON.parse(responseS);
-            // let responseValue=JSON.parse(event.target.responseText);
-            //새로 받아온 accessToken을 다시 로컬스토리지에 저장
-            // if (((status >= 400 && status <= 500) || (status > 500)) === false)
-            if (status == 200) {
+        try {
+            const response = await fetch("/api/auth/reissue", {
+                method: "POST",
+            });
+            console.log("가져온 응닶값 리프레쉬: "+response);
+            console.log("가져온 응닶값(바디): "+response.body);
+            if (response.status >= 400 && response.status <= 500) {
+                throw new Error("리프레쉬 토큰 에러 발생");
             }
-            else{
-                this.sendDelete();
-            }
-        });
-        reissueXhr.addEventListener("error", event => {
-            this.sendDelete();
-        });
 
-        reissueXhr.send();
+        } catch (error) {
+            alert("현재 접속중인 사용자님에 문제가 생겼습니다. 다시 로그인 해주십시오(리프레쉬)")
+            logout()
+        }
     }
-    sendDelete(){
-        console.log("sendDelete");
-        let deleteXhr = new XMLHttpRequest();
-        deleteXhr.open("DELETE", "/api/auth/delete", false);
-        //deleteXhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"));
 
-        deleteXhr.addEventListener("loadend", event => {
-            let status = event.target.status;
-            // let responseS = JSON.stringify(event.target.responseText);
-            // let responseValue=JSON.parse(responseS);
-            //새로 받아온 accessToken을 다시 로컬스토리지에 저장
-            // if (((status >= 400 && status <= 500) || (status > 500)) === false)
-            if (status == 200) {
-                console.log("쿠키와 로컬 스토리지 삭제");
-                this.deleteCookie("refreshToken");A
-                window.localStorage.removeItem("Authorization");
-                alert("인증 실패로 로그인으로 돌아갑니다.....")
-                window.location.href="/fastfood/login"
-            }
-        });
-        deleteXhr.addEventListener("error", event => {
-            this.showToastMessage('초기화에 실패하였습니다.');
-        });
-
-        deleteXhr.send();
-    }
-    deleteCookie(name){
-        console.log("deleteCookie 작동");
-        document.cookie = name + '=; expires=Thu, 01 Jan 1979 00:00:10 GMT;domain=C.kr; path=/;';
-    }
 }

@@ -44,8 +44,10 @@ public class JwtTokenProvider {
 
     @Value("${token.secret}")
     private String secretKey;
-    public static final long ACCESS_TIME = 86400000;
-    public static final long REFRESH_TIME = 259200000;
+//    public static final long ACCESS_TIME = 86400000;
+//    public static final long REFRESH_TIME = 259200000;
+    public static final long ACCESS_TIME = 1000L*60;
+    public static final long REFRESH_TIME = 1000L*60;
 //    public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer-";
 
