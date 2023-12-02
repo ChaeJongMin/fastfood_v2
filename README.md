@@ -10,14 +10,14 @@
  [![Video Label](http://img.youtube.com/vi/FGMfXpsJByM/0.jpg)](https://youtu.be/FGMfXpsJByM)
 
 ## 사용 기술
- 1. 언어 : Java, JS , HTML5/CSS3</br>
- 2. IDE: 인텔리제이</br>
- 3. 프레임워크: Spring Boot</br>
- 4. 백엔드: JPA, Spring Security, OAUTH2, JPA</br> 
- 5. DB : MySQL</br>
- 6. OS : Windows, Linux(aws 배포 시 사용)</br>
- 7. CI/CD : TravisCI, AWS Code Deploy (현재 사용하지 않고있습니다.)
- 8. 인프라 : AWS
+ 1. **언어** : Java, JS , HTML5/CSS3</br>
+ 2. **IDE** : 인텔리제이</br>
+ 3. **프레임워크** : Spring Boot</br>
+ 4. **백엔드** : JPA, Spring Security, OAUTH2, JPA</br> 
+ 5. **DB** : MySQL</br>
+ 6. **OS** : Windows, Linux(aws 배포 시 사용)</br>
+ 7. **CI/CD** : TravisCI, AWS Code Deploy (현재 사용하지 않고있습니다.)
+ 8. **인프라** : AWS
 
 ## 2. 개발 일지
 
@@ -25,7 +25,7 @@
 * 개발 인원: 3인</br>
 * 기간 : 21.04 ~ 21.07 
 
-2. ### V1 (개인)
+ ### V1 (개인)
    > 사용자(고객)이 사용하는 서비스에 대한 기능에 관련된 코드 리펙토링 ( 계층 분할, API 적용 ), UI 변경, 추가 기능(게시판 관련, 보안) 추가
    
  + #### 22.09 ~ 22.10 
@@ -44,7 +44,7 @@
    2. 장바구니, 결제, 로그인 UI 변경
    3. 예외 처리
  
-2. ### V2 (개인)
+ ### V2 (개인)
    > 어드민이 사용하는 서비스에 대한 기능에 관련된 코드 리펙토링 ( 계층 분할, API 적용 ), UI 변경, 추가 기능 ( 보안, 채팅, 메일 인증 등 ) 추가
  
  + ### 23.05
@@ -61,4 +61,8 @@
 ## ※ 참고한 교재
 1. 스프링 부트와 AWS로 혼자 구현하는 웹 서비스 
 2. 스프링 부트 퀵스타트</br>
+
+## 기타
+ 자세한 정보는 노션에 작성했습니다.</br>
+ https://scythe-jeep-25f.notion.site/d5b4d37126964c7f8879801a61060e7c?pvs=4
 
