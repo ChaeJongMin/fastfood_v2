@@ -1,17 +1,25 @@
-# 1. Project Title
+# 1. 패스트푸트 웹
 
-패스트푸트 
+학부생 시절 저를 포함한 3명이 진행한 팀프로젝트로 패스트푸드에 접할 수 있는 기능(로그인, 구매 , 장바구니, 제품 추가 등)으로 고객과 어드민으로 나뉘어집니다.
 
-### 환경
- IDE: 인텔리제이, Brackets</br>
- 프레임워크: Spring Boot</br>
- Skill: JPA, Spring Security, Thymeleaf, JUnit, AWS(현재 사용하지 않고있습니다.),OAUTH2, JPA</br> 
- 사용한 언어: HTML5/CSS3, Java, JavaScript</br> 
- DB : MySQL</br>
- OS : Windows, Linux(aws 배포 시 사용)</br>
- CI/CD : TravisCI, AWS Code Deploy (현재 사용하지 않고있습니다.)
+## 기능
+ 1. 고객 - 로그인 / 회원가입 / 장바구니 / 유저 정보 수정 / 제품 구매(상세) / 결제 / 채팅 / 메일을 통한 비밀번호 초기화 </br>
+ 2. 어드민 - 대시보드 / 제품 추가,수정,삭제 / 결산 기능
 
-## 2. 프로젝트 진행
+## 영상
+ [![Video Label](http://img.youtube.com/vi/FGMfXpsJByM/0.jpg)](https://youtu.be/FGMfXpsJByM)
+
+## 사용 기술
+ 1. 언어 : Java, JS , HTML5/CSS3</br>
+ 2. IDE: 인텔리제이</br>
+ 3. 프레임워크: Spring Boot</br>
+ 4. 백엔드: JPA, Spring Security, OAUTH2, JPA</br> 
+ 5. DB : MySQL</br>
+ 6. OS : Windows, Linux(aws 배포 시 사용)</br>
+ 7. CI/CD : TravisCI, AWS Code Deploy (현재 사용하지 않고있습니다.)
+ 8. 인프라 : AWS
+
+## 2. 개발 일지
 
 1. ### 팀프로젝트 
 * 개발 인원: 3인</br>
@@ -50,12 +58,7 @@
    3. 인증 메일로 비밀번호 초기화 기능 추가
    4. AWS의 S3를 통한 이미지(제품) 관리
 
------------ 참조 문서 -----------
-### 해당 프로젝트의 진행에 대한 포스트한 블로그
-= https://velog.io/@dico2760/series/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8</br>
-(23.02 시작한 게시판 기능 부터 ~~)
-
-### ※ 참고한 교재
+## ※ 참고한 교재
 1. 스프링 부트와 AWS로 혼자 구현하는 웹 서비스 
 2. 스프링 부트 퀵스타트</br>
 
